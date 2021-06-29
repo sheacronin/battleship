@@ -1,6 +1,22 @@
 class Bug {
     constructor(length) {
-        this.length = length;
+        this._length = length;
+        this.units = this._initUnits();
+    }
+
+    _initUnits() {
+        const units = [];
+        for (let i = 0; i < this._length; i++) {
+            // 0 indicates a non-hit unit.
+            units.push(0);
+        }
+        return units;
+    }
+
+    hit(index) {
+        const newUnits = [...this.units];
+        newUnits.splice(index, 1, 'hit');
+        this.units = newUnits;
     }
 }
 
