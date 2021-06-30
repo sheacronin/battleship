@@ -1,15 +1,15 @@
 /* eslint-disable no-undef */
 import Bug from './bugs';
 
-test('has a units prop that is an array of inputted length with null values', () => {
-    expect(new Bug(2).units).toStrictEqual([null, null]);
+test('has a units prop that is an array of inputted length with "safe" values', () => {
+    expect(new Bug(2).units).toStrictEqual(['safe', 'safe']);
 });
 
 test('hit function modifies hit unit', () => {
     const bug3 = new Bug(3);
-    expect(bug3.units).toStrictEqual([null, null, null]);
+    expect(bug3.units).toStrictEqual(['safe', 'safe', 'safe']);
     bug3.hit(1);
-    expect(bug3.units).toStrictEqual([null, 'hit', null]);
+    expect(bug3.units).toStrictEqual(['safe', 'hit', 'safe']);
 });
 
 test('hit method does not accept too large indecies', () => {

@@ -7,8 +7,8 @@ class Bug {
     _initUnits() {
         const units = [];
         for (let i = 0; i < this._length; i++) {
-            // null indicates a non-hit unit.
-            units.push(null);
+            // 'safe' indicates a non-hit unit.
+            units.push('safe');
         }
         return units;
     }
@@ -23,7 +23,7 @@ class Bug {
     }
 
     isSwatted() {
-        if (this.units.includes(null)) {
+        if (this.units.includes('safe')) {
             // If not all units are hit, bug is not swatted.
             return false;
         } else {
