@@ -25,3 +25,15 @@ test('hit method does not accept negative indecies', () => {
 test('isSwatted returns false for initial bug', () => {
     expect(new Bug(2).isSwatted()).toBe(false);
 });
+
+test('swat a single-unit bug', () => {
+    const bug = new Bug(1);
+    bug.hit(0);
+    expect(bug.isSwatted()).toBe(true);
+});
+
+test('isSwatted returns false for partially hit bug', () => {
+    const bug = new Bug(2);
+    bug.hit(0);
+    expect(bug.isSwatted()).toBe(false);
+});
