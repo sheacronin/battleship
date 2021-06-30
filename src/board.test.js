@@ -116,3 +116,24 @@ test('do not allow bug to be placed too far to the right accounting for its leng
         board.placeBug(new mockBug(4, 'Catepillar', 'horizontal'), 7, 5)
     ).toThrow('cannot place bug off the grid');
 });
+
+test('do not allow bug to be placed too far up', () => {
+    const board = new Board();
+    expect(() =>
+        board.placeBug(new mockBug(2, 'Spider', 'vertical'), 0, -1)
+    ).toThrow('cannot place bug off the grid');
+});
+
+test('do not allow bug to be placed too far down', () => {
+    const board = new Board();
+    expect(() =>
+        board.placeBug(new mockBug(2, 'Spider', 'horizontal'), 5, 10)
+    ).toThrow('cannot place bug off the grid');
+});
+
+test('do not allow bug to be placed too far down accounting for its length', () => {
+    const board = new Board();
+    expect(() =>
+        board.placeBug(new mockBug(4, 'Catepillar', 'vertical'), 5, 7)
+    ).toThrow('cannot place bug off the grid');
+});
