@@ -16,6 +16,13 @@ class Board {
     }
 
     placeBug(bug, x, y) {
+        if (
+            x < 0 ||
+            x >= 10 ||
+            (bug.direction === 'horizontal' && x + bug.length >= 10)
+        ) {
+            throw new Error('cannot place bug off the grid');
+        }
         if (bug.direction === 'horizontal') {
             this.coordinates[y].fill(bug.name, x, x + bug.length);
         } else {
