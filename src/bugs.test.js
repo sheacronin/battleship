@@ -37,3 +37,7 @@ test('isSwatted returns false for partially hit bug', () => {
     bug.hit(0);
     expect(bug.isSwatted()).toBe(false);
 });
+
+test('bugs return a name', () => {
+    expect(new Bug(2, 'Spider').name).toBe('Spider');
+});

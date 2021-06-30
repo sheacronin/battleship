@@ -1,12 +1,13 @@
 class Bug {
-    constructor(length) {
-        this._length = length;
+    constructor(length, name) {
+        this.length = length;
+        this.name = name;
         this.units = this._initUnits();
     }
 
     _initUnits() {
         const units = [];
-        for (let i = 0; i < this._length; i++) {
+        for (let i = 0; i < this.length; i++) {
             // 'safe' indicates a non-hit unit.
             units.push('safe');
         }
@@ -14,7 +15,7 @@ class Bug {
     }
 
     hit(index) {
-        if (index >= this._length || index < 0) {
+        if (index >= this.length || index < 0) {
             throw new Error('invalid target index');
         }
         const newUnits = [...this.units];

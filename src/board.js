@@ -17,7 +17,7 @@ class Board {
 
     placeBug(bug, x, y) {
         const row = [...this.coordinates[y]];
-        row.fill('bug', x, bug.length);
+        row.fill(bug.name, x, bug.length);
         this.coordinates[y] = row;
     }
 }
