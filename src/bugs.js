@@ -14,6 +14,9 @@ class Bug {
     }
 
     hit(index) {
+        if (index >= this._length || index < 0) {
+            throw new Error('invalid target index');
+        }
         const newUnits = [...this.units];
         newUnits.splice(index, 1, 'hit');
         this.units = newUnits;
