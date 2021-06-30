@@ -30,9 +30,10 @@ const mockBug = jest.fn((length, name, direction = 'horizontal') => {
 
 test('place a 2-unit bug in top left corner horizontally', () => {
     const board = new Board();
-    board.placeBug(new mockBug(2, 'Spider'), 0, 0);
+    const spider = new mockBug(2, 'Spider');
+    board.placeBug(spider, 0, 0);
     expect(board.coordinates).toStrictEqual([
-        ['Spider', 'Spider', null, null, null, null, null, null, null, null],
+        [spider, spider, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -47,14 +48,15 @@ test('place a 2-unit bug in top left corner horizontally', () => {
 
 test('place a bug in the middle of the board horizontally', () => {
     const board = new Board();
-    board.placeBug(new mockBug(2, 'Spider'), 5, 5);
+    const spider = new mockBug(2, 'Spider');
+    board.placeBug(spider, 5, 5);
     expect(board.coordinates).toStrictEqual([
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, 'Spider', 'Spider', null, null, null],
+        [null, null, null, null, null, spider, spider, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -64,10 +66,11 @@ test('place a bug in the middle of the board horizontally', () => {
 
 test('place a bug vertically', () => {
     const board = new Board();
-    board.placeBug(new mockBug(2, 'Spider', 'vertical'), 0, 0);
+    const spider = new mockBug(2, 'Spider', 'vertical');
+    board.placeBug(spider, 0, 0);
     expect(board.coordinates).toStrictEqual([
-        ['Spider', null, null, null, null, null, null, null, null, null],
-        ['Spider', null, null, null, null, null, null, null, null, null],
+        [spider, null, null, null, null, null, null, null, null, null],
+        [spider, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -81,15 +84,16 @@ test('place a bug vertically', () => {
 
 test('place a bug in the middle of the board vertically', () => {
     const board = new Board();
-    board.placeBug(new mockBug(2, 'Spider', 'vertical'), 5, 5);
+    const spider = new mockBug(2, 'Spider', 'vertical');
+    board.placeBug(spider, 5, 5);
     expect(board.coordinates).toStrictEqual([
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, 'Spider', null, null, null, null],
-        [null, null, null, null, null, 'Spider', null, null, null, null],
+        [null, null, null, null, null, spider, null, null, null, null],
+        [null, null, null, null, null, spider, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -140,18 +144,20 @@ test('do not allow bug to be placed too far down accounting for its length', () 
 
 test('place multiple bugs', () => {
     const board = new Board();
-    board.placeBug(new mockBug(2, 'Spider', 'vertical'), 5, 5);
-    board.placeBug(new mockBug(4, 'Caterpillar', 'horizontal'), 0, 0);
+    const spider = new mockBug(2, 'Spider', 'vertical');
+    const caterpillar = new mockBug(4, 'Caterpillar', 'horizontal');
+    board.placeBug(spider, 5, 5);
+    board.placeBug(caterpillar, 0, 0);
 
     expect(board.coordinates).toStrictEqual([
         // prettier-ignore
-        ['Caterpillar', 'Caterpillar', 'Caterpillar', 'Caterpillar', null, null, null, null, null, null],
+        [caterpillar, caterpillar, caterpillar, caterpillar, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, 'Spider', null, null, null, null],
-        [null, null, null, null, null, 'Spider', null, null, null, null],
+        [null, null, null, null, null, spider, null, null, null, null],
+        [null, null, null, null, null, spider, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -172,4 +178,9 @@ test('do not allow end length of horizontal bug to be placed on top of other bug
     expect(() =>
         board.placeBug(new mockBug(4, 'Caterpillar', 'horizontal'), 2, 5)
     ).toThrow('there is already another bug here!');
+});
+
+test('receives a missing attack', () => {
+    const board = new Board();
+    expect(board.receiveAttack(0, 0)).toStrictEqual([0, 0]);
 });

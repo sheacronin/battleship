@@ -35,15 +35,20 @@ class Board {
             ) {
                 throw new Error('there is already another bug here!');
             }
-            this.coordinates[y].fill(bug.name, x, x + bug.length);
+            this.coordinates[y].fill(bug, x, x + bug.length);
         } else {
             for (let rowI = y; rowI < y + bug.length; rowI++) {
                 if (this.coordinates[rowI][x] !== null) {
                     throw new Error('there is already another bug here!');
                 }
-                this.coordinates[rowI][x] = bug.name;
+                this.coordinates[rowI][x] = bug;
             }
         }
+    }
+
+    receiveAttack(x, y) {
+        const isHit = this.coordinates[y][x] !== null;
+        return isHit ? this.coordinates[y][x] : [x, y];
     }
 }
 
