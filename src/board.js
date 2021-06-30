@@ -26,10 +26,21 @@ class Board {
         ) {
             throw new Error('cannot place bug off the grid');
         }
+
         if (bug.direction === 'horizontal') {
+            if (
+                this.coordinates[y]
+                    .slice(x, x + bug.length)
+                    .some((unit) => unit !== null)
+            ) {
+                throw new Error('there is already another bug here!');
+            }
             this.coordinates[y].fill(bug.name, x, x + bug.length);
         } else {
             for (let rowI = y; rowI < y + bug.length; rowI++) {
+                if (this.coordinates[rowI][x] !== null) {
+                    throw new Error('there is already another bug here!');
+                }
                 this.coordinates[rowI][x] = bug.name;
             }
         }

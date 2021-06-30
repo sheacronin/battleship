@@ -113,7 +113,7 @@ test('do not allow bug to be placed too far to the right', () => {
 test('do not allow bug to be placed too far to the right accounting for its length', () => {
     const board = new Board();
     expect(() =>
-        board.placeBug(new mockBug(4, 'Catepillar', 'horizontal'), 7, 5)
+        board.placeBug(new mockBug(4, 'Caterpillar', 'horizontal'), 7, 5)
     ).toThrow('cannot place bug off the grid');
 });
 
@@ -134,6 +134,42 @@ test('do not allow bug to be placed too far down', () => {
 test('do not allow bug to be placed too far down accounting for its length', () => {
     const board = new Board();
     expect(() =>
-        board.placeBug(new mockBug(4, 'Catepillar', 'vertical'), 5, 7)
+        board.placeBug(new mockBug(4, 'Caterpillar', 'vertical'), 5, 7)
     ).toThrow('cannot place bug off the grid');
+});
+
+test('place multiple bugs', () => {
+    const board = new Board();
+    board.placeBug(new mockBug(2, 'Spider', 'vertical'), 5, 5);
+    board.placeBug(new mockBug(4, 'Caterpillar', 'horizontal'), 0, 0);
+
+    expect(board.coordinates).toStrictEqual([
+        // prettier-ignore
+        ['Caterpillar', 'Caterpillar', 'Caterpillar', 'Caterpillar', null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, 'Spider', null, null, null, null],
+        [null, null, null, null, null, 'Spider', null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+    ]);
+});
+
+test('do not allow bug to be placed on top of other bug', () => {
+    const board = new Board();
+    board.placeBug(new mockBug(4, 'Caterpillar', 'horizontal'), 0, 0);
+    expect(() =>
+        board.placeBug(new mockBug(2, 'Spider', 'vertical'), 2, 0)
+    ).toThrow('there is already another bug here!');
+});
+
+test('do not allow end length of horizontal bug to be placed on top of other bug', () => {
+    const board = new Board();
+    board.placeBug(new mockBug(2, 'Spider', 'horizontal'), 5, 5);
+    expect(() =>
+        board.placeBug(new mockBug(4, 'Caterpillar', 'horizontal'), 2, 5)
+    ).toThrow('there is already another bug here!');
 });
