@@ -1,18 +1,19 @@
 class Board {
     constructor() {
-        this.coordinates = this._initCoordinates();
+        this.grid = this._initGrid();
+        this.bugs = [];
     }
 
-    _initCoordinates() {
-        const coordinates = [];
+    _initGrid() {
+        const grid = [];
         for (let i = 0; i < 10; i++) {
             const row = [];
             for (let j = 0; j < 10; j++) {
                 row.push(null);
             }
-            coordinates.push(row);
+            grid.push(row);
         }
-        return coordinates;
+        return grid;
     }
 
     placeBug(bug, x, y) {
@@ -29,27 +30,29 @@ class Board {
 
         if (bug.direction === 'horizontal') {
             if (
-                this.coordinates[y]
+                this.grid[y]
                     .slice(x, x + bug.length)
                     .some((unit) => unit !== null)
             ) {
                 throw new Error('there is already another bug here!');
             }
-            this.coordinates[y].fill(bug, x, x + bug.length);
+            this.grid[y].fill(bug, x, x + bug.length);
         } else {
             for (let rowI = y; rowI < y + bug.length; rowI++) {
-                if (this.coordinates[rowI][x] !== null) {
+                if (this.grid[rowI][x] !== null) {
                     throw new Error('there is already another bug here!');
                 }
-                this.coordinates[rowI][x] = bug;
+                this.grid[rowI][x] = bug;
             }
         }
+
+        this.bugs.push(bug);
     }
 
     receiveAttack(x, y) {
-        const isHit = this.coordinates[y][x] !== null;
+        const isHit = this.grid[y][x] !== null;
         if (isHit) {
-            const bug = this.coordinates[y][x];
+            const bug = this.grid[y][x];
             let hitIndex = 0;
 
             if (bug.direction === 'horizontal') {
@@ -57,14 +60,14 @@ class Board {
                 // and if bug still there, increase hitIndex++
                 // stop when bug not there.
                 let n = 1;
-                while (this.coordinates[y][x - n] === bug) {
+                while (this.grid[y][x - n] === bug) {
                     hitIndex++;
                     n++;
                 }
             } else {
                 // vertical
                 let n = 1;
-                while (this.coordinates[y - n][x] === bug) {
+                while (this.grid[y - n][x] === bug) {
                     hitIndex++;
                     n++;
                 }
@@ -74,9 +77,13 @@ class Board {
             return bug;
         }
 
-        this.coordinates[y][x] = 'miss';
+        this.grid[y][x] = 'miss';
 
         return [x, y];
+    }
+
+    areAllBugsSwatted() {
+        console.log(this.bugs);
     }
 }
 

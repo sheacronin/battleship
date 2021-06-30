@@ -2,11 +2,11 @@
 import Board from './board';
 
 test('first row of board is an array with length of 10', () => {
-    expect(new Board().coordinates[0].length).toBe(10);
+    expect(new Board().grid[0].length).toBe(10);
 });
 
-test('init coordinates is a 10x10 2D array of null values', () => {
-    expect(new Board().coordinates).toStrictEqual([
+test('init grid is a 10x10 2D array of null values', () => {
+    expect(new Board().grid).toStrictEqual([
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -33,7 +33,7 @@ test('place a 2-unit bug in top left corner horizontally', () => {
     const board = new Board();
     const spider = new mockBug(2, 'Spider');
     board.placeBug(spider, 0, 0);
-    expect(board.coordinates).toStrictEqual([
+    expect(board.grid).toStrictEqual([
         [spider, spider, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -51,7 +51,7 @@ test('place a bug in the middle of the board horizontally', () => {
     const board = new Board();
     const spider = new mockBug(2, 'Spider');
     board.placeBug(spider, 5, 5);
-    expect(board.coordinates).toStrictEqual([
+    expect(board.grid).toStrictEqual([
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -69,7 +69,7 @@ test('place a bug vertically', () => {
     const board = new Board();
     const spider = new mockBug(2, 'Spider', 'vertical');
     board.placeBug(spider, 0, 0);
-    expect(board.coordinates).toStrictEqual([
+    expect(board.grid).toStrictEqual([
         [spider, null, null, null, null, null, null, null, null, null],
         [spider, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -87,7 +87,7 @@ test('place a bug in the middle of the board vertically', () => {
     const board = new Board();
     const spider = new mockBug(2, 'Spider', 'vertical');
     board.placeBug(spider, 5, 5);
-    expect(board.coordinates).toStrictEqual([
+    expect(board.grid).toStrictEqual([
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -150,7 +150,7 @@ test('place multiple bugs', () => {
     board.placeBug(spider, 5, 5);
     board.placeBug(caterpillar, 0, 0);
 
-    expect(board.coordinates).toStrictEqual([
+    expect(board.grid).toStrictEqual([
         // prettier-ignore
         [caterpillar, caterpillar, caterpillar, caterpillar, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -196,7 +196,7 @@ test('receives a hit attack', () => {
 test('tracks missed attack', () => {
     const board = new Board();
     board.receiveAttack(0, 0);
-    expect(board.coordinates).toStrictEqual([
+    expect(board.grid).toStrictEqual([
         ['miss', null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -215,7 +215,7 @@ test('tracks several missed attacks', () => {
     board.receiveAttack(0, 0);
     board.receiveAttack(2, 7);
     board.receiveAttack(4, 3);
-    expect(board.coordinates).toStrictEqual([
+    expect(board.grid).toStrictEqual([
         ['miss', null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -227,4 +227,12 @@ test('tracks several missed attacks', () => {
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
     ]);
+});
+
+test('reports when all bugs are swatted', () => {
+    const board = new Board();
+    board.placeBug(new mockBug(2, 'Spider', 'horizontal'), 0, 0);
+    board.receiveAttack(0, 0);
+    board.receiveAttack(0, 1);
+    expect(board.areAllBugsSwatted()).toBe(true);
 });
