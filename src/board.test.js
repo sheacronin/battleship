@@ -192,3 +192,39 @@ test('receives a hit attack', () => {
     board.placeBug(spider, 0, 0);
     expect(board.receiveAttack(0, 0)).toBe(spider);
 });
+
+test('tracks missed attack', () => {
+    const board = new Board();
+    board.receiveAttack(0, 0);
+    expect(board.coordinates).toStrictEqual([
+        ['miss', null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+    ]);
+});
+
+test('tracks several missed attacks', () => {
+    const board = new Board();
+    board.receiveAttack(0, 0);
+    board.receiveAttack(2, 7);
+    board.receiveAttack(4, 3);
+    expect(board.coordinates).toStrictEqual([
+        ['miss', null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, 'miss', null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, 'miss', null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+    ]);
+});

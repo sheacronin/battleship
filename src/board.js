@@ -71,9 +71,12 @@ class Board {
             }
 
             bug.hit(hitIndex);
+            return bug;
         }
 
-        return isHit ? this.coordinates[y][x] : [x, y];
+        this.coordinates[y][x] = 'miss';
+
+        return [x, y];
     }
 }
 
