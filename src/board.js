@@ -16,10 +16,13 @@ class Board {
     }
 
     placeBug(bug, x, y) {
-        const row = [...this.coordinates[y]];
-        row.fill(bug.name, x, x + bug.length);
-        this.coordinates[y] = row;
-        console.log(row, x, x + bug.length);
+        if (bug.direction === 'horizontal') {
+            this.coordinates[y].fill(bug.name, x, x + bug.length);
+        } else {
+            for (let rowI = y; rowI < y + bug.length; rowI++) {
+                this.coordinates[rowI][x] = bug.name;
+            }
+        }
     }
 }
 
