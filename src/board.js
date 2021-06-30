@@ -1,7 +1,9 @@
 class Board {
-    constructor() {}
+    constructor() {
+        this.coordinates = this._initCoordinates();
+    }
 
-    get coordinates() {
+    _initCoordinates() {
         const coordinates = [];
         for (let i = 0; i < 10; i++) {
             const row = [];
@@ -11,6 +13,12 @@ class Board {
             coordinates.push(row);
         }
         return coordinates;
+    }
+
+    placeBug(bug, x, y) {
+        const row = [...this.coordinates[y]];
+        row.fill('bug', x, bug.length);
+        this.coordinates[y] = row;
     }
 }
 
