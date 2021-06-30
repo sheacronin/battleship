@@ -1,7 +1,8 @@
 class Bug {
-    constructor(length, name) {
+    constructor(length, name, direction = 'horizontal') {
         this.length = length;
         this.name = name;
+        this.direction = direction;
         this.units = this._initUnits();
     }
 

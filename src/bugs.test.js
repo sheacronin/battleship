@@ -41,3 +41,11 @@ test('isSwatted returns false for partially hit bug', () => {
 test('bugs return a name', () => {
     expect(new Bug(2, 'Spider').name).toBe('Spider');
 });
+
+test('default bug direction is horizontal', () => {
+    expect(new Bug(2, 'Spider').direction).toBe('horizontal');
+});
+
+test('set bug direction to vertical', () => {
+    expect(new Bug(2, 'Spider', 'vertical').direction).toBe('vertical');
+});
