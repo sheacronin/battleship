@@ -25,6 +25,7 @@ const mockBug = jest.fn((length, name, direction = 'horizontal') => {
         length,
         name,
         direction,
+        hit() {},
     };
 });
 
@@ -183,4 +184,11 @@ test('do not allow end length of horizontal bug to be placed on top of other bug
 test('receives a missing attack', () => {
     const board = new Board();
     expect(board.receiveAttack(0, 0)).toStrictEqual([0, 0]);
+});
+
+test('receives a hit attack', () => {
+    const board = new Board();
+    const spider = new mockBug(2, 'Spider', 'horizontal');
+    board.placeBug(spider, 0, 0);
+    expect(board.receiveAttack(0, 0)).toBe(spider);
 });

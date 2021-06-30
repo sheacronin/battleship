@@ -48,6 +48,31 @@ class Board {
 
     receiveAttack(x, y) {
         const isHit = this.coordinates[y][x] !== null;
+        if (isHit) {
+            const bug = this.coordinates[y][x];
+            let hitIndex = 0;
+
+            if (bug.direction === 'horizontal') {
+                // go to the left,
+                // and if bug still there, increase hitIndex++
+                // stop when bug not there.
+                let n = 1;
+                while (this.coordinates[y][x - n] === bug) {
+                    hitIndex++;
+                    n++;
+                }
+            } else {
+                // vertical
+                let n = 1;
+                while (this.coordinates[y - n][x] === bug) {
+                    hitIndex++;
+                    n++;
+                }
+            }
+
+            bug.hit(hitIndex);
+        }
+
         return isHit ? this.coordinates[y][x] : [x, y];
     }
 }
