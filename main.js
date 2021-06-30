@@ -80,13 +80,23 @@ eval("\n\n/* istanbul ignore next  */\nfunction apply(style, options, obj) {\n  
 
 /***/ }),
 
+/***/ "./src/bugs.js":
+/*!*********************!*\
+  !*** ./src/bugs.js ***!
+  \*********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nfunction bugFactory(length) {\n    return { length };\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (bugFactory);\n\n\n//# sourceURL=webpack://battleship/./src/bugs.js?");
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles.css */ \"./src/styles.css\");\n\n\nconsole.log('hello world!');\n\n\n//# sourceURL=webpack://battleship/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles.css */ \"./src/styles.css\");\n/* harmony import */ var _bugs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bugs */ \"./src/bugs.js\");\n\n\n\nconsole.log('hello world!');\nconsole.log((0,_bugs__WEBPACK_IMPORTED_MODULE_1__.default)(2));\n\n\n//# sourceURL=webpack://battleship/./src/index.js?");
 
 /***/ })
 
