@@ -42,3 +42,26 @@ test('place a 2-unit bug in top left corner horizontally', () => {
         [null, null, null, null, null, null, null, null, null, null],
     ]);
 });
+
+test('place a bug in the middle of the board horizontally', () => {
+    const board = new Board();
+    const mockBug = jest.fn((length, name) => {
+        return {
+            length,
+            name,
+        };
+    });
+    board.placeBug(new mockBug(2, 'Spider'), 5, 5);
+    expect(board.coordinates).toStrictEqual([
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, 'Spider', 'Spider', null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null],
+    ]);
+});
