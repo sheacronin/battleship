@@ -83,7 +83,7 @@ class Board {
     }
 
     areAllBugsSwatted() {
-        console.log(this.bugs);
+        return this.bugs.every((bug) => bug.isSwatted());
     }
 }
 

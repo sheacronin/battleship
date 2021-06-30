@@ -229,10 +229,11 @@ test('tracks several missed attacks', () => {
     ]);
 });
 
-test('reports when all bugs are swatted', () => {
+test('stores bugs in prop when placed', () => {
     const board = new Board();
-    board.placeBug(new mockBug(2, 'Spider', 'horizontal'), 0, 0);
-    board.receiveAttack(0, 0);
-    board.receiveAttack(0, 1);
-    expect(board.areAllBugsSwatted()).toBe(true);
+    const spider = new mockBug(2, 'Spider', 'vertical');
+    const caterpillar = new mockBug(4, 'Caterpillar', 'horizontal');
+    board.placeBug(spider, 5, 5);
+    board.placeBug(caterpillar, 0, 0);
+    expect(board.bugs).toStrictEqual([spider, caterpillar]);
 });
