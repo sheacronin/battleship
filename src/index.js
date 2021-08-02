@@ -1,5 +1,4 @@
 import './styles.css';
-import bugFactory from './bugs';
+import main from './game-dom';
 
 console.log('hello world!');
-console.log(bugFactory(2));
