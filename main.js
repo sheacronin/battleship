@@ -100,13 +100,23 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
+/***/ "./src/events.js":
+/*!***********************!*\
+  !*** ./src/events.js ***!
+  \***********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nconst events = {\n    events: {},\n    on: function (eventName, fn) {\n        this.events[eventName] = this.events[eventName] || [];\n        this.events[eventName].push(fn);\n    },\n    off: function (eventName, fn) {\n        if (this.events[eventName]) {\n            for (let i = 0; i < this.events[eventName].length; i++) {\n                if (this.events[eventName][i] === fn) {\n                    this.events[eventName].splice(i, 1);\n                    break;\n                }\n            }\n        }\n    },\n    emit: function (eventName, data) {\n        console.log(eventName + ' emitted with ' + data);\n        if (this.events[eventName]) {\n            this.events[eventName].forEach((fn) => fn(data));\n        }\n    },\n};\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (events);\n\n\n//# sourceURL=webpack://battleship/./src/events.js?");
+
+/***/ }),
+
 /***/ "./src/game-dom.js":
 /*!*************************!*\
   !*** ./src/game-dom.js ***!
   \*************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ \"./src/game.js\");\n\n\nconst main = document.querySelector('main');\n\n_game__WEBPACK_IMPORTED_MODULE_0__.default.boards.forEach((board) => {\n    // populate grid.\n    const boardContainer = document.createElement('div');\n    boardContainer.classList.add('board');\n\n    board.grid.forEach((row) => {\n        row.forEach((unit) => {\n            const square = document.createElement('button');\n            square.classList.add('unit');\n\n            // add styles if unit is bug / missed target\n            // will need to only do some of this for own board\n            if (unit) square.classList.add('bug');\n\n            boardContainer.appendChild(square);\n        });\n    });\n\n    main.appendChild(boardContainer);\n});\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (main);\n\n\n//# sourceURL=webpack://battleship/./src/game-dom.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ \"./src/game.js\");\n/* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./events */ \"./src/events.js\");\n\n\n\nconst main = document.querySelector('main');\n\n_game__WEBPACK_IMPORTED_MODULE_0__.default.boards.forEach((board) => {\n    // populate grid.\n    const boardContainer = document.createElement('div');\n    boardContainer.classList.add('board');\n\n    board.grid.forEach((row) => {\n        let unitIndex = 0;\n\n        row.forEach((unit) => {\n            const square = document.createElement('button');\n            square.classList.add('unit');\n\n            // add styles if unit is bug / missed target\n            // will need to only do some of this for own board\n            if (unit) square.classList.add('bug');\n\n            const x = unitIndex;\n            const y = board.grid.indexOf(row);\n\n            // add event listeners to squares\n            square.addEventListener('click', () => {\n                console.log(unit);\n                console.log('x', x);\n                console.log('y', y);\n                // emit event that x, y was clicked\n                // game object should listen for that\n                _events__WEBPACK_IMPORTED_MODULE_1__.default.emit('unitClicked', [x, y]);\n            });\n\n            boardContainer.appendChild(square);\n\n            unitIndex++;\n        });\n    });\n\n    main.appendChild(boardContainer);\n});\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (main);\n\n\n//# sourceURL=webpack://battleship/./src/game-dom.js?");
 
 /***/ }),
 
