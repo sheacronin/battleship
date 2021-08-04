@@ -90,6 +90,16 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
+/***/ "./src/bugs.js":
+/*!*********************!*\
+  !*** ./src/bugs.js ***!
+  \*********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nclass Bug {\n    constructor(length, name, direction = 'horizontal') {\n        this.length = length;\n        this.name = name;\n        this.direction = direction;\n        this.units = this._initUnits();\n    }\n\n    _initUnits() {\n        const units = [];\n        for (let i = 0; i < this.length; i++) {\n            // 'safe' indicates a non-hit unit.\n            units.push('safe');\n        }\n        return units;\n    }\n\n    hit(index) {\n        if (index >= this.length || index < 0) {\n            throw new Error('invalid target index');\n        }\n        const newUnits = [...this.units];\n        newUnits.splice(index, 1, 'hit');\n        this.units = newUnits;\n    }\n\n    isSwatted() {\n        if (this.units.includes('safe')) {\n            // If not all units are hit, bug is not swatted.\n            return false;\n        } else {\n            return true;\n        }\n    }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Bug);\n\n\n//# sourceURL=webpack://battleship/./src/bugs.js?");
+
+/***/ }),
+
 /***/ "./src/game-dom.js":
 /*!*************************!*\
   !*** ./src/game-dom.js ***!
@@ -106,7 +116,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./player */ \"./src/player.js\");\n/* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./board */ \"./src/board.js\");\n\n\n\nconst game = (() => {\n    const player1 = new _player__WEBPACK_IMPORTED_MODULE_0__.default();\n    const player2 = new _player__WEBPACK_IMPORTED_MODULE_0__.default(true);\n\n    const board1 = new _board__WEBPACK_IMPORTED_MODULE_1__.default();\n    const board2 = new _board__WEBPACK_IMPORTED_MODULE_1__.default();\n\n    return { board1, board2 };\n})();\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (game);\n\n\n//# sourceURL=webpack://battleship/./src/game.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./player */ \"./src/player.js\");\n/* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./board */ \"./src/board.js\");\n/* harmony import */ var _bugs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./bugs */ \"./src/bugs.js\");\n\n\n\n\nconst game = (() => {\n    const player1 = new _player__WEBPACK_IMPORTED_MODULE_0__.default();\n    const player2 = new _player__WEBPACK_IMPORTED_MODULE_0__.default(true);\n\n    const board1 = new _board__WEBPACK_IMPORTED_MODULE_1__.default();\n    const board2 = new _board__WEBPACK_IMPORTED_MODULE_1__.default();\n\n    const worm = new _bugs__WEBPACK_IMPORTED_MODULE_2__.default(5, 'Worm');\n    const caterpillar = new _bugs__WEBPACK_IMPORTED_MODULE_2__.default(4, 'Caterpillar');\n    const ant = new _bugs__WEBPACK_IMPORTED_MODULE_2__.default(3, 'Ant');\n    const spider = new _bugs__WEBPACK_IMPORTED_MODULE_2__.default(3, 'Spider');\n    const ladybug = new _bugs__WEBPACK_IMPORTED_MODULE_2__.default(2, 'Ladybug');\n    const bugCollection = [worm, caterpillar, ant, spider, ladybug];\n\n    function placeBugRandomly(board, bug) {\n        let x = Math.floor(Math.random() * 10);\n        let y = Math.floor(Math.random() * 10);\n\n        // select direction randomly as well\n        let shouldDirectionChange = Math.random() < 0.5;\n        if (shouldDirectionChange) bug.direction = 'vertical';\n\n        try {\n            board.placeBug(bug, x, y);\n        } catch {\n            // catch thrown error and re-run for bug\n            // if there's an error\n            placeBugRandomly(board, bug);\n        }\n    }\n\n    bugCollection.forEach((bug) => {\n        placeBugRandomly(board1, bug);\n        placeBugRandomly(board2, bug);\n    });\n\n    return { board1, board2 };\n})();\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (game);\n\n\n//# sourceURL=webpack://battleship/./src/game.js?");
 
 /***/ }),
 
