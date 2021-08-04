@@ -38,7 +38,7 @@ const game = (() => {
         placeBugRandomly(board2, bug);
     });
 
-    return { board1, board2 };
+    return { boards: [board1, board2] };
 })();
 
 export default game;
