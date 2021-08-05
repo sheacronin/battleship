@@ -1,6 +1,7 @@
 import Player from './player';
 import Board from './board';
 import Bug from './bugs';
+import events from './events';
 
 const game = (() => {
     const player1 = new Player();
@@ -36,6 +37,16 @@ const game = (() => {
     bugCollection.forEach((bug) => {
         placeBugRandomly(board1, bug);
         placeBugRandomly(board2, bug);
+    });
+
+    // listen for events.
+    events.on('unitClicked', ([x, y]) => {
+        // determine who clicked/whose turn it is
+        // player.attack() ??
+        // use above determination to determine whose board
+        // is being attacked
+        // board.receiveAttack(x, y)
+        board1.receiveAttack(x, y);
     });
 
     return { boards: [board1, board2] };

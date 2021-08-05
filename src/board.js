@@ -50,8 +50,10 @@ class Board {
     }
 
     receiveAttack(x, y) {
+        // TODO: need to change this to account for 'miss'
         const isHit = this.grid[y][x] !== null;
         if (isHit) {
+            console.log('hit!');
             const bug = this.grid[y][x];
             let hitIndex = 0;
 
@@ -77,6 +79,7 @@ class Board {
             return bug;
         }
 
+        console.log('miss!');
         this.grid[y][x] = 'miss';
 
         return [x, y];
