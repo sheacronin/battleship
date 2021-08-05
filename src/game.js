@@ -10,6 +10,10 @@ const game = (() => {
     const board1 = new Board();
     const board2 = new Board();
 
+    // add enemy board prop?
+    player1.enemyBoard = board2;
+    player2.enemyBoard = board1;
+
     const worm = new Bug(5, 'Worm');
     const caterpillar = new Bug(4, 'Caterpillar');
     const ant = new Bug(3, 'Ant');
@@ -39,6 +43,13 @@ const game = (() => {
         placeBugRandomly(board2, bug);
     });
 
+    // store whose turn it is.
+    let whoseTurn = player1;
+
+    function switchTurn() {
+        whoseTurn = whoseTurn === player1 ? player1 : player2;
+    }
+
     // listen for events.
     events.on('unitClicked', ([x, y]) => {
         // determine who clicked/whose turn it is
@@ -46,7 +57,14 @@ const game = (() => {
         // use above determination to determine whose board
         // is being attacked
         // board.receiveAttack(x, y)
-        board1.receiveAttack(x, y);
+        whoseTurn.enemyBoard.receiveAttack(x, y);
+
+        // // attack result will be bug or coords.
+        // if (attackResult === [x, y]) {
+        //     events.emit('miss', [x , y]);
+        // } else {
+        //     events.emit('hit')
+        // }
     });
 
     return { boards: [board1, board2] };

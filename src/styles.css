@@ -42,3 +42,11 @@ main {
 .bug {
     background-color: lightgreen;
 }
+
+.miss {
+    background-color: grey;
+}
+
+.hit {
+    background-color: indianred;
+}

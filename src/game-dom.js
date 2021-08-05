@@ -4,9 +4,13 @@ import events from './events';
 const main = document.querySelector('main');
 
 game.boards.forEach((board) => {
+    // const boardContainer = document.createElement('section');
+    // const boardTitle = document.createElement('h2');
+    // boardTitle.textContent = board
+
     // populate grid.
-    const boardContainer = document.createElement('div');
-    boardContainer.classList.add('board');
+    const boardEl = document.createElement('div');
+    boardEl.classList.add('board');
 
     board.grid.forEach((row) => {
         let unitIndex = 0;
@@ -30,15 +34,21 @@ game.boards.forEach((board) => {
                 // emit event that x, y was clicked
                 // game object should listen for that
                 events.emit('unitClicked', [x, y]);
+
+                if (square.classList.contains('bug')) {
+                    square.classList.add('hit');
+                } else {
+                    square.classList.add('miss');
+                }
             });
 
-            boardContainer.appendChild(square);
+            boardEl.appendChild(square);
 
             unitIndex++;
         });
     });
 
-    main.appendChild(boardContainer);
+    main.appendChild(boardEl);
 });
 
 export default main;
