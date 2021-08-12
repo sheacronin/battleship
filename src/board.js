@@ -50,39 +50,44 @@ class Board {
     }
 
     receiveAttack(x, y) {
-        // TODO: need to change this to account for 'miss'
-        const isHit = this.grid[y][x] !== null;
-        if (isHit) {
-            console.log('hit!');
-            const bug = this.grid[y][x];
-            let hitIndex = 0;
+        switch (this.grid[y][x]) {
+            case 'miss':
+                console.log("you've already swatted here!");
+                return;
+            case null:
+                console.log('miss!');
+                this.grid[y][x] = 'miss';
+                return [x, y];
+            default:
+                console.log('hit!');
+                return this._hitBug(this.grid[y][x], [x, y]);
+        }
+    }
 
-            if (bug.direction === 'horizontal') {
-                // go to the left,
-                // and if bug still there, increase hitIndex++
-                // stop when bug not there.
-                let n = 1;
-                while (this.grid[y][x - n] === bug) {
-                    hitIndex++;
-                    n++;
-                }
-            } else {
-                // vertical
-                let n = 1;
-                while (this.grid[y - n][x] === bug) {
-                    hitIndex++;
-                    n++;
-                }
+    _hitBug(bug, [x, y]) {
+        console.log(this);
+        let hitIndex = 0;
+
+        if (bug.direction === 'horizontal') {
+            // go to the left,
+            // and if bug still there, increase hitIndex++
+            // stop when bug not there.
+            let n = 1;
+            while (this.grid[y][x - n] === bug) {
+                hitIndex++;
+                n++;
             }
-
-            bug.hit(hitIndex);
-            return bug;
+        } else {
+            // vertical
+            let n = 1;
+            while (this.grid[y - n][x] === bug) {
+                hitIndex++;
+                n++;
+            }
         }
 
-        console.log('miss!');
-        this.grid[y][x] = 'miss';
-
-        return [x, y];
+        bug.hit(hitIndex);
+        return bug;
     }
 
     areAllBugsSwatted() {

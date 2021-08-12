@@ -29,17 +29,18 @@ game.boards.forEach((board) => {
             // add event listeners to squares
             square.addEventListener('click', () => {
                 console.log(unit);
-                console.log('x', x);
-                console.log('y', y);
                 // emit event that x, y was clicked
                 // game object should listen for that
                 events.emit('unitClicked', [x, y]);
 
+                // should separate this --> happen after bug.hit runs?
                 if (square.classList.contains('bug')) {
                     square.classList.add('hit');
                 } else {
                     square.classList.add('miss');
                 }
+
+                console.log(board.grid);
             });
 
             boardEl.appendChild(square);

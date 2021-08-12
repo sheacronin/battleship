@@ -49,3 +49,9 @@ test('default bug direction is horizontal', () => {
 test('set bug direction to vertical', () => {
     expect(new Bug(2, 'Spider', 'vertical').direction).toBe('vertical');
 });
+
+test('bugs throw error if hit on unit that has already been hit', () => {
+    const spider = new Bug(2, 'Spider');
+    spider.hit(1);
+    expect(() => spider.hit(1)).toThrow('already hit this index');
+});

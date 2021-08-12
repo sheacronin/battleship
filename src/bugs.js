@@ -18,6 +18,8 @@ class Bug {
     hit(index) {
         if (index >= this.length || index < 0) {
             throw new Error('invalid target index');
+        } else if (this.units[index] === 'hit') {
+            throw new Error('already hit this index');
         }
         const newUnits = [...this.units];
         newUnits.splice(index, 1, 'hit');

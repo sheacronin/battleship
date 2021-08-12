@@ -47,7 +47,7 @@ const game = (() => {
     let whoseTurn = player1;
 
     function switchTurn() {
-        whoseTurn = whoseTurn === player1 ? player1 : player2;
+        whoseTurn = whoseTurn === player1 ? player2 : player1;
     }
 
     // listen for events.
@@ -56,15 +56,9 @@ const game = (() => {
         // player.attack() ??
         // use above determination to determine whose board
         // is being attacked
-        // board.receiveAttack(x, y)
         whoseTurn.enemyBoard.receiveAttack(x, y);
 
-        // // attack result will be bug or coords.
-        // if (attackResult === [x, y]) {
-        //     events.emit('miss', [x , y]);
-        // } else {
-        //     events.emit('hit')
-        // }
+        // get returned value?
     });
 
     return { boards: [board1, board2] };
