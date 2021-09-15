@@ -3,12 +3,37 @@ import events from './events';
 
 const main = document.querySelector('main');
 
-game.boards.forEach((board) => {
-    // const boardContainer = document.createElement('section');
-    // const boardTitle = document.createElement('h2');
-    // boardTitle.textContent = board
+// function updateBoard() {
 
-    // populate grid.
+// }
+
+// function disableBoard() {
+
+// }
+
+function emitAttackInputCoords(x, y) {
+    // game object should listen for this event
+    console.log(x, y);
+    events.emit('unitClicked', [x, y]);
+}
+
+function styleAttackedUnit(unitEl) {
+    if (unitEl.classList.contains('bug')) {
+        unitEl.classList.add('hit');
+    } else {
+        unitEl.classList.add('miss');
+    }
+}
+
+function styleUnit(unit, unitEl) {
+    if (unit === 'miss') {
+        unitEl.classList.add('miss');
+    } else if (unit !== null) {
+        unitEl.classList.add('bug');
+    }
+}
+
+function renderBoard(board) {
     const boardEl = document.createElement('div');
     boardEl.classList.add('board');
 
@@ -16,40 +41,33 @@ game.boards.forEach((board) => {
         let unitIndex = 0;
 
         row.forEach((unit) => {
-            const square = document.createElement('button');
-            square.classList.add('unit');
+            const unitEl = document.createElement('button');
+            unitEl.classList.add('unit');
 
-            // add styles if unit is bug / missed target
-            // will need to only do some of this for own board
-            if (unit) square.classList.add('bug');
+            styleUnit(unit, unitEl);
 
             const x = unitIndex;
             const y = board.grid.indexOf(row);
 
-            // add event listeners to squares
-            square.addEventListener('click', () => {
-                console.log(unit);
-                // emit event that x, y was clicked
-                // game object should listen for that
-                events.emit('unitClicked', [x, y]);
+            unitEl.addEventListener('click', () => emitAttackInputCoords(x, y));
+            unitEl.addEventListener('click', () => styleAttackedUnit(unitEl));
 
-                // should separate this --> happen after bug.hit runs?
-                if (square.classList.contains('bug')) {
-                    square.classList.add('hit');
-                } else {
-                    square.classList.add('miss');
-                }
-
-                console.log(board.grid);
-            });
-
-            boardEl.appendChild(square);
+            boardEl.appendChild(unitEl);
 
             unitIndex++;
         });
     });
 
     main.appendChild(boardEl);
+}
+
+const message = document.createElement('div');
+message.textContent = "It is Player 1's turn";
+message.id = 'message';
+main.appendChild(message);
+
+game.boards.forEach((board) => {
+    renderBoard(board);
 });
 
 export default main;
