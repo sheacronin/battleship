@@ -3,63 +3,82 @@ import events from './events';
 
 const main = document.querySelector('main');
 
-// function updateBoard() {
+const boardDisplay = (() => {
+    function _createBoard() {
+        const boardEl = document.createElement('div');
+        boardEl.classList.add('board');
 
-// }
-
-// function disableBoard() {
-
-// }
-
-function emitAttackInputCoords(x, y) {
-    // game object should listen for this event
-    console.log(x, y);
-    events.emit('unitClicked', [x, y]);
-}
-
-function styleAttackedUnit(unitEl) {
-    if (unitEl.classList.contains('bug')) {
-        unitEl.classList.add('hit');
-    } else {
-        unitEl.classList.add('miss');
+        return boardEl;
     }
-}
 
-function styleUnit(unit, unitEl) {
-    if (unit === 'miss') {
-        unitEl.classList.add('miss');
-    } else if (unit !== null) {
-        unitEl.classList.add('bug');
-    }
-}
+    function _createUnits(board) {
+        const unitEls = [];
 
-function renderBoard(board) {
-    const boardEl = document.createElement('div');
-    boardEl.classList.add('board');
+        board.grid.forEach((row) => {
+            let unitIndex = 0;
 
-    board.grid.forEach((row) => {
-        let unitIndex = 0;
+            row.forEach((unit) => {
+                const unitEl = document.createElement('button');
+                unitEl.classList.add('unit');
 
-        row.forEach((unit) => {
-            const unitEl = document.createElement('button');
-            unitEl.classList.add('unit');
+                _styleUnit(unit, unitEl);
 
-            styleUnit(unit, unitEl);
+                const x = unitIndex;
+                const y = board.grid.indexOf(row);
 
-            const x = unitIndex;
-            const y = board.grid.indexOf(row);
+                unitEl.addEventListener('click', () =>
+                    _emitAttackInputCoords(x, y)
+                );
+                unitEl.addEventListener('click', () =>
+                    _styleAttackedUnit(unitEl)
+                );
 
-            unitEl.addEventListener('click', () => emitAttackInputCoords(x, y));
-            unitEl.addEventListener('click', () => styleAttackedUnit(unitEl));
+                unitEls.push(unitEl);
 
-            boardEl.appendChild(unitEl);
-
-            unitIndex++;
+                unitIndex++;
+            });
         });
-    });
 
-    main.appendChild(boardEl);
-}
+        return unitEls;
+    }
+
+    function render(board) {
+        const boardEl = _createBoard();
+        const unitEls = _createUnits(board);
+        unitEls.forEach((unitEl) => boardEl.appendChild(unitEl));
+
+        main.appendChild(boardEl);
+    }
+
+    function _styleUnit(unit, unitEl) {
+        if (unit === 'miss') {
+            unitEl.classList.add('miss');
+        } else if (unit !== null) {
+            console.log(unit);
+            unitEl.classList.add('bug');
+        }
+    }
+
+    function _styleAttackedUnit(unitEl) {
+        if (unitEl.classList.contains('bug')) {
+            unitEl.classList.add('hit');
+        } else {
+            unitEl.classList.add('miss');
+        }
+    }
+
+    function _emitAttackInputCoords(x, y) {
+        // game object should listen for this event
+        console.log(x, y);
+        events.emit('unitClicked', [x, y]);
+    }
+
+    // TODO: function disableBoard() {
+
+    // }
+
+    return { render };
+})();
 
 const message = document.createElement('div');
 message.textContent = "It is Player 1's turn";
@@ -67,7 +86,7 @@ message.id = 'message';
 main.appendChild(message);
 
 game.boards.forEach((board) => {
-    renderBoard(board);
+    boardDisplay.render(board);
 });
 
 export default main;
