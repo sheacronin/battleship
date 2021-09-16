@@ -14,8 +14,12 @@ h1 {
 }
 
 main {
-    margin: 30px 0;
-    display: flex;
+    display: grid;
+    grid-template-rows: 10vh 90vh;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        'message message'
+        'board board';
 }
 
 .board {
@@ -49,4 +53,11 @@ main {
 
 .hit {
     background-color: indianred;
+}
+
+#message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-area: message;
 }
