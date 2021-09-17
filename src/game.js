@@ -4,8 +4,8 @@ import Bug from './bugs';
 import events from './events';
 
 const game = (() => {
-    const player1 = new Player();
-    const player2 = new Player(true);
+    const player1 = new Player('Sarah');
+    const player2 = new Player('Computer');
 
     const board1 = new Board();
     const board2 = new Board();
@@ -14,12 +14,13 @@ const game = (() => {
     player1.enemyBoard = board2;
     player2.enemyBoard = board1;
 
-    const worm = new Bug(5, 'Worm');
-    const caterpillar = new Bug(4, 'Caterpillar');
-    const ant = new Bug(3, 'Ant');
-    const spider = new Bug(3, 'Spider');
-    const ladybug = new Bug(2, 'Ladybug');
-    const bugCollection = [worm, caterpillar, ant, spider, ladybug];
+    const bugCollection = [
+        new Bug(5, 'Worm'),
+        new Bug(4, 'Caterpillar'),
+        new Bug(3, 'Ant'),
+        new Bug(3, 'Spider'),
+        new Bug(2, 'Ladybug'),
+    ];
 
     bugCollection.forEach((bug) => {
         board1.placeBugRandomly(bug);

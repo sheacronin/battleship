@@ -1,6 +1,7 @@
 class Player {
-    constructor(isComputer = false) {
-        this.isComputer = isComputer;
+    constructor(name) {
+        this.name = name;
+        this.isComputer = name === 'Computer';
     }
     attack() {
         if (this.isComputer) {
