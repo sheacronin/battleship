@@ -26,3 +26,23 @@ test('computer player returns valid random attack coordinates', () => {
 test('player uses first constructor arg as name', () => {
     expect(new Player('Shea').name).toBe('Shea');
 });
+
+test('player inits with it not being their turn', () => {
+    expect(new Player('Computer').isMyTurn).toBe(false);
+});
+
+test('player can switch to it being their turn', () => {
+    const player = new Player('Computer');
+    expect(player.isMyTurn).toBe(false);
+    player.switchTurn();
+    expect(player.isMyTurn).toBe(true);
+});
+
+test('player can switch to it not being their turn', () => {
+    const player = new Player('Computer');
+    expect(player.isMyTurn).toBe(false);
+    player.switchTurn();
+    expect(player.isMyTurn).toBe(true);
+    player.switchTurn();
+    expect(player.isMyTurn).toBe(false);
+});

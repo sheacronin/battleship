@@ -146,7 +146,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _sty
   \***********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nclass Player {\n    constructor(name) {\n        this.name = name;\n        this.isComputer = name === 'Computer';\n    }\n    attack() {\n        if (this.isComputer) {\n            return [\n                Math.floor(Math.random() * 10),\n                Math.floor(Math.random() * 10),\n            ];\n        }\n        return [0, 0];\n    }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Player);\n\n\n//# sourceURL=webpack://battleship/./src/player.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nclass Player {\n    constructor(name) {\n        this.name = name;\n        this.isComputer = name === 'Computer';\n        this.isMyTurn = false;\n    }\n\n    switchTurn() {\n        this.isMyTurn = !this.isMyTurn;\n    }\n\n    attack() {\n        if (this.isComputer) {\n            return [\n                Math.floor(Math.random() * 10),\n                Math.floor(Math.random() * 10),\n            ];\n        }\n        return [0, 0];\n    }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Player);\n\n\n//# sourceURL=webpack://battleship/./src/player.js?");
 
 /***/ })
 

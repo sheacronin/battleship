@@ -2,7 +2,13 @@ class Player {
     constructor(name) {
         this.name = name;
         this.isComputer = name === 'Computer';
+        this.isMyTurn = false;
     }
+
+    switchTurn() {
+        this.isMyTurn = !this.isMyTurn;
+    }
+
     attack() {
         if (this.isComputer) {
             return [
