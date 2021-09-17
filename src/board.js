@@ -49,6 +49,23 @@ class Board {
         this.bugs.push(bug);
     }
 
+    placeBugRandomly(bug) {
+        let x = Math.floor(Math.random() * 10);
+        let y = Math.floor(Math.random() * 10);
+
+        // select direction randomly as well
+        let shouldDirectionChange = Math.random() < 0.5;
+        if (shouldDirectionChange) bug.direction = 'vertical';
+
+        try {
+            this.placeBug(bug, x, y);
+        } catch {
+            // catch thrown error and re-run for bug
+            // if there's an error
+            this.placeBugRandomly(bug);
+        }
+    }
+
     receiveAttack(x, y) {
         switch (this.grid[y][x]) {
             case 'miss':
