@@ -1,7 +1,8 @@
 class Player {
-    constructor(name) {
+    constructor(name, enemyBoard) {
         this.name = name;
         this.isComputer = name === 'Computer';
+        this.enemyBoard = enemyBoard;
         this.isMyTurn = false;
     }
 
@@ -9,14 +10,17 @@ class Player {
         this.isMyTurn = !this.isMyTurn;
     }
 
-    attack() {
-        if (this.isComputer) {
-            return [
-                Math.floor(Math.random() * 10),
-                Math.floor(Math.random() * 10),
-            ];
+    attack(x, y) {
+        if (!this.enemyBoard) {
+            throw new Error('player must have an enemy board to attack');
         }
-        return [0, 0];
+
+        if (this.isComputer) {
+            x = Math.floor(Math.random() * 10);
+            y = Math.floor(Math.random() * 10);
+        }
+        this.enemyBoard.receiveAttack(x, y);
+        return [x, y];
     }
 }
 
