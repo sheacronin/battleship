@@ -4,15 +4,14 @@ import Bug from './bugs';
 import events from './events';
 
 const game = (() => {
-    const player1 = new Player('Sarah');
-    const player2 = new Player('Computer');
-
     const board1 = new Board();
     const board2 = new Board();
 
-    // add enemy board prop?
-    player1.enemyBoard = board2;
-    player2.enemyBoard = board1;
+    const player1 = new Player('Sarah', board2);
+    const player2 = new Player('Computer', board1);
+
+    // Player 1 goes first.
+    player1.switchTurn();
 
     const bugCollection = [
         new Bug(5, 'Worm'),
@@ -27,22 +26,16 @@ const game = (() => {
         board2.placeBugRandomly(bug);
     });
 
-    // store whose turn it is.
-    let whoseTurn = player1;
-
-    function switchTurn() {
-        whoseTurn = whoseTurn === player1 ? player2 : player1;
-    }
-
     // listen for events.
     events.on('unitClicked', ([x, y]) => {
-        // determine who clicked/whose turn it is
-        // player.attack() ??
-        // use above determination to determine whose board
-        // is being attacked
-        whoseTurn.enemyBoard.receiveAttack(x, y);
+        if (player1.isMyTurn) {
+            player1.attack(x, y);
+        } else {
+            player2.attack(x, y);
+        }
         // get returned value?
-        switchTurn();
+        player1.switchTurn();
+        player2.switchTurn();
     });
 
     return { boards: [board1, board2] };
