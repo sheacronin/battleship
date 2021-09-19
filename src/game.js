@@ -38,7 +38,7 @@ const game = (() => {
         player2.switchTurn();
     });
 
-    return { boards: [board1, board2] };
+    return { boards: [board1, board2], players: [player1, player2] };
 })();
 
 export default game;

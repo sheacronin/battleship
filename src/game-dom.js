@@ -42,12 +42,26 @@ const boardDisplay = (() => {
         return unitEls;
     }
 
+    function _createPlayerName(player) {
+        const nameEl = document.createElement('h2');
+        nameEl.textContent = `${player.name}'s board`;
+        return nameEl;
+    }
+
     function render(board) {
+        const containerEl = document.createElement('article');
+
+        const nameEl = _createPlayerName(
+            game.players.find((player) => player.enemyBoard !== board)
+        );
         const boardEl = _createBoard();
         const unitEls = _createUnits(board);
         unitEls.forEach((unitEl) => boardEl.appendChild(unitEl));
 
-        main.appendChild(boardEl);
+        containerEl.appendChild(nameEl);
+        containerEl.appendChild(boardEl);
+
+        main.appendChild(containerEl);
     }
 
     function _styleUnit(unit, unitEl) {
