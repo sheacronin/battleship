@@ -3,7 +3,7 @@ import events from './events';
 
 const main = document.querySelector('main');
 
-const boardDisplay = (() => {
+const displayBoards = (() => {
     function _createBoard() {
         const boardEl = document.createElement('div');
         boardEl.classList.add('board');
@@ -94,13 +94,27 @@ const boardDisplay = (() => {
     return { render };
 })();
 
-const message = document.createElement('div');
-message.textContent = "It is Player 1's turn";
-message.id = 'message';
-main.appendChild(message);
+const displayMessages = (() => {
+    const message = document.createElement('div');
+    message.id = 'message';
+
+    function _updateMessageText() {
+        const whoseTurn = game.players.find((player) => player.isMyTurn);
+        message.textContent = `It is ${whoseTurn.name}'s turn.`;
+    }
+
+    function render() {
+        _updateMessageText();
+        main.appendChild(message);
+    }
+
+    return { render };
+})();
+
+displayMessages.render();
 
 game.boards.forEach((board) => {
-    boardDisplay.render(board);
+    displayBoards.render(board);
 });
 
 export default main;
