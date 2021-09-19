@@ -95,17 +95,35 @@ const displayBoards = (() => {
 })();
 
 const displayMessages = (() => {
-    const message = document.createElement('div');
-    message.id = 'message';
+    const messages = document.createElement('div');
+    messages.id = 'messages';
 
-    function _updateMessageText() {
+    function _updateWhoseTurnText(whoseTurnEl) {
         const whoseTurn = game.players.find((player) => player.isMyTurn);
-        message.textContent = `It is ${whoseTurn.name}'s turn.`;
+        whoseTurnEl.textContent = `It is ${whoseTurn.name}'s turn.`;
+    }
+
+    function _renderWhoseTurnText() {
+        const whoseTurnEl = document.createElement('p');
+        _updateWhoseTurnText(whoseTurnEl);
+        messages.appendChild(whoseTurnEl);
+    }
+
+    function _updateActionText(actionEl) {
+        // this should listen for an event?
+        actionEl.textContent = '[[action text here]]';
+    }
+
+    function _renderActionText() {
+        const actionEl = document.createElement('p');
+        _updateActionText(actionEl);
+        messages.appendChild(actionEl);
     }
 
     function render() {
-        _updateMessageText();
-        main.appendChild(message);
+        _renderWhoseTurnText();
+        _renderActionText();
+        main.appendChild(messages);
     }
 
     return { render };
