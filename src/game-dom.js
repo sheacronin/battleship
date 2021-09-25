@@ -121,10 +121,19 @@ const displayMessages = (() => {
     }
 
     function render() {
+        _clearMessages();
         _renderWhoseTurnText();
         _renderActionText();
         main.appendChild(messages);
     }
+
+    function _clearMessages() {
+        while (messages.firstChild) {
+            messages.removeChild(messages.firstChild);
+        }
+    }
+
+    events.on('turnEnded', () => render());
 
     return { render };
 })();

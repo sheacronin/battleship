@@ -36,6 +36,7 @@ const game = (() => {
         // get returned value?
         player1.switchTurn();
         player2.switchTurn();
+        events.emit('turnEnded');
     });
 
     return { boards: [board1, board2], players: [player1, player2] };
