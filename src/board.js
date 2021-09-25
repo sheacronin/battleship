@@ -82,7 +82,7 @@ class Board {
     }
 
     _hitBug(bug, [x, y]) {
-        console.log(this);
+        console.log(bug);
         let hitIndex = 0;
 
         if (bug.direction === 'horizontal') {
