@@ -4,6 +4,7 @@ import Bug from './bugs';
 import events from './events';
 
 const game = (() => {
+    // Setup.
     const board1 = new Board();
     const board2 = new Board();
 
@@ -34,10 +35,23 @@ const game = (() => {
             player2.attack(x, y);
         }
         // get returned value?
+        endTurn();
+    });
+
+    function endTurn() {
         player1.switchTurn();
         player2.switchTurn();
         events.emit('turnEnded');
-    });
+    }
+
+    events.on('turnEnded', computerTriesToTakeTurn);
+
+    function computerTriesToTakeTurn() {
+        if (player2.isMyTurn) {
+            player2.attack();
+            endTurn();
+        }
+    }
 
     return { boards: [board1, board2], players: [player1, player2] };
 })();
