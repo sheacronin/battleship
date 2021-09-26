@@ -16,9 +16,7 @@ function DOMBoard(board) {
     );
     nameEl.textContent = `${boardOwnerPlayer.name}'s board`;
 
-    const hitUnits = [];
-
-    function render(result) {
+    function render() {
         console.log('====== BOARD RENDER =====');
         _clearBoard();
 
@@ -49,12 +47,6 @@ function DOMBoard(board) {
                 const x = unitIndex;
                 const y = board.grid.indexOf(row);
 
-                hitUnits.forEach((hitUnit) => {
-                    if ([x, y] === hitUnit) {
-                        _styleHitUnit(unitEl);
-                    }
-                });
-
                 if (
                     !boardOwnerPlayer.isMyTurn &&
                     !game.players.find((player) => player.isMyTurn).isComputer
@@ -82,7 +74,6 @@ function DOMBoard(board) {
 
     function _addClickEventListener(unitEl, [x, y]) {
         unitEl.addEventListener('click', () => _emitAttackInputCoords(x, y));
-        unitEl.addEventListener('click', () => hitUnits.push([x, y]));
     }
 
     function _styleUnit(unit, unitEl) {
@@ -97,12 +88,10 @@ function DOMBoard(board) {
             unitEl.classList.add('miss');
         } else if (unit !== null) {
             unitEl.classList.add('bug');
-            unitEl.textContent = unit.name;
+            if (unit[0].units[unit[1]] === 'hit') unitEl.classList.add('hit');
+            // temp add name until bug assets are added
+            unitEl.textContent = unit[0].name;
         }
-    }
-
-    function _styleHitUnit(unitEl) {
-        unitEl.classList.add('hit');
     }
 
     function _emitAttackInputCoords(x, y) {

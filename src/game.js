@@ -14,7 +14,7 @@ const game = (() => {
     // Player 1 goes first.
     player1.switchTurn();
 
-    const bugCollection = [
+    const bugCollection1 = [
         new Bug(5, 'Worm'),
         new Bug(4, 'Caterpillar'),
         new Bug(3, 'Ant'),
@@ -22,8 +22,19 @@ const game = (() => {
         new Bug(2, 'Ladybug'),
     ];
 
-    bugCollection.forEach((bug) => {
+    const bugCollection2 = [
+        new Bug(5, 'Worm'),
+        new Bug(4, 'Caterpillar'),
+        new Bug(3, 'Ant'),
+        new Bug(3, 'Spider'),
+        new Bug(2, 'Ladybug'),
+    ];
+
+    bugCollection1.forEach((bug) => {
         board1.placeBugRandomly(bug);
+    });
+
+    bugCollection2.forEach((bug) => {
         board2.placeBugRandomly(bug);
     });
 
