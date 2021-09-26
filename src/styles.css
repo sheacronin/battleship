@@ -36,6 +36,7 @@ main {
 .unit {
     border: 1px solid grey;
     background-color: white;
+    width: 50px;
 }
 
 .active:hover {

@@ -5,8 +5,8 @@ module.exports = {
     entry: './src/index.js',
     plugins: [
         new HtmlWebpackPlugin({
-          title: 'Battleship',
-          template: './src/index.html'
+            title: 'Battlebug',
+            template: './src/index.html',
         }),
     ],
     output: {
