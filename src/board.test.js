@@ -34,7 +34,18 @@ test('place a 2-unit bug in top left corner horizontally', () => {
     const spider = new mockBug(2, 'Spider');
     board.placeBug(spider, 0, 0);
     expect(board.grid).toStrictEqual([
-        [spider, spider, null, null, null, null, null, null, null, null],
+        [
+            [spider, 0],
+            [spider, 1],
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+        ],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -57,7 +68,18 @@ test('place a bug in the middle of the board horizontally', () => {
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, spider, spider, null, null, null],
+        [
+            null,
+            null,
+            null,
+            null,
+            null,
+            [spider, 0],
+            [spider, 1],
+            null,
+            null,
+            null,
+        ],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -70,8 +92,8 @@ test('place a bug vertically', () => {
     const spider = new mockBug(2, 'Spider', 'vertical');
     board.placeBug(spider, 0, 0);
     expect(board.grid).toStrictEqual([
-        [spider, null, null, null, null, null, null, null, null, null],
-        [spider, null, null, null, null, null, null, null, null, null],
+        [[spider, 0], null, null, null, null, null, null, null, null, null],
+        [[spider, 1], null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -93,8 +115,8 @@ test('place a bug in the middle of the board vertically', () => {
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, spider, null, null, null, null],
-        [null, null, null, null, null, spider, null, null, null, null],
+        [null, null, null, null, null, [spider, 0], null, null, null, null],
+        [null, null, null, null, null, [spider, 1], null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -152,13 +174,13 @@ test('place multiple bugs', () => {
 
     expect(board.grid).toStrictEqual([
         // prettier-ignore
-        [caterpillar, caterpillar, caterpillar, caterpillar, null, null, null, null, null, null],
+        [[caterpillar, 0], [caterpillar, 1], [caterpillar, 2], [caterpillar, 3], null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, spider, null, null, null, null],
-        [null, null, null, null, null, spider, null, null, null, null],
+        [null, null, null, null, null, [spider, 0], null, null, null, null],
+        [null, null, null, null, null, [spider, 1], null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
@@ -190,7 +212,7 @@ test('receives a hit attack', () => {
     const board = new Board();
     const spider = new mockBug(2, 'Spider', 'horizontal');
     board.placeBug(spider, 0, 0);
-    expect(board.receiveAttack(0, 0)).toBe(spider);
+    expect(board.receiveAttack(0, 0)).toStrictEqual([spider, [0, 0]]);
 });
 
 test('tracks missed attack', () => {

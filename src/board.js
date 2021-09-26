@@ -36,13 +36,19 @@ class Board {
             ) {
                 throw new Error('there is already another bug here!');
             }
-            this.grid[y].fill(bug, x, x + bug.length);
+            for (let bugIndex = 0; bugIndex < bug.length; bugIndex++) {
+                this.grid[y][x + bugIndex] = [bug, bugIndex];
+            }
+            // this.grid[y][x]
+            // this.grid[y].fill(bug, x, x + bug.length);
         } else {
+            let bugIndex = 0;
             for (let rowI = y; rowI < y + bug.length; rowI++) {
                 if (this.grid[rowI][x] !== null) {
                     throw new Error('there is already another bug here!');
                 }
-                this.grid[rowI][x] = bug;
+                this.grid[rowI][x] = [bug, bugIndex];
+                bugIndex++;
             }
         }
 
@@ -81,30 +87,10 @@ class Board {
         }
     }
 
-    _hitBug(bug, [x, y]) {
+    _hitBug([bug, bugIndex], [x, y]) {
         console.log(bug);
-        let hitIndex = 0;
-
-        if (bug.direction === 'horizontal') {
-            // go to the left,
-            // and if bug still there, increase hitIndex++
-            // stop when bug not there.
-            let n = 1;
-            while (this.grid[y][x - n] === bug) {
-                hitIndex++;
-                n++;
-            }
-        } else {
-            // vertical
-            let n = 1;
-            while (this.grid[y - n][x] === bug) {
-                hitIndex++;
-                n++;
-            }
-        }
-
-        bug.hit(hitIndex);
-        return bug;
+        bug.hit(bugIndex);
+        return [bug, [x, y]];
     }
 
     areAllBugsSwatted() {

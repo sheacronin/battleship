@@ -16,7 +16,9 @@ function DOMBoard(board) {
     );
     nameEl.textContent = `${boardOwnerPlayer.name}'s board`;
 
-    function render() {
+    const hitUnits = [];
+
+    function render(result) {
         console.log('====== BOARD RENDER =====');
         _clearBoard();
 
@@ -47,6 +49,12 @@ function DOMBoard(board) {
                 const x = unitIndex;
                 const y = board.grid.indexOf(row);
 
+                hitUnits.forEach((hitUnit) => {
+                    if ([x, y] === hitUnit) {
+                        _styleHitUnit(unitEl);
+                    }
+                });
+
                 if (
                     !boardOwnerPlayer.isMyTurn &&
                     !game.players.find((player) => player.isMyTurn).isComputer
@@ -74,6 +82,7 @@ function DOMBoard(board) {
 
     function _addClickEventListener(unitEl, [x, y]) {
         unitEl.addEventListener('click', () => _emitAttackInputCoords(x, y));
+        unitEl.addEventListener('click', () => hitUnits.push([x, y]));
     }
 
     function _styleUnit(unit, unitEl) {
@@ -92,13 +101,9 @@ function DOMBoard(board) {
         }
     }
 
-    // function _styleAttackedUnit(unitEl) {
-    //     if (unitEl.classList.contains('bug')) {
-    //         unitEl.classList.add('hit');
-    //     } else {
-    //         unitEl.classList.add('miss');
-    //     }
-    // }
+    function _styleHitUnit(unitEl) {
+        unitEl.classList.add('hit');
+    }
 
     function _emitAttackInputCoords(x, y) {
         // game object should listen for this event
@@ -106,7 +111,7 @@ function DOMBoard(board) {
         events.emit('unitClicked', [x, y]);
     }
 
-    events.on('turnEnded', () => render());
+    events.on('turnEnded', (result) => render(result));
 
     return { render };
 }
