@@ -11,6 +11,8 @@ const game = (() => {
     const player1 = new Player('Sarah', board2);
     const player2 = new Player('Computer', board1);
 
+    const players = [player1, player2];
+
     // Player 1 goes first.
     player1.switchTurn();
 
@@ -40,20 +42,38 @@ const game = (() => {
 
     // listen for events.
     events.on('unitClicked', ([x, y]) => {
-        let result;
-
         if (player1.isMyTurn) {
-            result = player1.attack(x, y);
+            humanPlayerTakesTurn(player1, [x, y]);
         } else {
-            result = player2.attack(x, y);
+            humanPlayerTakesTurn(player2, [x, y]);
         }
-        // get returned value?
-        endTurn(result);
     });
+
+    function humanPlayerTakesTurn(player, [x, y]) {
+        console.log(`======= ${player.name} attacks! ========`);
+        const result = player.attack(x, y);
+        // if the result isn't a miss, check if hit bug is swatted
+        if (result[0] !== 'miss') {
+            const bug = result[0];
+            if (bug.isSwatted()) {
+                // this bug is swatted
+                console.log(bug.name + ' has been swatted by ' + player.name);
+                // add styles to all of its units in game-dom
+                // check if all bugs are swatted
+                if (player.enemyBoard.areAllBugsSwatted()) {
+                    // end game
+                    // declare winner
+                }
+            }
+        }
+
+        endTurn(result);
+    }
 
     function endTurn(result) {
         player1.switchTurn();
         player2.switchTurn();
+        //events.off('unitClicked');
         events.emit('turnEnded', result);
     }
 
@@ -61,12 +81,13 @@ const game = (() => {
 
     function computerTriesToTakeTurn() {
         if (player2.isMyTurn) {
-            player2.attack();
-            endTurn();
+            console.log(`======= ${player2.name} attacks! ========`);
+            const result = player2.attack();
+            endTurn(result);
         }
     }
 
-    return { boards: [board1, board2], players: [player1, player2] };
+    return { boards: [board1, board2], players };
 })();
 
 export default game;

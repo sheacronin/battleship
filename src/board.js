@@ -78,17 +78,16 @@ class Board {
                 console.log("you've already swatted here!");
                 return;
             case null:
-                console.log('miss!');
+                console.log(`Missed at ${x}, ${y}!`);
                 this.grid[y][x] = 'miss';
-                return [x, y];
+                return ['miss', [x, y]];
             default:
-                console.log('hit!');
+                console.log(`Hit ${this.grid[y][x][0].name} at ${x}, ${y}`);
                 return this._hitBug(this.grid[y][x], [x, y]);
         }
     }
 
     _hitBug([bug, bugIndex], [x, y]) {
-        console.log(bug);
         bug.hit(bugIndex);
         return [bug, [x, y]];
     }

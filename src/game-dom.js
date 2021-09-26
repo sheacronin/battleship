@@ -96,7 +96,6 @@ function DOMBoard(board) {
 
     function _emitAttackInputCoords(x, y) {
         // game object should listen for this event
-        console.log(x, y);
         events.emit('unitClicked', [x, y]);
     }
 
