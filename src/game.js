@@ -29,19 +29,21 @@ const game = (() => {
 
     // listen for events.
     events.on('unitClicked', ([x, y]) => {
+        let result;
+
         if (player1.isMyTurn) {
-            player1.attack(x, y);
+            result = player1.attack(x, y);
         } else {
-            player2.attack(x, y);
+            result = player2.attack(x, y);
         }
         // get returned value?
-        endTurn();
+        endTurn(result);
     });
 
-    function endTurn() {
+    function endTurn(result) {
         player1.switchTurn();
         player2.switchTurn();
-        events.emit('turnEnded');
+        events.emit('turnEnded', result);
     }
 
     events.on('turnEnded', computerTriesToTakeTurn);

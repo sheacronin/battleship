@@ -19,8 +19,8 @@ class Player {
             x = Math.floor(Math.random() * 10);
             y = Math.floor(Math.random() * 10);
         }
-        this.enemyBoard.receiveAttack(x, y);
-        return [x, y];
+        const result = this.enemyBoard.receiveAttack(x, y);
+        return result;
     }
 }
 

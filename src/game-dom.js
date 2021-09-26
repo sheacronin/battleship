@@ -1,5 +1,6 @@
 import game from './game';
 import events from './events';
+import Bug from './bugs';
 
 const main = document.querySelector('main');
 
@@ -125,21 +126,27 @@ const displayMessages = (() => {
         messages.appendChild(whoseTurnEl);
     }
 
-    function _updateActionText(actionEl) {
+    function _updateActionText(actionEl, result) {
         // this should listen for an event?
-        actionEl.textContent = '[[action text here]]';
+        if (result) {
+            if (Object.getPrototypeOf(result) === Bug.prototype) {
+                actionEl.textContent = `Blank's ${result.name} was hit!`;
+            } else {
+                actionEl.textContent = `Miss at ${result}`;
+            }
+        }
     }
 
-    function _renderActionText() {
+    function _renderActionText(result) {
         const actionEl = document.createElement('p');
-        _updateActionText(actionEl);
+        _updateActionText(actionEl, result);
         messages.appendChild(actionEl);
     }
 
-    function render() {
+    function render(result) {
         _clearMessages();
         _renderWhoseTurnText();
-        _renderActionText();
+        _renderActionText(result);
         main.appendChild(messages);
     }
 
@@ -149,7 +156,7 @@ const displayMessages = (() => {
         }
     }
 
-    events.on('turnEnded', () => render());
+    events.on('turnEnded', (result) => render(result));
 
     return { render };
 })();
