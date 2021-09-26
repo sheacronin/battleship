@@ -1,6 +1,5 @@
 import game from './game';
 import events from './events';
-import Bug from './bugs';
 
 const main = document.querySelector('main');
 
@@ -120,12 +119,15 @@ const displayMessages = (() => {
     }
 
     function _updateActionText(actionEl, result) {
-        // this should listen for an event?
+        const whoDidAction = game.players.find((player) => !player.isMyTurn);
+        const whoReceivedAction = game.players.find(
+            (player) => player.isMyTurn
+        );
         if (result) {
-            if (Object.getPrototypeOf(result) === Bug.prototype) {
-                actionEl.textContent = `Blank's ${result.name} was hit!`;
+            if (result[0] === 'miss') {
+                actionEl.textContent = `${whoDidAction.name} missed at ${result[1]}`;
             } else {
-                actionEl.textContent = `Miss at ${result}`;
+                actionEl.textContent = `${whoDidAction.name} hit ${whoReceivedAction.name}'s ${result[0].name} at ${result[1]}!`;
             }
         }
     }
@@ -138,8 +140,8 @@ const displayMessages = (() => {
 
     function render(result) {
         _clearMessages();
-        _renderWhoseTurnText();
         _renderActionText(result);
+        _renderWhoseTurnText();
         main.appendChild(messages);
     }
 
