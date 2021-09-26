@@ -82,15 +82,18 @@ class BoardDisplay {
             unitEl.classList.add('miss');
         } else if (unit !== null) {
             unitEl.classList.add('bug');
+            const bug = unit[0];
             // if this unit was hit, add styles
-            if (unit[0].units[unit[1]] === 'hit') unitEl.classList.add('hit');
+            if (bug.units[unit[1]] === 'hit') unitEl.classList.add('hit');
+            // if this bug was swatted, add styles
+            if (bug.isSwatted()) unitEl.classList.add('swatted');
             // temporarily add name until bug assets are added
-            unitEl.textContent = unit[0].name;
+            unitEl.textContent = bug.name;
         }
     }
 
-    styleSwattedBug(bug) {
-        console.log(this.board.grid);
+    _shouldThisBoardBeActive() {
+        return !this.boardOwnerPlayer.isMyTurn;
     }
 
     _shouldThisBoardBeClickable() {
@@ -109,6 +112,11 @@ class BoardDisplay {
     _emitAttackInputCoords(x, y) {
         // game object should listen for this event
         events.emit('unitClicked', [x, y]);
+    }
+
+    disable() {
+        // style disabled - opacity lower
+        this.boardEl.style.opacity = '0.5';
     }
 }
 

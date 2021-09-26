@@ -56,6 +56,10 @@ main {
     background-color: indianred;
 }
 
+.swatted {
+    opacity: 0.5;
+}
+
 #messages {
     display: flex;
     flex-direction: column;

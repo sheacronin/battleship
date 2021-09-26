@@ -59,7 +59,6 @@ const game = (() => {
             if (bug.isSwatted()) {
                 // this bug is swatted
                 console.log(bug.name + ' has been swatted by ' + player.name);
-                // add styles to all of its units in game-dom
 
                 // check if all bugs are swatted
                 if (player.enemyBoard.areAllBugsSwatted()) {
