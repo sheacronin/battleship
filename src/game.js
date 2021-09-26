@@ -77,7 +77,7 @@ const game = (() => {
         events.emit('turnEnded', result);
     }
 
-    events.on('turnEnded', computerTriesToTakeTurn);
+    events.on('turnEnded', () => setTimeout(computerTriesToTakeTurn, 2000));
 
     function computerTriesToTakeTurn() {
         if (player2.isMyTurn) {
