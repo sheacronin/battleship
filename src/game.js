@@ -2,6 +2,7 @@ import Player from './player';
 import Board from './board';
 import Bug from './bugs';
 import events from './events';
+import { boardDisplays } from './game-dom';
 
 const game = (() => {
     // Setup.
@@ -59,10 +60,12 @@ const game = (() => {
                 // this bug is swatted
                 console.log(bug.name + ' has been swatted by ' + player.name);
                 // add styles to all of its units in game-dom
+
                 // check if all bugs are swatted
                 if (player.enemyBoard.areAllBugsSwatted()) {
                     // end game
                     // declare winner
+                    endGame(player);
                 }
             }
         }
@@ -75,6 +78,14 @@ const game = (() => {
         player2.switchTurn();
         //events.off('unitClicked');
         events.emit('turnEnded', result);
+        boardDisplays.forEach((boardDisplay) => boardDisplay.render());
+    }
+
+    function endGame(winner) {
+        console.log(winner.name + ' has won!');
+        // DOMBoard.disable
+        // messages.declareWinner
+        // messages.appendPlayAgainButton
     }
 
     events.on('turnEnded', () => setTimeout(computerTriesToTakeTurn, 2000));

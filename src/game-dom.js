@@ -3,54 +3,56 @@ import events from './events';
 
 const main = document.querySelector('main');
 
-function DOMBoard(board) {
-    const containerEl = document.createElement('article');
-
-    const boardEl = document.createElement('div');
-    boardEl.classList.add('board');
-
-    const nameEl = document.createElement('h2');
-    const boardOwnerPlayer = game.players.find(
-        (player) => player.enemyBoard !== board
-    );
-    nameEl.textContent = `${boardOwnerPlayer.name}'s board`;
-
-    function render() {
-        console.log('====== BOARD RENDER =====');
-        _clearBoard();
-
-        const unitEls = _createUnits();
-        unitEls.forEach((unitEl) => boardEl.appendChild(unitEl));
-
-        containerEl.appendChild(nameEl);
-        containerEl.appendChild(boardEl);
-
-        main.appendChild(containerEl);
+class BoardDisplay {
+    constructor(board) {
+        this.board = board;
+        this.boardOwnerPlayer = game.players.find(
+            (player) => player.enemyBoard !== board
+        );
+        this.containerEl = document.createElement('article');
+        this.nameEl = document.createElement('h2');
+        this.boardEl = document.createElement('div');
+        this.boardEl.classList.add('board');
     }
 
-    function _clearBoard() {
-        while (boardEl.firstChild) {
-            boardEl.removeChild(boardEl.firstChild);
+    render() {
+        this._clearBoard();
+
+        // add name element
+        this.nameEl.textContent = `${this.boardOwnerPlayer.name}'s board`;
+        this.containerEl.appendChild(this.nameEl);
+
+        // add units to board
+        const unitEls = this._createUnits();
+        unitEls.forEach((unitEl) => this.boardEl.appendChild(unitEl));
+
+        // add board element
+        this.containerEl.appendChild(this.boardEl);
+
+        // add container
+        main.appendChild(this.containerEl);
+    }
+
+    _clearBoard() {
+        while (this.boardEl.firstChild) {
+            this.boardEl.removeChild(this.boardEl.firstChild);
         }
     }
 
-    function _createUnits() {
+    _createUnits() {
         const unitEls = [];
 
-        board.grid.forEach((row) => {
+        this.board.grid.forEach((row) => {
             let unitIndex = 0;
 
             row.forEach((unit) => {
-                const unitEl = _createUnit(unit);
+                const unitEl = this._createUnit(unit);
 
                 const x = unitIndex;
-                const y = board.grid.indexOf(row);
+                const y = this.board.grid.indexOf(row);
 
-                if (
-                    !boardOwnerPlayer.isMyTurn &&
-                    !game.players.find((player) => player.isMyTurn).isComputer
-                ) {
-                    _addClickEventListener(unitEl, [x, y]);
+                if (this._shouldThisBoardBeClickable()) {
+                    this._addClickEventListener(unitEl, [x, y]);
                 }
 
                 unitEls.push(unitEl);
@@ -62,24 +64,17 @@ function DOMBoard(board) {
         return unitEls;
     }
 
-    function _createUnit(unit) {
+    _createUnit(unit) {
         const unitEl = document.createElement('button');
         unitEl.classList.add('unit');
 
-        _styleUnit(unit, unitEl);
+        this._styleUnit(unit, unitEl);
 
         return unitEl;
     }
 
-    function _addClickEventListener(unitEl, [x, y]) {
-        unitEl.addEventListener('click', () => _emitAttackInputCoords(x, y));
-    }
-
-    function _styleUnit(unit, unitEl) {
-        if (
-            !boardOwnerPlayer.isMyTurn &&
-            !game.players.find((player) => player.isMyTurn).isComputer
-        ) {
+    _styleUnit(unit, unitEl) {
+        if (this._shouldThisBoardBeClickable()) {
             unitEl.classList.add('active');
         }
 
@@ -87,20 +82,34 @@ function DOMBoard(board) {
             unitEl.classList.add('miss');
         } else if (unit !== null) {
             unitEl.classList.add('bug');
+            // if this unit was hit, add styles
             if (unit[0].units[unit[1]] === 'hit') unitEl.classList.add('hit');
-            // temp add name until bug assets are added
+            // temporarily add name until bug assets are added
             unitEl.textContent = unit[0].name;
         }
     }
 
-    function _emitAttackInputCoords(x, y) {
+    styleSwattedBug(bug) {
+        console.log(this.board.grid);
+    }
+
+    _shouldThisBoardBeClickable() {
+        return (
+            !this.boardOwnerPlayer.isMyTurn &&
+            !game.players.find((player) => player.isMyTurn).isComputer
+        );
+    }
+
+    _addClickEventListener(unitEl, [x, y]) {
+        unitEl.addEventListener('click', () =>
+            this._emitAttackInputCoords(x, y)
+        );
+    }
+
+    _emitAttackInputCoords(x, y) {
         // game object should listen for this event
         events.emit('unitClicked', [x, y]);
     }
-
-    events.on('turnEnded', (result) => render(result));
-
-    return { render };
 }
 
 const displayMessages = (() => {
@@ -158,9 +167,12 @@ const displayMessages = (() => {
 
 displayMessages.render();
 
+const boardDisplays = [];
+
 game.boards.forEach((board) => {
-    const thisDOMBoard = new DOMBoard(board);
-    thisDOMBoard.render();
+    const thisBoardDisplay = new BoardDisplay(board);
+    boardDisplays.push(thisBoardDisplay);
+    thisBoardDisplay.render();
 });
 
-export default main;
+export { boardDisplays };
