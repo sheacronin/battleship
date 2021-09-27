@@ -17,6 +17,11 @@ class BoardDisplay {
 
     render() {
         this._clearBoard();
+        if (this._shouldThisBoardBeActive()) {
+            this.boardEl.classList.add('active');
+        } else {
+            this.boardEl.classList.remove('active');
+        }
 
         // add name element
         this.nameEl.textContent = `${this.boardOwnerPlayer.name}'s board`;
@@ -74,10 +79,6 @@ class BoardDisplay {
     }
 
     _styleUnit(unit, unitEl) {
-        if (this._shouldThisBoardBeClickable()) {
-            unitEl.classList.add('active');
-        }
-
         if (unit === 'miss') {
             unitEl.classList.add('miss');
         } else if (unit !== null) {
@@ -117,6 +118,7 @@ class BoardDisplay {
     disable() {
         // style disabled - opacity lower
         this.boardEl.style.opacity = '0.5';
+        // remove active class
     }
 }
 

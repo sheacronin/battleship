@@ -39,7 +39,11 @@ main {
     width: 50px;
 }
 
-.active:hover {
+.active.board {
+    box-shadow: lightskyblue 0 0 10px 10px;
+}
+
+.active .unit:hover {
     cursor: pointer;
     box-shadow: inset 0 0 5px black;
 }
