@@ -62,9 +62,8 @@ const game = (() => {
 
                 // check if all bugs are swatted
                 if (player.enemyBoard.areAllBugsSwatted()) {
-                    // end game
-                    // declare winner
                     endGame(player);
+                    return;
                 }
             }
         }
@@ -81,8 +80,11 @@ const game = (() => {
     }
 
     function endGame(winner) {
+        // make sure board renders hit unit
+        boardDisplays.forEach((boardDisplay) => boardDisplay.render());
+        // declare winner
         console.log(winner.name + ' has won!');
-        // DOMBoard.disable
+        boardDisplays.forEach((boardDisplay) => boardDisplay.disable());
         // messages.declareWinner
         // messages.appendPlayAgainButton
     }

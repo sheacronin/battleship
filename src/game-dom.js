@@ -116,9 +116,12 @@ class BoardDisplay {
     }
 
     disable() {
-        // style disabled - opacity lower
+        // styles - opacity lower
         this.boardEl.style.opacity = '0.5';
         // remove active class
+        this.boardEl.classList.remove('active');
+        // disable unit buttons
+        this.boardEl.childNodes.forEach((unit) => (unit.disabled = true));
     }
 }
 
