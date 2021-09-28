@@ -46,7 +46,9 @@ const game = (() => {
 
         // If whoseTurn is computer, there will be no player input and
         // attack will be random coordinates
-        const result = whoseTurn.attack(xInput, yInput);
+        const result = xInput
+            ? whoseTurn.attack(xInput, yInput)
+            : whoseTurn.attack();
 
         if (result[0] !== 'miss') {
             const bug = result[0];
@@ -64,7 +66,11 @@ const game = (() => {
                     endGame(whoseTurn);
                     return;
                 }
+            } else {
+                messageDisplays.wasABugSwatted.render('');
             }
+        } else {
+            messageDisplays.wasABugSwatted.render('');
         }
 
         endTurn(result);
@@ -92,12 +98,19 @@ const game = (() => {
             );
         }
 
+        messageDisplays.whoseTurn.render(
+            `It is ${whoReceivedAction.name}'s turn`
+        );
+
         player1.switchTurn();
         player2.switchTurn();
 
         boardDisplays.forEach((boardDisplay) => boardDisplay.render());
 
-        playTurn();
+        // If it's computer's turn now, it should play without any input
+        if (whoReceivedAction.isComputer) {
+            setTimeout(playTurn, 2000);
+        }
     }
 
     function endGame(winner) {
