@@ -50,14 +50,30 @@ const game = (() => {
             ? whoseTurn.attack(xInput, yInput)
             : whoseTurn.attack();
 
+        const wasABugSwatted = result[0] !== 'miss' && result[0].isSwatted();
+        console.log('swatted? ' + wasABugSwatted);
+
+        //const shouldGameEnd = checkIfGameShouldEnd(result);
+
+        for (let message in messageDisplays) {
+            messageDisplays[message].render({
+                missOrBug: result[0],
+                coords: result[1],
+                whoDidAction: whoseTurn,
+                whoReceivedAction: players.find((player) => !player.isMyTurn),
+                wasABugSwatted,
+            });
+        }
+
+        endTurn(result);
+    }
+
+    function checkIfGameShouldEnd(result) {
         if (result[0] !== 'miss') {
             const bug = result[0];
             if (bug.isSwatted()) {
                 // this bug is swatted
                 console.log(
-                    bug.name + ' has been swatted by ' + whoseTurn.name
-                );
-                messageDisplays.wasABugSwatted.render(
                     bug.name + ' has been swatted by ' + whoseTurn.name
                 );
 
@@ -72,35 +88,15 @@ const game = (() => {
         } else {
             messageDisplays.wasABugSwatted.render('');
         }
-
-        endTurn(result);
     }
 
     function endTurn(result) {
-        let whoDidAction;
         let whoReceivedAction;
         if (player1.isMyTurn) {
-            whoDidAction = player1;
             whoReceivedAction = player2;
         } else {
-            whoDidAction = player2;
             whoReceivedAction = player1;
         }
-
-        // update messages
-        if (result[0] === 'miss') {
-            messageDisplays.previousAction.render(
-                `${whoDidAction.name} missed at ${result[1]}`
-            );
-        } else {
-            messageDisplays.previousAction.render(
-                `${whoDidAction.name} hit ${whoReceivedAction.name}'s ${result[0].name} at ${result[1]}!`
-            );
-        }
-
-        messageDisplays.whoseTurn.render(
-            `It is ${whoReceivedAction.name}'s turn`
-        );
 
         player1.switchTurn();
         player2.switchTurn();
