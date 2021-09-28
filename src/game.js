@@ -53,7 +53,10 @@ const game = (() => {
         const wasABugSwatted = result[0] !== 'miss' && result[0].isSwatted();
         console.log('swatted? ' + wasABugSwatted);
 
-        //const shouldGameEnd = checkIfGameShouldEnd(result);
+        let shouldGameEnd;
+        if (wasABugSwatted) {
+            shouldGameEnd = checkIfGameShouldEnd(whoseTurn.enemyBoard);
+        }
 
         for (let message in messageDisplays) {
             messageDisplays[message].render({
@@ -62,49 +65,36 @@ const game = (() => {
                 whoDidAction: whoseTurn,
                 whoReceivedAction: players.find((player) => !player.isMyTurn),
                 wasABugSwatted,
+                shouldGameEnd,
             });
         }
 
-        endTurn(result);
-    }
-
-    function checkIfGameShouldEnd(result) {
-        if (result[0] !== 'miss') {
-            const bug = result[0];
-            if (bug.isSwatted()) {
-                // this bug is swatted
-                console.log(
-                    bug.name + ' has been swatted by ' + whoseTurn.name
-                );
-
-                // check if all bugs are swatted
-                if (whoseTurn.enemyBoard.areAllBugsSwatted()) {
-                    endGame(whoseTurn);
-                    return;
-                }
-            } else {
-                messageDisplays.wasABugSwatted.render('');
-            }
+        if (shouldGameEnd) {
+            endGame();
         } else {
-            messageDisplays.wasABugSwatted.render('');
+            endTurn();
         }
     }
 
-    function endTurn(result) {
-        let whoReceivedAction;
-        if (player1.isMyTurn) {
-            whoReceivedAction = player2;
+    function checkIfGameShouldEnd(boardBeingAttacked) {
+        // check if all bugs are swatted
+        if (boardBeingAttacked.areAllBugsSwatted()) {
+            return true;
         } else {
-            whoReceivedAction = player1;
+            return false;
         }
+    }
 
+    function endTurn() {
         player1.switchTurn();
         player2.switchTurn();
+
+        const whoseTurnNext = players.find((player) => player.isMyTurn);
 
         boardDisplays.forEach((boardDisplay) => boardDisplay.render());
 
         // If it's computer's turn now, it should play without any input
-        if (whoReceivedAction.isComputer) {
+        if (whoseTurnNext.isComputer) {
             setTimeout(playTurn, 2000);
         }
     }
