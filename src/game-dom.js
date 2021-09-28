@@ -1,7 +1,8 @@
 import game from './game';
-import events from './events';
 
 const main = document.querySelector('main');
+
+console.log(game);
 
 class BoardDisplay {
     constructor(board) {
@@ -105,14 +106,7 @@ class BoardDisplay {
     }
 
     _addClickEventListener(unitEl, [x, y]) {
-        unitEl.addEventListener('click', () =>
-            this._emitAttackInputCoords(x, y)
-        );
-    }
-
-    _emitAttackInputCoords(x, y) {
-        // game object should listen for this event
-        events.emit('unitClicked', [x, y]);
+        unitEl.addEventListener('click', () => game.playTurn(x, y));
     }
 
     disable() {
@@ -138,12 +132,14 @@ class MessageDisplay {
 
 const messageDisplays = {
     previousAction: new MessageDisplay(),
+    wasABugSwatted: new MessageDisplay(),
     whoseTurn: new MessageDisplay(),
 };
 
 const messagesContainer = document.createElement('div');
 messagesContainer.id = 'messages';
 messagesContainer.appendChild(messageDisplays.previousAction.messageEl);
+messagesContainer.appendChild(messageDisplays.wasABugSwatted.messageEl);
 messagesContainer.appendChild(messageDisplays.whoseTurn.messageEl);
 main.appendChild(messagesContainer);
 

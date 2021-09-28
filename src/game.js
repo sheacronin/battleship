@@ -1,7 +1,6 @@
 import Player from './player';
 import Board from './board';
 import Bug from './bugs';
-import events from './events';
 import { boardDisplays, messageDisplays } from './game-dom';
 
 const game = (() => {
@@ -41,28 +40,28 @@ const game = (() => {
         board2.placeBugRandomly(bug);
     });
 
-    // listen for events.
-    events.on('unitClicked', ([x, y]) => {
-        if (player1.isMyTurn) {
-            humanPlayerTakesTurn(player1, [x, y]);
-        } else {
-            humanPlayerTakesTurn(player2, [x, y]);
-        }
-    });
+    function playTurn(xInput, yInput) {
+        const whoseTurn = players.find((player) => player.isMyTurn);
+        console.log(`======= ${whoseTurn.name} attacks! ========`);
 
-    function humanPlayerTakesTurn(player, [x, y]) {
-        console.log(`======= ${player.name} attacks! ========`);
-        const result = player.attack(x, y);
-        // if the result isn't a miss, check if hit bug is swatted
+        // If whoseTurn is computer, there will be no player input and
+        // attack will be random coordinates
+        const result = whoseTurn.attack(xInput, yInput);
+
         if (result[0] !== 'miss') {
             const bug = result[0];
             if (bug.isSwatted()) {
                 // this bug is swatted
-                console.log(bug.name + ' has been swatted by ' + player.name);
+                console.log(
+                    bug.name + ' has been swatted by ' + whoseTurn.name
+                );
+                messageDisplays.wasABugSwatted.render(
+                    bug.name + ' has been swatted by ' + whoseTurn.name
+                );
 
                 // check if all bugs are swatted
-                if (player.enemyBoard.areAllBugsSwatted()) {
-                    endGame(player);
+                if (whoseTurn.enemyBoard.areAllBugsSwatted()) {
+                    endGame(whoseTurn);
                     return;
                 }
             }
@@ -98,8 +97,7 @@ const game = (() => {
 
         boardDisplays.forEach((boardDisplay) => boardDisplay.render());
 
-        //events.off('unitClicked');
-        events.emit('turnEnded', result);
+        playTurn();
     }
 
     function endGame(winner) {
@@ -112,17 +110,7 @@ const game = (() => {
         // messages.appendPlayAgainButton
     }
 
-    events.on('turnEnded', () => setTimeout(computerTriesToTakeTurn, 2000));
-
-    function computerTriesToTakeTurn() {
-        if (player2.isMyTurn) {
-            console.log(`======= ${player2.name} attacks! ========`);
-            const result = player2.attack();
-            endTurn(result);
-        }
-    }
-
-    return { boards: [board1, board2], players };
+    return { boards: [board1, board2], players, playTurn };
 })();
 
 export default game;
