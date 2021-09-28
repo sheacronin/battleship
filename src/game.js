@@ -2,7 +2,7 @@ import Player from './player';
 import Board from './board';
 import Bug from './bugs';
 import events from './events';
-import { boardDisplays } from './game-dom';
+import { boardDisplays, messageDisplays } from './game-dom';
 
 const game = (() => {
     // Setup.
@@ -72,11 +72,34 @@ const game = (() => {
     }
 
     function endTurn(result) {
+        let whoDidAction;
+        let whoReceivedAction;
+        if (player1.isMyTurn) {
+            whoDidAction = player1;
+            whoReceivedAction = player2;
+        } else {
+            whoDidAction = player2;
+            whoReceivedAction = player1;
+        }
+
+        // update messages
+        if (result[0] === 'miss') {
+            messageDisplays.previousAction.render(
+                `${whoDidAction.name} missed at ${result[1]}`
+            );
+        } else {
+            messageDisplays.previousAction.render(
+                `${whoDidAction.name} hit ${whoReceivedAction.name}'s ${result[0].name} at ${result[1]}!`
+            );
+        }
+
         player1.switchTurn();
         player2.switchTurn();
+
+        boardDisplays.forEach((boardDisplay) => boardDisplay.render());
+
         //events.off('unitClicked');
         events.emit('turnEnded', result);
-        boardDisplays.forEach((boardDisplay) => boardDisplay.render());
     }
 
     function endGame(winner) {

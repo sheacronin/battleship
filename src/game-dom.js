@@ -125,60 +125,27 @@ class BoardDisplay {
     }
 }
 
-const displayMessages = (() => {
-    const messages = document.createElement('div');
-    messages.id = 'messages';
-
-    function _updateWhoseTurnText(whoseTurnEl) {
-        const whoseTurn = game.players.find((player) => player.isMyTurn);
-        whoseTurnEl.textContent = `It is ${whoseTurn.name}'s turn.`;
+class MessageDisplay {
+    constructor() {
+        this.messageEl = document.createElement('p');
     }
 
-    function _renderWhoseTurnText() {
-        const whoseTurnEl = document.createElement('p');
-        _updateWhoseTurnText(whoseTurnEl);
-        messages.appendChild(whoseTurnEl);
+    render(newText) {
+        // update text
+        this.messageEl.textContent = newText;
     }
+}
 
-    function _updateActionText(actionEl, result) {
-        const whoDidAction = game.players.find((player) => !player.isMyTurn);
-        const whoReceivedAction = game.players.find(
-            (player) => player.isMyTurn
-        );
-        if (result) {
-            if (result[0] === 'miss') {
-                actionEl.textContent = `${whoDidAction.name} missed at ${result[1]}`;
-            } else {
-                actionEl.textContent = `${whoDidAction.name} hit ${whoReceivedAction.name}'s ${result[0].name} at ${result[1]}!`;
-            }
-        }
-    }
+const messageDisplays = {
+    previousAction: new MessageDisplay(),
+    whoseTurn: new MessageDisplay(),
+};
 
-    function _renderActionText(result) {
-        const actionEl = document.createElement('p');
-        _updateActionText(actionEl, result);
-        messages.appendChild(actionEl);
-    }
-
-    function render(result) {
-        _clearMessages();
-        _renderActionText(result);
-        _renderWhoseTurnText();
-        main.appendChild(messages);
-    }
-
-    function _clearMessages() {
-        while (messages.firstChild) {
-            messages.removeChild(messages.firstChild);
-        }
-    }
-
-    events.on('turnEnded', (result) => render(result));
-
-    return { render };
-})();
-
-displayMessages.render();
+const messagesContainer = document.createElement('div');
+messagesContainer.id = 'messages';
+messagesContainer.appendChild(messageDisplays.previousAction.messageEl);
+messagesContainer.appendChild(messageDisplays.whoseTurn.messageEl);
+main.appendChild(messagesContainer);
 
 const boardDisplays = [];
 
@@ -188,4 +155,4 @@ game.boards.forEach((board) => {
     thisBoardDisplay.render();
 });
 
-export { boardDisplays };
+export { boardDisplays, messageDisplays };
