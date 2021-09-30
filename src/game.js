@@ -46,9 +46,7 @@ const game = (() => {
 
         // If whoseTurn is computer, there will be no player input and
         // attack will be random coordinates
-        const result = xInput
-            ? whoseTurn.attack(xInput, yInput)
-            : whoseTurn.attack();
+        const result = whoseTurn.attack(xInput, yInput);
 
         const wasABugSwatted = result[0] !== 'miss' && result[0].isSwatted();
         console.log('swatted? ' + wasABugSwatted);
