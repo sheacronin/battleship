@@ -153,8 +153,16 @@ messageDisplays.wasABugSwatted.render = (turnData) => {
     messageDisplays.wasABugSwatted.messageEl.textContent = message;
 };
 
+const playAgainBtn = document.createElement('button');
+playAgainBtn.textContent = 'Play Again';
+
 messageDisplays.whoseTurn.render = (turnData) => {
-    messageDisplays.whoseTurn.messageEl.textContent = `It is ${turnData.whoReceivedAction.name}'s turn`;
+    if (!turnData.shouldGameEnd) {
+        messageDisplays.whoseTurn.messageEl.textContent = `It is ${turnData.whoReceivedAction.name}'s turn`;
+    } else {
+        messageDisplays.whoseTurn.messageEl.textContent = `Game over! ${turnData.whoDidAction.name} wins!`;
+        messageDisplays.whoseTurn.messageEl.appendChild(playAgainBtn);
+    }
 };
 
 const messagesContainer = document.createElement('div');

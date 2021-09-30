@@ -105,14 +105,10 @@ const game = (() => {
         }
     }
 
-    function endGame(winner) {
+    function endGame() {
         // make sure board renders hit unit
         boardDisplays.forEach((boardDisplay) => boardDisplay.render());
-        // declare winner
-        console.log(winner.name + ' has won!');
         boardDisplays.forEach((boardDisplay) => boardDisplay.disable());
-        // messages.declareWinner
-        // messages.appendPlayAgainButton
     }
 
     return { boards: [board1, board2], players, playTurn };
