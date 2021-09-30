@@ -39,14 +39,16 @@ class Board {
             for (let bugIndex = 0; bugIndex < bug.length; bugIndex++) {
                 this.grid[y][x + bugIndex] = [bug, bugIndex];
             }
-            // this.grid[y][x]
-            // this.grid[y].fill(bug, x, x + bug.length);
         } else {
             let bugIndex = 0;
+            // first check if there are any other bugs here.
             for (let rowI = y; rowI < y + bug.length; rowI++) {
                 if (this.grid[rowI][x] !== null) {
                     throw new Error('there is already another bug here!');
                 }
+            }
+            // place the bug if there were no errors.
+            for (let rowI = y; rowI < y + bug.length; rowI++) {
                 this.grid[rowI][x] = [bug, bugIndex];
                 bugIndex++;
             }
