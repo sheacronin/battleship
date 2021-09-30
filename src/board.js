@@ -78,7 +78,7 @@ class Board {
         switch (this.grid[y][x]) {
             case 'miss':
                 console.log("you've already swatted here!");
-                return;
+                throw new Error('this unit has already been attacked!');
             case null:
                 console.log(`Missed at ${x}, ${y}!`);
                 this.grid[y][x] = 'miss';

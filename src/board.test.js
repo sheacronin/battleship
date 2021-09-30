@@ -205,7 +205,7 @@ test('do not allow end length of horizontal bug to be placed on top of other bug
 
 test('receives a missing attack', () => {
     const board = new Board();
-    expect(board.receiveAttack(0, 0)).toStrictEqual([0, 0]);
+    expect(board.receiveAttack(0, 0)).toStrictEqual(['miss', [0, 0]]);
 });
 
 test('receives a hit attack', () => {
@@ -258,4 +258,12 @@ test('stores bugs in prop when placed', () => {
     board.placeBug(spider, 5, 5);
     board.placeBug(caterpillar, 0, 0);
     expect(board.bugs).toStrictEqual([spider, caterpillar]);
+});
+
+test('throws an error if it receives an attack on a unit that has already been attacked', () => {
+    const board = new Board();
+    board.receiveAttack(0, 0);
+    expect(() => board.receiveAttack(0, 0)).toThrow(
+        'this unit has already been attacked!'
+    );
 });

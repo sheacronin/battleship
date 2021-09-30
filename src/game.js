@@ -46,7 +46,15 @@ const game = (() => {
 
         // If whoseTurn is computer, there will be no player input and
         // attack will be random coordinates
-        const result = whoseTurn.attack(xInput, yInput);
+        let result;
+        try {
+            result = whoseTurn.attack(xInput, yInput);
+        } catch {
+            // If computer throws an error, run the function again
+            console.log("you've already attacked here!");
+            if (whoseTurn.isComputer) playTurn();
+            return;
+        }
 
         const wasABugSwatted = result[0] !== 'miss' && result[0].isSwatted();
         console.log('swatted? ' + wasABugSwatted);
