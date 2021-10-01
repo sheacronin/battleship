@@ -40,24 +40,9 @@ main {
 }
 
 .player-name {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 3fr 1fr;
-    grid-template-areas:
-        'question question'
-        'input submit';
-}
-
-.player-name label {
-    grid-area: question;
-}
-
-.player-name input {
-    grid-area: input;
-}
-
-.player-name button {
-    grid-area: submit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .board {

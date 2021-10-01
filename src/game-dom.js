@@ -21,15 +21,14 @@ const setup = (() => {
         playerNameContainer.classList.add('player-name');
 
         const playerNameLabel = document.createElement('label');
+        playerNameLabel.setAttribute('for', `player${playerN}-name`);
         playerNameLabel.textContent = `What is Player ${playerN}'s name?`;
         playerNameContainer.appendChild(playerNameLabel);
 
         const playerNameInput = document.createElement('input');
+        playerNameInput.id = `player${playerN}-name`;
+        playerNameInput.setAttribute('name', `player${playerN}-name`);
         playerNameContainer.appendChild(playerNameInput);
-
-        const playerNameSubmit = document.createElement('button');
-        playerNameSubmit.textContent = 'Submit';
-        playerNameContainer.appendChild(playerNameSubmit);
 
         whoIsPlayerContainer.appendChild(playerNameContainer);
 
@@ -42,6 +41,8 @@ const setup = (() => {
 
         const isComputerCheckbox = document.createElement('input');
         isComputerCheckbox.type = 'checkbox';
+        isComputerCheckbox.id = `is-player${playerN}-computer`;
+        isComputerCheckbox.setAttribute('name', `is-player${playerN}-computer`);
         isComputerContainer.appendChild(isComputerCheckbox);
         whoIsPlayerContainer.appendChild(isComputerContainer);
 
@@ -49,9 +50,25 @@ const setup = (() => {
         containerEl.appendChild(whoIsPlayerContainer);
     }
 
-    const readyToPlayBtn = document.createElement('button');
-    readyToPlayBtn.textContent = 'Play';
-    containerEl.appendChild(readyToPlayBtn);
+    const playBtn = document.createElement('button');
+    playBtn.textContent = 'Play';
+    containerEl.appendChild(playBtn);
+
+    // on check of isComputer
+    function onIsComputerClick(e) {
+        // change name input to = 'Computer'
+        // disable name input
+    }
+
+    // on click submit button
+    function onPlayBtnClick(e) {
+        // get name inputs
+        // if none, default to "Player 1"
+        // get is computer inputs
+        // remove setup elements
+        // play game function
+        // this should render the boards
+    }
 
     function render() {
         main.appendChild(containerEl);
