@@ -6,6 +6,7 @@ console.log(game);
 
 const setup = (() => {
     const containerEl = document.createElement('article');
+    containerEl.id = 'setup';
 
     const setupTitle = document.createElement('h3');
     setupTitle.textContent = 'Setup';
@@ -13,19 +14,30 @@ const setup = (() => {
 
     for (let playerN = 1; playerN < 3; playerN++) {
         const whoIsPlayerContainer = document.createElement('section');
-        whoIsPlayerContainer.id = 'setup';
+        whoIsPlayerContainer.classList.add('who-is-player');
 
-        const whoIsPlayerLabel = document.createElement('label');
-        whoIsPlayerLabel.textContent = `What is ${playerN}'s name?`;
-        whoIsPlayerContainer.appendChild(whoIsPlayerLabel);
+        // Player Name
+        const playerNameContainer = document.createElement('div');
+        playerNameContainer.classList.add('player-name');
 
-        const whoIsPlayerInput = document.createElement('input');
-        whoIsPlayerContainer.appendChild(whoIsPlayerInput);
+        const playerNameLabel = document.createElement('label');
+        playerNameLabel.textContent = `What is Player ${playerN}'s name?`;
+        playerNameContainer.appendChild(playerNameLabel);
 
+        const playerNameInput = document.createElement('input');
+        playerNameContainer.appendChild(playerNameInput);
+
+        const playerNameSubmit = document.createElement('button');
+        playerNameSubmit.textContent = 'Submit';
+        playerNameContainer.appendChild(playerNameSubmit);
+
+        whoIsPlayerContainer.appendChild(playerNameContainer);
+
+        // Are They A Computer?
         const isComputerContainer = document.createElement('div');
 
         const isComputerLabel = document.createElement('label');
-        isComputerLabel.textContent = 'Is this player a computer?';
+        isComputerLabel.textContent = `Is Player ${playerN} a computer?`;
         isComputerContainer.appendChild(isComputerLabel);
 
         const isComputerCheckbox = document.createElement('input');
@@ -33,10 +45,7 @@ const setup = (() => {
         isComputerContainer.appendChild(isComputerCheckbox);
         whoIsPlayerContainer.appendChild(isComputerContainer);
 
-        const whoIsPlayerSubmit = document.createElement('button');
-        whoIsPlayerSubmit.textContent = 'Submit';
-        whoIsPlayerContainer.appendChild(whoIsPlayerSubmit);
-
+        // Append everything.
         containerEl.appendChild(whoIsPlayerContainer);
     }
 
