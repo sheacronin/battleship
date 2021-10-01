@@ -4,6 +4,55 @@ const main = document.querySelector('main');
 
 console.log(game);
 
+const setup = (() => {
+    const containerEl = document.createElement('article');
+
+    const setupTitle = document.createElement('h3');
+    setupTitle.textContent = 'Setup';
+    containerEl.appendChild(setupTitle);
+
+    for (let playerN = 1; playerN < 3; playerN++) {
+        const whoIsPlayerContainer = document.createElement('section');
+        whoIsPlayerContainer.id = 'setup';
+
+        const whoIsPlayerLabel = document.createElement('label');
+        whoIsPlayerLabel.textContent = `What is ${playerN}'s name?`;
+        whoIsPlayerContainer.appendChild(whoIsPlayerLabel);
+
+        const whoIsPlayerInput = document.createElement('input');
+        whoIsPlayerContainer.appendChild(whoIsPlayerInput);
+
+        const isComputerContainer = document.createElement('div');
+
+        const isComputerLabel = document.createElement('label');
+        isComputerLabel.textContent = 'Is this player a computer?';
+        isComputerContainer.appendChild(isComputerLabel);
+
+        const isComputerCheckbox = document.createElement('input');
+        isComputerCheckbox.type = 'checkbox';
+        isComputerContainer.appendChild(isComputerCheckbox);
+        whoIsPlayerContainer.appendChild(isComputerContainer);
+
+        const whoIsPlayerSubmit = document.createElement('button');
+        whoIsPlayerSubmit.textContent = 'Submit';
+        whoIsPlayerContainer.appendChild(whoIsPlayerSubmit);
+
+        containerEl.appendChild(whoIsPlayerContainer);
+    }
+
+    const readyToPlayBtn = document.createElement('button');
+    readyToPlayBtn.textContent = 'Play';
+    containerEl.appendChild(readyToPlayBtn);
+
+    function render() {
+        main.appendChild(containerEl);
+    }
+
+    return { render };
+})();
+
+setup.render();
+
 class BoardDisplay {
     constructor(board) {
         this.board = board;
@@ -155,6 +204,7 @@ messageDisplays.wasABugSwatted.render = (turnData) => {
 
 const playAgainBtn = document.createElement('button');
 playAgainBtn.textContent = 'Play Again';
+//TODO: setup --- playAgainBtn.addEventListener('click', )
 
 messageDisplays.whoseTurn.render = (turnData) => {
     if (!turnData.shouldGameEnd) {
@@ -174,10 +224,10 @@ main.appendChild(messagesContainer);
 
 const boardDisplays = [];
 
-game.boards.forEach((board) => {
-    const thisBoardDisplay = new BoardDisplay(board);
-    boardDisplays.push(thisBoardDisplay);
-    thisBoardDisplay.render();
-});
+// game.boards.forEach((board) => {
+//     const thisBoardDisplay = new BoardDisplay(board);
+//     boardDisplays.push(thisBoardDisplay);
+//     thisBoardDisplay.render();
+// });
 
 export { boardDisplays, messageDisplays };
