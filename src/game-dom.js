@@ -2,8 +2,6 @@ import game from './game';
 
 const main = document.querySelector('main');
 
-console.log(game);
-
 const setup = (() => {
     const containerEl = document.createElement('article');
     containerEl.id = 'setup';
@@ -112,27 +110,48 @@ const setup = (() => {
         }
     }
 
+    const playersNameInfo = {};
+
     for (let playerN = 1; playerN < 3; playerN++) {
         const playerInfo = new PlayerInfo(playerN);
+        playersNameInfo[playerN] = playerInfo.playerName;
         playerInfo.render();
     }
 
     const playBtn = document.createElement('button');
     playBtn.textContent = 'Play';
+    playBtn.addEventListener('click', onPlayBtnClick);
     containerEl.appendChild(playBtn);
 
     // on click submit button
-    function onPlayBtnClick(e) {
+    function onPlayBtnClick() {
         // get name inputs
-        // if none, default to "Player 1"
-        // get is computer inputs
+        const playerNames = {
+            1: playersNameInfo['1'].inputEl.value,
+            2: playersNameInfo['2'].inputEl.value,
+        };
+
+        // if none, default to "Player N"
+        for (let player in playerNames) {
+            if (playerNames[player] === '') {
+                playerNames[player] = `Player ${player}`;
+            }
+        }
+
         // remove setup elements
+        removeSetup();
+
         // play game function
+        game.setup(playerNames);
         // this should render the boards
     }
 
     function render() {
         main.appendChild(containerEl);
+    }
+
+    function removeSetup() {
+        main.removeChild(containerEl);
     }
 
     return { render };
@@ -141,11 +160,9 @@ const setup = (() => {
 setup.render();
 
 class BoardDisplay {
-    constructor(board) {
+    constructor(board, boardOwnerPlayer) {
         this.board = board;
-        this.boardOwnerPlayer = game.players.find(
-            (player) => player.enemyBoard !== board
-        );
+        this.boardOwnerPlayer = boardOwnerPlayer;
         this.containerEl = document.createElement('article');
         this.nameEl = document.createElement('h2');
         this.boardEl = document.createElement('div');
@@ -309,12 +326,4 @@ messagesContainer.appendChild(messageDisplays.wasABugSwatted.messageEl);
 messagesContainer.appendChild(messageDisplays.whoseTurn.messageEl);
 main.appendChild(messagesContainer);
 
-const boardDisplays = [];
-
-// game.boards.forEach((board) => {
-//     const thisBoardDisplay = new BoardDisplay(board);
-//     boardDisplays.push(thisBoardDisplay);
-//     thisBoardDisplay.render();
-// });
-
-export { boardDisplays, messageDisplays };
+export { BoardDisplay, messageDisplays };

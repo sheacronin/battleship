@@ -1,44 +1,61 @@
 import Player from './player';
 import Board from './board';
 import Bug from './bugs';
-import { boardDisplays, messageDisplays } from './game-dom';
+import { BoardDisplay, messageDisplays } from './game-dom';
 
 const game = (() => {
+    console.log('playing game!');
+
+    const boards = [];
+    const players = [];
+    const boardDisplays = [];
+
     // Setup.
-    const board1 = new Board();
-    const board2 = new Board();
+    function setup(playerNames) {
+        const board1 = new Board();
+        const board2 = new Board();
+        boards.push(board1, board2);
 
-    const player1 = new Player('Sarah', board2);
-    const player2 = new Player('Computer', board1);
+        const player1 = new Player(playerNames['1'], board2);
+        const player2 = new Player(playerNames['2'], board1);
+        players.push(player1, player2);
 
-    const players = [player1, player2];
+        // Player 1 goes first.
+        player1.switchTurn();
 
-    // Player 1 goes first.
-    player1.switchTurn();
+        const bugCollection1 = [
+            new Bug(5, 'Worm'),
+            new Bug(4, 'Caterpillar'),
+            new Bug(3, 'Ant'),
+            new Bug(3, 'Spider'),
+            new Bug(2, 'Ladybug'),
+        ];
 
-    const bugCollection1 = [
-        new Bug(5, 'Worm'),
-        new Bug(4, 'Caterpillar'),
-        new Bug(3, 'Ant'),
-        new Bug(3, 'Spider'),
-        new Bug(2, 'Ladybug'),
-    ];
+        const bugCollection2 = [
+            new Bug(5, 'Worm'),
+            new Bug(4, 'Caterpillar'),
+            new Bug(3, 'Ant'),
+            new Bug(3, 'Spider'),
+            new Bug(2, 'Ladybug'),
+        ];
 
-    const bugCollection2 = [
-        new Bug(5, 'Worm'),
-        new Bug(4, 'Caterpillar'),
-        new Bug(3, 'Ant'),
-        new Bug(3, 'Spider'),
-        new Bug(2, 'Ladybug'),
-    ];
+        bugCollection1.forEach((bug) => {
+            board1.placeBugRandomly(bug);
+        });
 
-    bugCollection1.forEach((bug) => {
-        board1.placeBugRandomly(bug);
-    });
+        bugCollection2.forEach((bug) => {
+            board2.placeBugRandomly(bug);
+        });
 
-    bugCollection2.forEach((bug) => {
-        board2.placeBugRandomly(bug);
-    });
+        boards.forEach((board) => {
+            const boardDisplay = new BoardDisplay(
+                board,
+                players.find((player) => player.enemyBoard !== board)
+            );
+            boardDisplays.push(boardDisplay);
+            boardDisplay.render();
+        });
+    }
 
     function playTurn(xInput, yInput) {
         const whoseTurn = players.find((player) => player.isMyTurn);
@@ -92,8 +109,7 @@ const game = (() => {
     }
 
     function endTurn() {
-        player1.switchTurn();
-        player2.switchTurn();
+        players.forEach((player) => player.switchTurn());
 
         const whoseTurnNext = players.find((player) => player.isMyTurn);
 
@@ -111,7 +127,7 @@ const game = (() => {
         boardDisplays.forEach((boardDisplay) => boardDisplay.disable());
     }
 
-    return { boards: [board1, board2], players, playTurn };
+    return { boards, players, setup, playTurn };
 })();
 
 export default game;
