@@ -17,58 +17,20 @@ const setup = (() => {
             this.playerN = playerN;
             this.containerEl = document.createElement('section');
             this.containerEl.classList.add('player-info');
-
-            this.playerName = new PlayerInfoAttribute(playerN, 'name');
-            this.playerName.render = () => {
-                this.playerName.labelEl.textContent = `What is Player ${playerN}'s name?`;
-                this.playerName.containerEl.appendChild(
-                    this.playerName.labelEl
-                );
-                this.playerName.containerEl.appendChild(
-                    this.playerName.inputEl
-                );
-
-                this.containerEl.appendChild(this.playerName.containerEl);
-            };
-
-            this.playerIsComputer = new PlayerInfoAttribute(
+            this.playerName = new PlayerName(playerN, 'name');
+            this.playerIsComputer = new PlayerIsComputer(
                 playerN,
                 'is-computer'
             );
-            this.playerIsComputer.render = () => {
-                this.playerIsComputer.labelEl.textContent = `Is Player ${playerN} a computer?`;
-                this.playerIsComputer.containerEl.appendChild(
-                    this.playerIsComputer.labelEl
-                );
-
-                this.playerIsComputer.inputEl.type = 'checkbox';
-                this.playerIsComputer.inputEl.addEventListener('change', () =>
-                    onIsComputerClick(
-                        this.playerIsComputer.inputEl,
-                        this.playerName.inputEl
-                    )
-                );
-                this.playerIsComputer.containerEl.appendChild(
-                    this.playerIsComputer.inputEl
-                );
-
-                function onIsComputerClick(checkbox, nameInput) {
-                    if (checkbox.checked) {
-                        nameInput.value = 'Computer';
-                        nameInput.disabled = true;
-                    } else {
-                        nameInput.value = '';
-                        nameInput.disabled = false;
-                    }
-                }
-
-                this.containerEl.appendChild(this.playerIsComputer.containerEl);
-            };
         }
 
         render() {
-            this.playerName.render();
-            this.playerIsComputer.render();
+            this.playerName.create();
+            this.containerEl.appendChild(this.playerName.containerEl);
+
+            this.playerIsComputer.create(this.playerName.inputEl);
+            this.containerEl.appendChild(this.playerIsComputer.containerEl);
+
             containerEl.appendChild(this.containerEl);
         }
     }
@@ -76,16 +38,77 @@ const setup = (() => {
     class PlayerInfoAttribute {
         constructor(playerN, attribute) {
             this.playerN = playerN;
+            this.attribute = attribute;
 
             this.containerEl = document.createElement('div');
-            this.containerEl.classList.add(`player-${attribute}`);
+            this.containerEl.classList.add(`player-${this.attribute}`);
 
             this.labelEl = document.createElement('label');
-            this.labelEl.setAttribute('for', `player${playerN}-${attribute}`);
+            this.labelEl.setAttribute(
+                'for',
+                `player${playerN}-${this.attribute}`
+            );
 
             this.inputEl = document.createElement('input');
-            this.inputEl.id = `player${playerN}-${attribute}`;
-            this.inputEl.setAttribute('name', `player${playerN}-${attribute}`);
+            this.inputEl.id = `player${playerN}-${this.attribute}`;
+            this.inputEl.setAttribute(
+                'name',
+                `player${playerN}-${this.attribute}`
+            );
+        }
+    }
+
+    class PlayerName extends PlayerInfoAttribute {
+        constructor(playerN, attribute) {
+            super(playerN, attribute);
+            this.labelEl.textContent = `What is Player ${playerN}'s name?`;
+        }
+
+        create() {
+            this.containerEl.appendChild(this.labelEl);
+            this.containerEl.appendChild(this.inputEl);
+        }
+    }
+
+    class PlayerIsComputer extends PlayerInfoAttribute {
+        constructor(playerN, attribute) {
+            super(playerN, attribute);
+            this.labelEl.textContent = `Is Player ${playerN} a computer?`;
+        }
+
+        create(playerNameInput) {
+            this.containerEl.appendChild(this.labelEl);
+
+            this.inputEl.type = 'checkbox';
+            this.inputEl.addEventListener('change', () =>
+                this.onIsComputerClick(playerNameInput)
+            );
+
+            if (this.playerN === 2) {
+                this.makePlayerAComputer(playerNameInput);
+            }
+
+            this.containerEl.appendChild(this.inputEl);
+        }
+
+        onIsComputerClick(nameInput) {
+            if (this.inputEl.checked) {
+                this.makePlayerAComputer(nameInput);
+            } else {
+                this.makePlayerNotAComputer(nameInput);
+            }
+        }
+
+        makePlayerAComputer(nameInput) {
+            this.inputEl.checked = true;
+            nameInput.value = 'Computer';
+            nameInput.disabled = true;
+        }
+
+        makePlayerNotAComputer(nameInput) {
+            this.inputEl.checked = false;
+            nameInput.value = '';
+            nameInput.disabled = false;
         }
     }
 
@@ -97,17 +120,6 @@ const setup = (() => {
     const playBtn = document.createElement('button');
     playBtn.textContent = 'Play';
     containerEl.appendChild(playBtn);
-
-    // on check of isComputer
-    function onIsComputerClick(checkbox, nameInput) {
-        if (checkbox.checked) {
-            nameInput.value = 'Computer';
-            nameInput.disabled = true;
-        } else {
-            nameInput.value = '';
-            nameInput.disabled = false;
-        }
-    }
 
     // on click submit button
     function onPlayBtnClick(e) {
