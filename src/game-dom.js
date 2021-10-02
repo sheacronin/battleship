@@ -43,6 +43,15 @@ const setup = (() => {
         isComputerCheckbox.type = 'checkbox';
         isComputerCheckbox.id = `is-player${playerN}-computer`;
         isComputerCheckbox.setAttribute('name', `is-player${playerN}-computer`);
+        isComputerCheckbox.addEventListener('change', () =>
+            onIsComputerClick(isComputerCheckbox, playerNameInput)
+        );
+        // Start player2 off as a computer
+        if (playerN === 2) {
+            isComputerCheckbox.checked = true;
+            playerNameInput.value = 'Computer';
+            playerNameInput.disabled = true;
+        }
         isComputerContainer.appendChild(isComputerCheckbox);
         whoIsPlayerContainer.appendChild(isComputerContainer);
 
@@ -55,9 +64,14 @@ const setup = (() => {
     containerEl.appendChild(playBtn);
 
     // on check of isComputer
-    function onIsComputerClick(e) {
-        // change name input to = 'Computer'
-        // disable name input
+    function onIsComputerClick(checkbox, nameInput) {
+        if (checkbox.checked) {
+            nameInput.value = 'Computer';
+            nameInput.disabled = true;
+        } else {
+            nameInput.value = '';
+            nameInput.disabled = false;
+        }
     }
 
     // on click submit button
