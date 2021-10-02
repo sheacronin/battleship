@@ -35,7 +35,7 @@ main {
     align-self: center;
 }
 
-.who-is-player {
+.player-info {
     display: grid;
 }
 

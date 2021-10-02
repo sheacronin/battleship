@@ -12,51 +12,86 @@ const setup = (() => {
     setupTitle.textContent = 'Setup';
     containerEl.appendChild(setupTitle);
 
-    for (let playerN = 1; playerN < 3; playerN++) {
-        const whoIsPlayerContainer = document.createElement('section');
-        whoIsPlayerContainer.classList.add('who-is-player');
+    class PlayerInfo {
+        constructor(playerN) {
+            this.playerN = playerN;
+            this.containerEl = document.createElement('section');
+            this.containerEl.classList.add('player-info');
 
-        // Player Name
-        const playerNameContainer = document.createElement('div');
-        playerNameContainer.classList.add('player-name');
+            this.playerName = new PlayerInfoAttribute(playerN, 'name');
+            this.playerName.render = () => {
+                this.playerName.labelEl.textContent = `What is Player ${playerN}'s name?`;
+                this.playerName.containerEl.appendChild(
+                    this.playerName.labelEl
+                );
+                this.playerName.containerEl.appendChild(
+                    this.playerName.inputEl
+                );
 
-        const playerNameLabel = document.createElement('label');
-        playerNameLabel.setAttribute('for', `player${playerN}-name`);
-        playerNameLabel.textContent = `What is Player ${playerN}'s name?`;
-        playerNameContainer.appendChild(playerNameLabel);
+                this.containerEl.appendChild(this.playerName.containerEl);
+            };
 
-        const playerNameInput = document.createElement('input');
-        playerNameInput.id = `player${playerN}-name`;
-        playerNameInput.setAttribute('name', `player${playerN}-name`);
-        playerNameContainer.appendChild(playerNameInput);
+            this.playerIsComputer = new PlayerInfoAttribute(
+                playerN,
+                'is-computer'
+            );
+            this.playerIsComputer.render = () => {
+                this.playerIsComputer.labelEl.textContent = `Is Player ${playerN} a computer?`;
+                this.playerIsComputer.containerEl.appendChild(
+                    this.playerIsComputer.labelEl
+                );
 
-        whoIsPlayerContainer.appendChild(playerNameContainer);
+                this.playerIsComputer.inputEl.type = 'checkbox';
+                this.playerIsComputer.inputEl.addEventListener('change', () =>
+                    onIsComputerClick(
+                        this.playerIsComputer.inputEl,
+                        this.playerName.inputEl
+                    )
+                );
+                this.playerIsComputer.containerEl.appendChild(
+                    this.playerIsComputer.inputEl
+                );
 
-        // Are They A Computer?
-        const isComputerContainer = document.createElement('div');
+                function onIsComputerClick(checkbox, nameInput) {
+                    if (checkbox.checked) {
+                        nameInput.value = 'Computer';
+                        nameInput.disabled = true;
+                    } else {
+                        nameInput.value = '';
+                        nameInput.disabled = false;
+                    }
+                }
 
-        const isComputerLabel = document.createElement('label');
-        isComputerLabel.textContent = `Is Player ${playerN} a computer?`;
-        isComputerContainer.appendChild(isComputerLabel);
-
-        const isComputerCheckbox = document.createElement('input');
-        isComputerCheckbox.type = 'checkbox';
-        isComputerCheckbox.id = `is-player${playerN}-computer`;
-        isComputerCheckbox.setAttribute('name', `is-player${playerN}-computer`);
-        isComputerCheckbox.addEventListener('change', () =>
-            onIsComputerClick(isComputerCheckbox, playerNameInput)
-        );
-        // Start player2 off as a computer
-        if (playerN === 2) {
-            isComputerCheckbox.checked = true;
-            playerNameInput.value = 'Computer';
-            playerNameInput.disabled = true;
+                this.containerEl.appendChild(this.playerIsComputer.containerEl);
+            };
         }
-        isComputerContainer.appendChild(isComputerCheckbox);
-        whoIsPlayerContainer.appendChild(isComputerContainer);
 
-        // Append everything.
-        containerEl.appendChild(whoIsPlayerContainer);
+        render() {
+            this.playerName.render();
+            this.playerIsComputer.render();
+            containerEl.appendChild(this.containerEl);
+        }
+    }
+
+    class PlayerInfoAttribute {
+        constructor(playerN, attribute) {
+            this.playerN = playerN;
+
+            this.containerEl = document.createElement('div');
+            this.containerEl.classList.add(`player-${attribute}`);
+
+            this.labelEl = document.createElement('label');
+            this.labelEl.setAttribute('for', `player${playerN}-${attribute}`);
+
+            this.inputEl = document.createElement('input');
+            this.inputEl.id = `player${playerN}-${attribute}`;
+            this.inputEl.setAttribute('name', `player${playerN}-${attribute}`);
+        }
+    }
+
+    for (let playerN = 1; playerN < 3; playerN++) {
+        const playerInfo = new PlayerInfo(playerN);
+        playerInfo.render();
     }
 
     const playBtn = document.createElement('button');
