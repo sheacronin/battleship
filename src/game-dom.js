@@ -272,6 +272,32 @@ class BoardDisplay {
     }
 }
 
+class BugPen {
+    constructor(bugs) {
+        this.bugs = bugs;
+        this.bugEls = [];
+        this.containerEl = document.createElement('div');
+        this.containerEl.classList.add('bug-pen');
+    }
+
+    render() {
+        this.bugs.forEach((bug) => {
+            const bugContainer = document.createElement('div');
+            bugContainer.classList.add('bug-container');
+            bug.units.forEach(() => {
+                const bugUnit = document.createElement('div');
+                bugUnit.classList.add('unit');
+                bugUnit.classList.add('bug');
+                bugContainer.appendChild(bugUnit);
+            });
+
+            this.containerEl.appendChild(bugContainer);
+        });
+
+        main.appendChild(this.containerEl);
+    }
+}
+
 class MessageDisplay {
     constructor() {
         this.messageEl = document.createElement('p');
@@ -331,4 +357,4 @@ messagesContainer.appendChild(messageDisplays.wasABugSwatted.messageEl);
 messagesContainer.appendChild(messageDisplays.whoseTurn.messageEl);
 main.appendChild(messagesContainer);
 
-export { BoardDisplay, messageDisplays };
+export { BoardDisplay, BugPen, messageDisplays };

@@ -1,7 +1,7 @@
 import Player from './player';
 import Board from './board';
 import Bug from './bugs';
-import { BoardDisplay, messageDisplays } from './game-dom';
+import { BoardDisplay, BugPen, messageDisplays } from './game-dom';
 
 const game = (() => {
     console.log('playing game!');
@@ -49,15 +49,19 @@ const game = (() => {
                 board1.placeBugRandomly(bug);
             });
         } else {
-            const coords = prompt(
-                `Where would you like to place your ${bugCollection1[0].name}?`
-            );
-            const [strX, strY] = coords.split(',');
-            const x = parseInt(strX);
-            const y = parseInt(strY);
-
-            board1.placeBug(bugCollection1[0], x, y);
+            // const coords = prompt(
+            //     `Where would you like to place your ${bugCollection1[0].name}?`
+            // );
+            // const [strX, strY] = coords.split(',');
+            // const x = parseInt(strX);
+            // const y = parseInt(strY);
+            // board1.placeBug(bugCollection1[0], x, y);
         }
+
+        // BUG PEN CODE
+        const bugPen = new BugPen(bugCollection1);
+        bugPen.render();
+        // END CODE
 
         if (player2.isComputer) {
             bugCollection2.forEach((bug) => {

@@ -15,11 +15,12 @@ h1 {
 
 main {
     display: grid;
-    grid-template-rows: 10vh 90vh;
+    grid-template-rows: 10vh 50vh 40vh;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
         'message message'
-        'board board';
+        'board board'
+        'bug-pen bug-pen';
 }
 
 #setup {
@@ -45,9 +46,22 @@ main {
     justify-content: center;
 }
 
+.bug-pen {
+    background-color: grey;
+    grid-area: bug-pen;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.bug-container {
+    display: flex;
+}
+
 .board {
-    width: 500px;
-    height: 500px;
+    width: 250px;
+    height: 250px;
     margin: 0 auto;
     background-color: white;
     border: 1px solid black;
@@ -59,7 +73,8 @@ main {
 .unit {
     border: 1px solid grey;
     background-color: white;
-    width: 50px;
+    width: 25px;
+    height: 25px;
 }
 
 .active.board {
