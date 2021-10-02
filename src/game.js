@@ -44,13 +44,26 @@ const game = (() => {
             new Bug(2, 'Ladybug'),
         ];
 
-        bugCollection1.forEach((bug) => {
-            board1.placeBugRandomly(bug);
-        });
+        if (player1.isComputer) {
+            bugCollection1.forEach((bug) => {
+                board1.placeBugRandomly(bug);
+            });
+        } else {
+            const coords = prompt(
+                `Where would you like to place your ${bugCollection1[0].name}?`
+            );
+            const [strX, strY] = coords.split(',');
+            const x = parseInt(strX);
+            const y = parseInt(strY);
 
-        bugCollection2.forEach((bug) => {
-            board2.placeBugRandomly(bug);
-        });
+            board1.placeBug(bugCollection1[0], x, y);
+        }
+
+        if (player2.isComputer) {
+            bugCollection2.forEach((bug) => {
+                board2.placeBugRandomly(bug);
+            });
+        }
 
         boards.forEach((board) => {
             const boardDisplay = new BoardDisplay(
