@@ -308,7 +308,12 @@ messageDisplays.wasABugSwatted.render = (turnData) => {
 
 const playAgainBtn = document.createElement('button');
 playAgainBtn.textContent = 'Play Again';
-//TODO: setup --- playAgainBtn.addEventListener('click', )
+playAgainBtn.addEventListener('click', () => {
+    while (main.firstChild) {
+        main.removeChild(main.firstChild);
+    }
+    setup.render();
+});
 
 messageDisplays.whoseTurn.render = (turnData) => {
     if (!turnData.shouldGameEnd) {

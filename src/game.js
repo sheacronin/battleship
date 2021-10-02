@@ -12,6 +12,11 @@ const game = (() => {
 
     // Setup.
     function setup(playerNames) {
+        // clear previous boards and players
+        boards.splice(0, 2);
+        players.splice(0, 2);
+        boardDisplays.splice(0, 2);
+
         const board1 = new Board();
         const board2 = new Board();
         boards.push(board1, board2);
