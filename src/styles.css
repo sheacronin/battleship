@@ -60,6 +60,10 @@ main {
     cursor: move;
 }
 
+.board-title {
+    margin-bottom: 30px;
+}
+
 .board {
     width: 250px;
     height: 250px;
@@ -69,6 +73,24 @@ main {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
+    position: relative;
+}
+
+.board-x-labels {
+    position: absolute;
+    width: 100%;
+    top: -23px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.board-y-labels {
+    display: flex;
+    position: absolute;
+    left: -23px;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .unit {

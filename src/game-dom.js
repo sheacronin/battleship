@@ -165,6 +165,7 @@ class BoardDisplay {
         this.boardOwnerPlayer = boardOwnerPlayer;
         this.containerEl = document.createElement('article');
         this.nameEl = document.createElement('h2');
+        this.nameEl.classList.add('board-title');
         this.boardEl = document.createElement('div');
         this.boardEl.classList.add('board');
     }
@@ -181,6 +182,10 @@ class BoardDisplay {
         this.nameEl.textContent = `${this.boardOwnerPlayer.name}'s board`;
         this.containerEl.appendChild(this.nameEl);
 
+        // add board labels
+        this.boardEl.appendChild(this._createXAxisLabels());
+        this.boardEl.appendChild(this._createYAxisLabels());
+
         // add units to board
         const unitEls = this._createUnits();
         unitEls.forEach((unitEl) => this.boardEl.appendChild(unitEl));
@@ -196,6 +201,37 @@ class BoardDisplay {
         while (this.boardEl.firstChild) {
             this.boardEl.removeChild(this.boardEl.firstChild);
         }
+    }
+
+    _createXAxisLabels() {
+        const xLabelsContainer = document.createElement('div');
+        xLabelsContainer.classList.add('board-x-labels');
+
+        for (let n = 1; n <= 10; n++) {
+            const xLabel = document.createElement('div');
+            xLabel.textContent = n;
+            xLabelsContainer.appendChild(xLabel);
+        }
+
+        return xLabelsContainer;
+    }
+
+    _createYAxisLabels() {
+        const yLabelsContainer = document.createElement('div');
+        yLabelsContainer.classList.add('board-y-labels');
+
+        let yCharCode = 65;
+        for (let n = 1; n <= 10; n++) {
+            // Start y label as 'A'
+            // add letter by unicode
+            const yLabel = document.createElement('div');
+            yLabel.textContent = String.fromCharCode(yCharCode);
+            yLabelsContainer.appendChild(yLabel);
+
+            yCharCode++;
+        }
+
+        return yLabelsContainer;
     }
 
     _createUnits() {
