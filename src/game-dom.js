@@ -283,21 +283,47 @@ class BugPen {
     render() {
         this.bugs.forEach((bug) => {
             const bugContainer = document.createElement('div');
-            bugContainer.classList.add('bug-container');
-            bugContainer.draggable = true;
-            this.addDragEventListeners(bugContainer);
+
+            const bugName = document.createElement('h4');
+            bugName.textContent = bug.name;
+            bugContainer.appendChild(bugName);
+
+            const wholeBug = document.createElement('div');
+            wholeBug.classList.add('whole-bug');
+            wholeBug.draggable = true;
+            this.addDragEventListeners(wholeBug);
 
             bug.units.forEach(() => {
                 const bugUnit = document.createElement('div');
                 bugUnit.classList.add('unit');
                 bugUnit.classList.add('bug');
-                bugContainer.appendChild(bugUnit);
+                wholeBug.appendChild(bugUnit);
             });
+
+            bugContainer.appendChild(wholeBug);
+
+            bugContainer.appendChild(this._createCoordsInput());
 
             this.containerEl.appendChild(bugContainer);
         });
 
         main.appendChild(this.containerEl);
+    }
+
+    _createCoordsInput() {
+        const coordsInputContainer = document.createElement('div');
+        const label = document.createElement('label');
+        coordsInputContainer.appendChild(label);
+
+        label.textContent = 'Enter Coordinates:';
+        const input = document.createElement('input');
+        coordsInputContainer.appendChild(input);
+
+        const submit = document.createElement('button');
+        submit.textContent = 'Place';
+        coordsInputContainer.appendChild(submit);
+
+        return coordsInputContainer;
     }
 
     addDragEventListeners(bugContainer) {
@@ -310,7 +336,11 @@ class BugPen {
         bugContainer.addEventListener('dragend', onDragEnd);
 
         function onDragEnd(e) {
-            console.log(e);
+            const dropX = e.screenX;
+            const dropY = e.screenY;
+
+            const dropEl = document.elementFromPoint(dropX, dropY);
+            console.log(dropEl);
         }
     }
 }
