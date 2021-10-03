@@ -1,6 +1,6 @@
-import game from './game';
+import game from '../game';
 import { BugPen } from './bug-pen';
-import { main } from './index';
+import { main } from '../index';
 
 class BoardDisplay {
     constructor(board, boardOwnerPlayer) {
@@ -157,7 +157,5 @@ class BoardDisplay {
         this.boardEl.childNodes.forEach((unit) => (unit.disabled = true));
     }
 }
-
-// Functions run on page load - move to index.js?
 
 export { BoardDisplay };

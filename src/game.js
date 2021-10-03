@@ -1,8 +1,8 @@
 import Player from './player';
 import Board from './board';
 import Bug from './bugs';
-import { BoardDisplay } from './board-dom';
-import { displays as messageDisplays } from './messages';
+import { BoardDisplay } from './dom/board-dom';
+import { displays as messageDisplays } from './dom/messages';
 
 const game = (() => {
     const boards = [];
