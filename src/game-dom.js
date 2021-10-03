@@ -167,6 +167,7 @@ class BugPen {
         this.owner = boardDisplay.boardOwnerPlayer;
 
         this.hasBeenCreated = false;
+        this.bugsOnBoardCount = 0;
 
         this.containerEl = document.createElement('div');
         this.containerEl.classList.add('bug-pen');
@@ -211,7 +212,11 @@ class BugPen {
 
         // reset bugs on board object so that they don't get doubled up
         // when the player places them on the board
-        this.board.bugs = [];
+        if (!this.owner.isComputer) {
+            console.log('wiping out bugs');
+            this.board.bugs = [];
+        }
+
         // change this flag so extra bugs don't get added by BoardDisplay
         this.hasBeenCreated = true;
     }
@@ -238,15 +243,32 @@ class BugPen {
     }
 
     onSubmitCoords(submitBtn, inputEl, bug) {
-        console.log(inputEl.value);
         const [x, y] = this.board.convertCoordsToIndicies(inputEl.value);
         console.log(x, y);
 
         this.board.placeBug(bug, x, y);
-        // render board
+
         this.boardDisplay.render();
 
         submitBtn.remove();
+
+        // TODO: add edit button
+
+        // check if all coords have been submitted
+        this.bugsOnBoardCount++;
+        if (this.bugsOnBoardCount === 5) {
+            console.log('all bugs have been added!');
+            // render both boards and start game
+            // make sure turns switch twice if the other player is computer
+            // so you can still go first
+            if (
+                game.players.find((player) => player !== this.owner).isComputer
+            ) {
+                this.owner.switchTurn();
+            }
+            // end once if the other player is human
+            game.endTurn();
+        }
     }
 
     addDragEventListeners(bugContainer) {

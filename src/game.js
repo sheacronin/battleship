@@ -5,8 +5,6 @@ import { BoardDisplay } from './game-dom';
 import { displays as messageDisplays } from './messages';
 
 const game = (() => {
-    console.log('playing game!');
-
     const boards = [];
     const players = [];
     const boardDisplays = [];
@@ -157,7 +155,7 @@ const game = (() => {
         boardDisplays.forEach((boardDisplay) => boardDisplay.disable());
     }
 
-    return { boards, players, setup, playTurn };
+    return { boards, players, setup, playTurn, endTurn };
 })();
 
 export default game;

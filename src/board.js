@@ -133,8 +133,6 @@ class Board {
 
         indicies[0] = coords[1] - 1;
 
-        console.log(indicies);
-
         return indicies;
     }
 
