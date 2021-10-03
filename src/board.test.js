@@ -267,3 +267,48 @@ test('throws an error if it receives an attack on a unit that has already been a
         'this unit has already been attacked!'
     );
 });
+
+test('board converts coordinates to indicies', () => {
+    const board = new Board();
+    expect(board.convertCoordsToIndicies('A1')).toStrictEqual([0, 0]);
+});
+
+test('board converts coordinates to indicies', () => {
+    const board = new Board();
+    expect(board.convertCoordsToIndicies('G3')).toStrictEqual([6, 2]);
+});
+
+test('throws an error if first coord is not a valid letter', () => {
+    const board = new Board();
+    expect(() => board.convertCoordsToIndicies('K1')).toThrow(
+        'invalid coordinate letter'
+    );
+});
+
+test('throws an error if first coord is not a valid letter', () => {
+    const board = new Board();
+    expect(() => board.convertCoordsToIndicies('!1')).toThrow(
+        'invalid coordinate letter'
+    );
+});
+
+test('throws an error if second coord is not a valid number', () => {
+    const board = new Board();
+    expect(() => board.convertCoordsToIndicies('A0')).toThrow(
+        'invalid coordinate number'
+    );
+});
+
+test('throws an error if second coord is not a valid number', () => {
+    const board = new Board();
+    expect(() => board.convertCoordsToIndicies('AB')).toThrow(
+        'invalid coordinate number'
+    );
+});
+
+test('throws an error if second coord is not a valid number', () => {
+    const board = new Board();
+    expect(() => board.convertCoordsToIndicies('A!')).toThrow(
+        'invalid coordinate number'
+    );
+});

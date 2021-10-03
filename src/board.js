@@ -89,6 +89,55 @@ class Board {
         }
     }
 
+    convertCoordsToIndicies(coords) {
+        coords = coords.split('');
+        const indicies = [];
+        switch (coords[0]) {
+            case 'A':
+                indicies[0] = 0;
+                break;
+            case 'B':
+                indicies[0] = 1;
+                break;
+            case 'C':
+                indicies[0] = 2;
+                break;
+            case 'D':
+                indicies[0] = 3;
+                break;
+            case 'E':
+                indicies[0] = 4;
+                break;
+            case 'F':
+                indicies[0] = 5;
+                break;
+            case 'G':
+                indicies[0] = 6;
+                break;
+            case 'H':
+                indicies[0] = 7;
+                break;
+            case 'I':
+                indicies[0] = 8;
+                break;
+            case 'J':
+                indicies[0] = 9;
+                break;
+            default:
+                throw new Error('invalid coordinate letter');
+        }
+
+        if (coords[1] < 1 || isNaN(coords[1])) {
+            throw new Error('invalid coordinate number');
+        }
+
+        indicies[1] = coords[1] - 1;
+
+        console.log(indicies);
+
+        return indicies;
+    }
+
     _hitBug([bug, bugIndex], [x, y]) {
         bug.hit(bugIndex);
         return [bug, [x, y]];
