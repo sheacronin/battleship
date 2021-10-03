@@ -1,5 +1,5 @@
 import game from './game';
-import { main } from './game-dom';
+import { main } from './index';
 
 const setup = (() => {
     const containerEl = document.createElement('article');

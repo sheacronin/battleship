@@ -1,7 +1,7 @@
 import Player from './player';
 import Board from './board';
 import Bug from './bugs';
-import { BoardDisplay } from './game-dom';
+import { BoardDisplay } from './board-dom';
 import { displays as messageDisplays } from './messages';
 
 const game = (() => {

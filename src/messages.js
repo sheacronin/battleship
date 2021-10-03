@@ -1,4 +1,5 @@
-import { playAgainBtn } from './game-dom';
+import { main } from './board-dom';
+import { setup } from './setup-dom';
 
 class MessageDisplay {
     constructor() {
@@ -49,5 +50,14 @@ containerEl.id = 'messages';
 for (let message in displays) {
     containerEl.appendChild(displays[message].messageEl);
 }
+
+const playAgainBtn = document.createElement('button');
+playAgainBtn.textContent = 'Play Again';
+playAgainBtn.addEventListener('click', () => {
+    while (main.firstChild) {
+        main.removeChild(main.firstChild);
+    }
+    setup.render();
+});
 
 export { containerEl, displays };
