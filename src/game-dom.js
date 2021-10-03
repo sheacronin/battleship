@@ -284,6 +284,9 @@ class BugPen {
         this.bugs.forEach((bug) => {
             const bugContainer = document.createElement('div');
             bugContainer.classList.add('bug-container');
+            bugContainer.draggable = true;
+            this.addDragEventListeners(bugContainer);
+
             bug.units.forEach(() => {
                 const bugUnit = document.createElement('div');
                 bugUnit.classList.add('unit');
@@ -295,6 +298,20 @@ class BugPen {
         });
 
         main.appendChild(this.containerEl);
+    }
+
+    addDragEventListeners(bugContainer) {
+        bugContainer.addEventListener('dragstart', onDragStart);
+
+        function onDragStart(e) {
+            console.log(e);
+        }
+
+        bugContainer.addEventListener('dragend', onDragEnd);
+
+        function onDragEnd(e) {
+            console.log(e);
+        }
     }
 }
 
