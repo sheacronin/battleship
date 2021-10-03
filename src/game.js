@@ -58,13 +58,19 @@ const game = (() => {
             }
         }
 
+        // add board number for styling class
+        let boardN = 1;
+
         boards.forEach((board) => {
             const boardDisplay = new BoardDisplay(
                 board,
                 players.find((player) => player.enemyBoard !== board)
             );
-            boardDisplays.push(boardDisplay);
+            boardDisplay.containerEl.classList.add('p' + boardN);
+            boardN++;
             boardDisplay.render();
+
+            boardDisplays.push(boardDisplay);
         });
     }
 
