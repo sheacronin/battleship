@@ -1,4 +1,5 @@
 import game from './game';
+import { containerEl as messagesContainer } from './messages';
 
 const main = document.querySelector('main');
 
@@ -398,40 +399,6 @@ class BugPen {
     }
 }
 
-class MessageDisplay {
-    constructor() {
-        this.messageEl = document.createElement('p');
-    }
-}
-
-const messageDisplays = {
-    previousAction: new MessageDisplay(),
-    wasABugSwatted: new MessageDisplay(),
-    whoseTurn: new MessageDisplay(),
-};
-
-messageDisplays.previousAction.render = (turnData) => {
-    let message;
-    if (turnData.missOrBug === 'miss') {
-        message = `${turnData.whoDidAction.name} missed at ${turnData.coords}`;
-    } else {
-        message = `${turnData.whoDidAction.name} hit ${turnData.whoReceivedAction.name}'s ${turnData.missOrBug.name} at ${turnData.coords}!`;
-    }
-
-    messageDisplays.previousAction.messageEl.textContent = message;
-};
-
-messageDisplays.wasABugSwatted.render = (turnData) => {
-    let message;
-    if (turnData.wasABugSwatted) {
-        message = `${turnData.whoReceivedAction.name}'s ${turnData.missOrBug.name} has been swatted!`;
-    } else {
-        message = '';
-    }
-
-    messageDisplays.wasABugSwatted.messageEl.textContent = message;
-};
-
 const playAgainBtn = document.createElement('button');
 playAgainBtn.textContent = 'Play Again';
 playAgainBtn.addEventListener('click', () => {
@@ -441,20 +408,6 @@ playAgainBtn.addEventListener('click', () => {
     setup.render();
 });
 
-messageDisplays.whoseTurn.render = (turnData) => {
-    if (!turnData.shouldGameEnd) {
-        messageDisplays.whoseTurn.messageEl.textContent = `It is ${turnData.whoReceivedAction.name}'s turn`;
-    } else {
-        messageDisplays.whoseTurn.messageEl.textContent = `Game over! ${turnData.whoDidAction.name} wins!`;
-        messageDisplays.whoseTurn.messageEl.appendChild(playAgainBtn);
-    }
-};
-
-const messagesContainer = document.createElement('div');
-messagesContainer.id = 'messages';
-messagesContainer.appendChild(messageDisplays.previousAction.messageEl);
-messagesContainer.appendChild(messageDisplays.wasABugSwatted.messageEl);
-messagesContainer.appendChild(messageDisplays.whoseTurn.messageEl);
 main.appendChild(messagesContainer);
 
-export { BoardDisplay, BugPen, messageDisplays };
+export { BoardDisplay, BugPen, playAgainBtn };

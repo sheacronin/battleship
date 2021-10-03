@@ -1,7 +1,8 @@
 import Player from './player';
 import Board from './board';
 import Bug from './bugs';
-import { BoardDisplay, BugPen, messageDisplays } from './game-dom';
+import { BoardDisplay, BugPen } from './game-dom';
+import { displays as messageDisplays } from './messages';
 
 const game = (() => {
     console.log('playing game!');
