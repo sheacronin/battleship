@@ -10,17 +10,19 @@ body {
 }
 
 h1 {
-    margin-top: 30px;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 main {
     display: grid;
-    grid-template-rows: 10vh 50vh 40vh;
+    grid-template-rows: 10vh 80vh;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
         'message message'
-        'board board'
-        'bug-pen bug-pen';
+        'board board';
 }
 
 #setup {
@@ -55,9 +57,29 @@ main {
     align-items: center;
 }
 
+.bug-container {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+        'bug-name bug-name'
+        'bug input';
+}
+
+.bug-container h4 {
+    grid-area: bug-name;
+}
+
+.bug-container input {
+    width: 50px;
+}
+
 .whole-bug {
     display: flex;
     cursor: move;
+    grid-area: bug;
 }
 
 .board-title {

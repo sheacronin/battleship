@@ -176,6 +176,7 @@ class BugPen {
     render(bugs) {
         bugs.forEach((bug) => {
             const bugContainer = document.createElement('div');
+            bugContainer.classList.add('bug-container');
 
             const bugName = document.createElement('h4');
             bugName.textContent = bug.name;
