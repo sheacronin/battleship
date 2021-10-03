@@ -62,15 +62,28 @@ const game = (() => {
         let boardN = 1;
 
         boards.forEach((board) => {
-            const boardDisplay = new BoardDisplay(
-                board,
-                players.find((player) => player.enemyBoard !== board)
-            );
+            const owner = players.find((player) => player.enemyBoard !== board);
+            const boardDisplay = new BoardDisplay(board, owner);
             boardDisplay.containerEl.classList.add('p' + boardN);
             boardN++;
-            boardDisplay.render();
 
             boardDisplays.push(boardDisplay);
+
+            // instead of rendering both these board displays here,
+            // check to see if players are human / computer
+            // if both computer, render
+            if (players.every((player) => player.isComputer)) {
+                boardDisplay.render();
+            } else if (players.every((player) => !player.isComputer)) {
+                // if both human, (WILL NEED PASS TO X SCREEN LATER)
+                // then show just p1 board
+            } else {
+                // if just one player is human,
+                // show just that player's board to setup
+                if (!owner.isComputer) {
+                    boardDisplay.render();
+                }
+            }
         });
     }
 
