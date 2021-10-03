@@ -13,6 +13,7 @@ class BoardDisplay {
         this.nameEl.classList.add('board-title');
         this.boardEl = document.createElement('div');
         this.boardEl.classList.add('board');
+        this.bugPen = new BugPen(this);
     }
 
     render() {
@@ -37,6 +38,9 @@ class BoardDisplay {
 
         // add board element
         this.containerEl.appendChild(this.boardEl);
+
+        // add bug pen
+        this.bugPen.render(this.board.bugs);
 
         // add container
         main.appendChild(this.containerEl);
@@ -154,16 +158,23 @@ class BoardDisplay {
 }
 
 class BugPen {
-    constructor(board, bugs) {
-        this.board = board;
-        this.bugs = bugs;
+    constructor(boardDisplay) {
+        this.boardDisplay = boardDisplay;
+        this.board = boardDisplay.board;
+        this.owner = boardDisplay.boardOwnerPlayer;
+
         this.bugEls = [];
+
         this.containerEl = document.createElement('div');
         this.containerEl.classList.add('bug-pen');
+
+        this.titleEl = document.createElement('h3');
+        this.titleEl.textContent = `${this.owner.name}'s Bugs`;
+        this.containerEl.appendChild(this.titleEl);
     }
 
-    render() {
-        this.bugs.forEach((bug) => {
+    render(bugs) {
+        bugs.forEach((bug) => {
             const bugContainer = document.createElement('div');
 
             const bugName = document.createElement('h4');
@@ -184,12 +195,19 @@ class BugPen {
 
             bugContainer.appendChild(wholeBug);
 
-            bugContainer.appendChild(this._createCoordsInput(bug));
+            // only add inputs if the owner of the bugs is human
+            if (!this.owner.isComputer) {
+                bugContainer.appendChild(this._createCoordsInput(bug));
+            }
 
             this.containerEl.appendChild(bugContainer);
         });
 
-        main.appendChild(this.containerEl);
+        // reset bugs on board object so that they don't get doubled up
+        // when the player places them on the board
+        this.board.bugs = [];
+
+        this.boardDisplay.containerEl.appendChild(this.containerEl);
     }
 
     _createCoordsInput(bug) {
@@ -220,8 +238,9 @@ class BugPen {
 
         this.board.placeBug(bug, x, y);
         // render board
+        this.boardDisplay.render();
 
-        //submitBtn.remove();
+        submitBtn.remove();
     }
 
     addDragEventListeners(bugContainer) {

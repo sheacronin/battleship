@@ -1,7 +1,7 @@
 import Player from './player';
 import Board from './board';
 import Bug from './bugs';
-import { BoardDisplay, BugPen } from './game-dom';
+import { BoardDisplay } from './game-dom';
 import { displays as messageDisplays } from './messages';
 
 const game = (() => {
@@ -29,45 +29,33 @@ const game = (() => {
         // Player 1 goes first.
         player1.switchTurn();
 
-        const bugCollection1 = [
-            new Bug(5, 'Worm'),
-            new Bug(4, 'Caterpillar'),
-            new Bug(3, 'Ant'),
-            new Bug(3, 'Spider'),
-            new Bug(2, 'Ladybug'),
-        ];
+        const bugCollections = {
+            1: [
+                new Bug(5, 'Worm'),
+                new Bug(4, 'Caterpillar'),
+                new Bug(3, 'Ant'),
+                new Bug(3, 'Spider'),
+                new Bug(2, 'Ladybug'),
+            ],
 
-        const bugCollection2 = [
-            new Bug(5, 'Worm'),
-            new Bug(4, 'Caterpillar'),
-            new Bug(3, 'Ant'),
-            new Bug(3, 'Spider'),
-            new Bug(2, 'Ladybug'),
-        ];
+            2: [
+                new Bug(5, 'Worm'),
+                new Bug(4, 'Caterpillar'),
+                new Bug(3, 'Ant'),
+                new Bug(3, 'Spider'),
+                new Bug(2, 'Ladybug'),
+            ],
+        };
 
-        if (player1.isComputer) {
-            bugCollection1.forEach((bug) => {
-                board1.placeBugRandomly(bug);
-            });
-        } else {
-            // const coords = prompt(
-            //     `Where would you like to place your ${bugCollection1[0].name}?`
-            // );
-            // const [strX, strY] = coords.split(',');
-            // const x = parseInt(strX);
-            // const y = parseInt(strY);
-            // board1.placeBug(bugCollection1[0], x, y);
-        }
-
-        // BUG PEN CODE
-        const bugPen = new BugPen(board1, bugCollection1);
-        bugPen.render();
-        // END CODE
-
-        if (player2.isComputer) {
-            bugCollection2.forEach((bug) => {
-                board2.placeBugRandomly(bug);
-            });
+        for (let i = 0; i < players.length; i++) {
+            if (players[i].isComputer) {
+                bugCollections[i + 1].forEach((bug) => {
+                    boards[i].placeBugRandomly(bug);
+                });
+            } else {
+                // push bugs to the board so they will render in bug pen
+                boards[i].bugs = bugCollections[i + 1];
+            }
         }
 
         boards.forEach((board) => {
