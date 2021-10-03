@@ -309,7 +309,8 @@ class BoardDisplay {
 }
 
 class BugPen {
-    constructor(bugs) {
+    constructor(board, bugs) {
+        this.board = board;
         this.bugs = bugs;
         this.bugEls = [];
         this.containerEl = document.createElement('div');
@@ -338,7 +339,7 @@ class BugPen {
 
             bugContainer.appendChild(wholeBug);
 
-            bugContainer.appendChild(this._createCoordsInput());
+            bugContainer.appendChild(this._createCoordsInput(bug));
 
             this.containerEl.appendChild(bugContainer);
         });
@@ -346,27 +347,35 @@ class BugPen {
         main.appendChild(this.containerEl);
     }
 
-    _createCoordsInput() {
+    _createCoordsInput(bug) {
         const coordsInputContainer = document.createElement('div');
         const label = document.createElement('label');
         coordsInputContainer.appendChild(label);
 
         label.textContent = 'Enter Coordinates:';
         const input = document.createElement('input');
+        input.maxLength = 2;
+        input.minLength = 2;
         coordsInputContainer.appendChild(input);
 
         const submit = document.createElement('button');
         submit.textContent = 'Place';
         submit.addEventListener('click', () =>
-            this.onSubmitCoords(submit, input)
+            this.onSubmitCoords(submit, input, bug)
         );
         coordsInputContainer.appendChild(submit);
 
         return coordsInputContainer;
     }
 
-    onSubmitCoords(submitBtn, inputEl) {
+    onSubmitCoords(submitBtn, inputEl, bug) {
         console.log(inputEl.value);
+        const [x, y] = this.board.convertCoordsToIndicies(inputEl.value);
+        console.log(x, y);
+
+        this.board.placeBug(bug, x, y);
+        // render board
+
         //submitBtn.remove();
     }
 

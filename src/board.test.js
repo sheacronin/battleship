@@ -275,7 +275,7 @@ test('board converts coordinates to indicies', () => {
 
 test('board converts coordinates to indicies', () => {
     const board = new Board();
-    expect(board.convertCoordsToIndicies('G3')).toStrictEqual([6, 2]);
+    expect(board.convertCoordsToIndicies('G3')).toStrictEqual([2, 6]);
 });
 
 test('throws an error if first coord is not a valid letter', () => {

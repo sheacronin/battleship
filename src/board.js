@@ -94,34 +94,34 @@ class Board {
         const indicies = [];
         switch (coords[0]) {
             case 'A':
-                indicies[0] = 0;
+                indicies[1] = 0;
                 break;
             case 'B':
-                indicies[0] = 1;
+                indicies[1] = 1;
                 break;
             case 'C':
-                indicies[0] = 2;
+                indicies[1] = 2;
                 break;
             case 'D':
-                indicies[0] = 3;
+                indicies[1] = 3;
                 break;
             case 'E':
-                indicies[0] = 4;
+                indicies[1] = 4;
                 break;
             case 'F':
-                indicies[0] = 5;
+                indicies[1] = 5;
                 break;
             case 'G':
-                indicies[0] = 6;
+                indicies[1] = 6;
                 break;
             case 'H':
-                indicies[0] = 7;
+                indicies[1] = 7;
                 break;
             case 'I':
-                indicies[0] = 8;
+                indicies[1] = 8;
                 break;
             case 'J':
-                indicies[0] = 9;
+                indicies[1] = 9;
                 break;
             default:
                 throw new Error('invalid coordinate letter');
@@ -131,7 +131,7 @@ class Board {
             throw new Error('invalid coordinate number');
         }
 
-        indicies[1] = coords[1] - 1;
+        indicies[0] = coords[1] - 1;
 
         console.log(indicies);
 

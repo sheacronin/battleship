@@ -59,7 +59,7 @@ const game = (() => {
         }
 
         // BUG PEN CODE
-        const bugPen = new BugPen(bugCollection1);
+        const bugPen = new BugPen(board1, bugCollection1);
         bugPen.render();
         // END CODE
 
