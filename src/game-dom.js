@@ -40,7 +40,10 @@ class BoardDisplay {
         this.containerEl.appendChild(this.boardEl);
 
         // add bug pen
-        this.bugPen.render(this.board.bugs);
+        if (!this.bugPen.hasBeenCreated) {
+            this.bugPen.createPen(this.board.bugs);
+        }
+        this.containerEl.appendChild(this.bugPen.containerEl);
 
         // add container
         main.appendChild(this.containerEl);
@@ -163,7 +166,7 @@ class BugPen {
         this.board = boardDisplay.board;
         this.owner = boardDisplay.boardOwnerPlayer;
 
-        this.bugEls = [];
+        this.hasBeenCreated = false;
 
         this.containerEl = document.createElement('div');
         this.containerEl.classList.add('bug-pen');
@@ -173,7 +176,8 @@ class BugPen {
         this.containerEl.appendChild(this.titleEl);
     }
 
-    render(bugs) {
+    createPen(bugs) {
+        console.log(bugs);
         bugs.forEach((bug) => {
             const bugContainer = document.createElement('div');
             bugContainer.classList.add('bug-container');
@@ -207,8 +211,8 @@ class BugPen {
         // reset bugs on board object so that they don't get doubled up
         // when the player places them on the board
         this.board.bugs = [];
-
-        this.boardDisplay.containerEl.appendChild(this.containerEl);
+        // change this flag so extra bugs don't get added by BoardDisplay
+        this.hasBeenCreated = true;
     }
 
     _createCoordsInput(bug) {
