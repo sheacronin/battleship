@@ -321,9 +321,17 @@ class BugPen {
 
         const submit = document.createElement('button');
         submit.textContent = 'Place';
+        submit.addEventListener('click', () =>
+            this.onSubmitCoords(submit, input)
+        );
         coordsInputContainer.appendChild(submit);
 
         return coordsInputContainer;
+    }
+
+    onSubmitCoords(submitBtn, inputEl) {
+        console.log(inputEl.value);
+        //submitBtn.remove();
     }
 
     addDragEventListeners(bugContainer) {
