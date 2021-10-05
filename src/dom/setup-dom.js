@@ -126,8 +126,8 @@ const setup = (() => {
     function onPlayBtnClick() {
         // get name inputs
         const playerNames = {
-            1: playersNameInfo['1'].inputEl.value,
-            2: playersNameInfo['2'].inputEl.value,
+            1: playersNameInfo[1].inputEl.value,
+            2: playersNameInfo[2].inputEl.value,
         };
 
         // if none, default to "Player N"

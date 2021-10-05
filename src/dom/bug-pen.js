@@ -101,10 +101,13 @@ class BugPen {
             // render both boards and start game
             // make sure turns switch twice if the other player is computer
             // so you can still go first
-            if (
-                game.players.find((player) => player !== this.owner).isComputer
-            ) {
+
+            // TODO: fix this section
+            const enemy = game.getEnemyPlayer(this.owner);
+
+            if (enemy.isComputer) {
                 this.owner.switchTurn();
+                enemy.switchTurn();
             }
             // end once if the other player is human
             game.endTurn();

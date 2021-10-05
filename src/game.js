@@ -5,27 +5,19 @@ import { BoardDisplay } from './dom/board-dom';
 import { displays as messageDisplays } from './dom/messages';
 
 const game = (() => {
-    const boards = [];
-    const players = [];
+    const boards = {};
+    const players = {};
     const boardDisplays = [];
 
-    // Setup.
     function setup(playerNames) {
-        // clear previous boards and players
-        boards.splice(0, 2);
-        players.splice(0, 2);
-        boardDisplays.splice(0, 2);
+        boards[1] = new Board();
+        boards[2] = new Board();
 
-        const board1 = new Board();
-        const board2 = new Board();
-        boards.push(board1, board2);
-
-        const player1 = new Player(playerNames['1'], board2);
-        const player2 = new Player(playerNames['2'], board1);
-        players.push(player1, player2);
+        players[1] = new Player(playerNames[1], boards[1]);
+        players[2] = new Player(playerNames[2], boards[2]);
 
         // Player 1 goes first.
-        player1.switchTurn();
+        players[1].switchTurn();
 
         const bugCollections = {
             1: [
@@ -45,23 +37,23 @@ const game = (() => {
             ],
         };
 
-        for (let i = 0; i < players.length; i++) {
-            if (players[i].isComputer) {
-                bugCollections[i + 1].forEach((bug) => {
-                    boards[i].placeBugRandomly(bug);
+        for (let n in players) {
+            if (players[n].isComputer) {
+                bugCollections[n].forEach((bug) => {
+                    boards[n].placeBugRandomly(bug);
                 });
             } else {
                 // push bugs to the board so they will render in bug pen
-                boards[i].bugs = bugCollections[i + 1];
+                boards[n].bugs = bugCollections[n];
             }
         }
 
         // add board number for styling class
         let boardN = 1;
 
-        boards.forEach((board) => {
-            const owner = players.find((player) => player.enemyBoard !== board);
-            const boardDisplay = new BoardDisplay(board, owner);
+        for (let n in boards) {
+            const owner = players[n];
+            const boardDisplay = new BoardDisplay(boards[n], owner);
             boardDisplay.containerEl.classList.add('p' + boardN);
             boardN++;
 
@@ -70,9 +62,9 @@ const game = (() => {
             // instead of rendering both these board displays here,
             // check to see if players are human / computer
             // if both computer, render
-            if (players.every((player) => player.isComputer)) {
+            if (players[1].isComputer && players[2].isComputer) {
                 boardDisplay.render();
-            } else if (players.every((player) => !player.isComputer)) {
+            } else if (!players[1].isComputer && !players[2].isComputer) {
                 // if both human, (WILL NEED PASS TO X SCREEN LATER)
                 // then show just p1 board
             } else {
@@ -82,11 +74,12 @@ const game = (() => {
                     boardDisplay.render();
                 }
             }
-        });
+        }
     }
 
     function playTurn(xInput, yInput) {
-        const whoseTurn = players.find((player) => player.isMyTurn);
+        let whoseTurn = getWhoseTurn();
+
         console.log(`======= ${whoseTurn.name} attacks! ========`);
 
         // If whoseTurn is computer, there will be no player input and
@@ -114,7 +107,7 @@ const game = (() => {
                 missOrBug: result[0],
                 coords: result[1],
                 whoDidAction: whoseTurn,
-                whoReceivedAction: players.find((player) => !player.isMyTurn),
+                whoReceivedAction: getNotWhoseTurn(),
                 wasABugSwatted,
                 shouldGameEnd,
             });
@@ -124,6 +117,28 @@ const game = (() => {
             endGame();
         } else {
             endTurn();
+        }
+    }
+
+    function getWhoseTurn() {
+        for (let n in players) {
+            if (players[n].isMyTurn) {
+                return players[n];
+            }
+        }
+    }
+
+    function getNotWhoseTurn() {
+        for (let n in players) {
+            if (!players[n].isMyTurn) {
+                return players[n];
+            }
+        }
+    }
+
+    function getEnemyPlayer(player) {
+        for (let n in players) {
+            if (players[n] !== player) return players[n];
         }
     }
 
@@ -137,9 +152,12 @@ const game = (() => {
     }
 
     function endTurn() {
-        players.forEach((player) => player.switchTurn());
+        let whoseTurnNext;
 
-        const whoseTurnNext = players.find((player) => player.isMyTurn);
+        for (let n in players) {
+            players[n].switchTurn();
+            if (players[n].isMyTurn) whoseTurnNext = players[n];
+        }
 
         boardDisplays.forEach((boardDisplay) => boardDisplay.render());
 
@@ -150,12 +168,14 @@ const game = (() => {
     }
 
     function endGame() {
-        // make sure board renders hit unit
-        boardDisplays.forEach((boardDisplay) => boardDisplay.render());
-        boardDisplays.forEach((boardDisplay) => boardDisplay.disable());
+        boardDisplays.forEach((boardDisplay) => {
+            // make sure board renders hit unit
+            boardDisplay.render();
+            boardDisplay.disable();
+        });
     }
 
-    return { boards, players, setup, playTurn, endTurn };
+    return { setup, playTurn, endTurn, getWhoseTurn, getEnemyPlayer };
 })();
 
 export default game;

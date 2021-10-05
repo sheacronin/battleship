@@ -139,8 +139,7 @@ class BoardDisplay {
 
     _shouldThisBoardBeClickable() {
         return (
-            !this.boardOwnerPlayer.isMyTurn &&
-            !game.players.find((player) => player.isMyTurn).isComputer
+            !this.boardOwnerPlayer.isMyTurn && !game.getWhoseTurn().isComputer
         );
     }
 
