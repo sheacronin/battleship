@@ -60,10 +60,12 @@ const game = (() => {
             // if both computer, render
             if (players[1].isComputer && players[2].isComputer) {
                 boardDisplay.render();
+                // after both boards are rendered, play turn
+                if (n === '2') playTurn();
             } else if (!players[1].isComputer && !players[2].isComputer) {
                 // if both human, (WILL NEED PASS TO X SCREEN LATER)
                 // then show just p1 board
-                if (n === 1) boardDisplay.render();
+                if (n === '1') boardDisplay.render();
             } else {
                 // if just one player is human,
                 // show just that player's board to setup
