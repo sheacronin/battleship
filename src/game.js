@@ -13,8 +13,8 @@ const game = (() => {
         boards[1] = new Board();
         boards[2] = new Board();
 
-        players[1] = new Player(playerNames[1], boards[1]);
-        players[2] = new Player(playerNames[2], boards[2]);
+        players[1] = new Player(playerNames[1], boards[2]);
+        players[2] = new Player(playerNames[2], boards[1]);
 
         // Player 1 goes first.
         players[1].switchTurn();
@@ -48,14 +48,10 @@ const game = (() => {
             }
         }
 
-        // add board number for styling class
-        let boardN = 1;
-
         for (let n in boards) {
             const owner = players[n];
             const boardDisplay = new BoardDisplay(boards[n], owner);
-            boardDisplay.containerEl.classList.add('p' + boardN);
-            boardN++;
+            boardDisplay.containerEl.classList.add('p' + n);
 
             boardDisplays.push(boardDisplay);
 
@@ -67,6 +63,7 @@ const game = (() => {
             } else if (!players[1].isComputer && !players[2].isComputer) {
                 // if both human, (WILL NEED PASS TO X SCREEN LATER)
                 // then show just p1 board
+                if (n === 1) boardDisplay.render();
             } else {
                 // if just one player is human,
                 // show just that player's board to setup
