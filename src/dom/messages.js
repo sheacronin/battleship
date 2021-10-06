@@ -1,55 +1,73 @@
-import { main } from './board-dom';
+import { main } from '../index';
 import { setup } from './setup-dom';
 
-class MessageDisplay {
-    constructor() {
-        this.messageEl = document.createElement('p');
-    }
-}
+const messages = (() => {
+    const containerEl = document.createElement('div');
+    containerEl.id = 'messages';
 
-const displays = {
-    previousAction: new MessageDisplay(),
-    wasABugSwatted: new MessageDisplay(),
-    whoseTurn: new MessageDisplay(),
-};
+    const text = [];
 
-displays.previousAction.render = (turnData) => {
-    let message;
-    if (turnData.missOrBug === 'miss') {
-        message = `${turnData.whoDidAction.name} missed at ${turnData.coords}`;
-    } else {
-        message = `${turnData.whoDidAction.name} hit ${turnData.whoReceivedAction.name}'s ${turnData.missOrBug.name} at ${turnData.coords}!`;
-    }
-
-    displays.previousAction.messageEl.textContent = message;
-};
-
-displays.wasABugSwatted.render = (turnData) => {
-    let message;
-    if (turnData.wasABugSwatted) {
-        message = `${turnData.whoReceivedAction.name}'s ${turnData.missOrBug.name} has been swatted!`;
-    } else {
-        message = '';
+    function render(turnData) {
+        console.log('rendering messages');
+        containerEl.remove();
+        _clear();
+        _create(turnData);
+        text.forEach((message) => {
+            if (text === 'playAgainBtn') {
+                containerEl.appendChild(playAgainBtn);
+            } else {
+                const p = document.createElement('p');
+                p.textContent = message;
+                containerEl.appendChild(p);
+            }
+        });
+        main.appendChild(containerEl);
     }
 
-    displays.wasABugSwatted.messageEl.textContent = message;
-};
-
-displays.whoseTurn.render = (turnData) => {
-    if (!turnData.shouldGameEnd) {
-        displays.whoseTurn.messageEl.textContent = `It is ${turnData.whoReceivedAction.name}'s turn`;
-    } else {
-        displays.whoseTurn.messageEl.textContent = `Game over! ${turnData.whoDidAction.name} wins!`;
-        displays.whoseTurn.messageEl.appendChild(playAgainBtn);
+    function _clear() {
+        while (containerEl.firstChild) {
+            containerEl.removeChild(containerEl.firstChild);
+        }
+        text.length = 0;
     }
-};
 
-const containerEl = document.createElement('div');
-containerEl.id = 'messages';
+    function _create(turnData) {
+        if (!turnData) {
+            text.push(
+                'Welcome to BatteBug! Please enter your information and click "Play".'
+            );
+        }
+        // render "Player X, please place your bugs by typing..."
+        // render "Pass to other player"
 
-for (let message in displays) {
-    containerEl.appendChild(displays[message].messageEl);
-}
+        if (turnData.missOrBug === 'miss') {
+            text.push(
+                `${turnData.whoDidAction.name} missed at ${turnData.coords}`
+            );
+        } else {
+            text.push(
+                `${turnData.whoDidAction.name} hit ${turnData.whoReceivedAction.name}'s ${turnData.missOrBug.name} at ${turnData.coords}!`
+            );
+        }
+
+        // was a bug swatted
+        if (turnData.wasABugSwatted) {
+            text.push(
+                `${turnData.whoReceivedAction.name}'s ${turnData.missOrBug.name} has been swatted!`
+            );
+        }
+
+        // whose turn
+        if (!turnData.shouldGameEnd) {
+            text.push(`It is ${turnData.whoReceivedAction.name}'s turn`);
+        } else {
+            text.push(`Game over! ${turnData.whoDidAction.name} wins!`);
+            text.push('playAgainBtn');
+        }
+    }
+
+    return { render };
+})();
 
 const playAgainBtn = document.createElement('button');
 playAgainBtn.textContent = 'Play Again';
@@ -60,4 +78,4 @@ playAgainBtn.addEventListener('click', () => {
     setup.render();
 });
 
-export { containerEl, displays };
+export default messages;

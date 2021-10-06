@@ -2,7 +2,7 @@ import Player from './player';
 import Board from './board';
 import Bug from './bugs';
 import { BoardDisplay } from './dom/board-dom';
-import { displays as messageDisplays } from './dom/messages';
+import messages from './dom/messages';
 
 const game = (() => {
     const boards = {};
@@ -61,7 +61,7 @@ const game = (() => {
             if (players[1].isComputer && players[2].isComputer) {
                 boardDisplay.render();
                 // after both boards are rendered, play turn
-                if (n === '2') playTurn();
+                if (n === '2') setTimeout(playTurn, 2000);
             } else if (!players[1].isComputer && !players[2].isComputer) {
                 // if both human, (WILL NEED PASS TO X SCREEN LATER)
                 // then show just p1 board
@@ -101,16 +101,14 @@ const game = (() => {
             shouldGameEnd = checkIfGameShouldEnd(whoseTurn.enemyBoard);
         }
 
-        for (let message in messageDisplays) {
-            messageDisplays[message].render({
-                missOrBug: result[0],
-                coords: result[1],
-                whoDidAction: whoseTurn,
-                whoReceivedAction: getNotWhoseTurn(),
-                wasABugSwatted,
-                shouldGameEnd,
-            });
-        }
+        messages.render({
+            missOrBug: result[0],
+            coords: result[1],
+            whoDidAction: whoseTurn,
+            whoReceivedAction: getNotWhoseTurn(),
+            wasABugSwatted,
+            shouldGameEnd,
+        });
 
         if (shouldGameEnd) {
             endGame();
@@ -151,17 +149,14 @@ const game = (() => {
     }
 
     function endTurn() {
-        let whoseTurnNext;
-
         for (let n in players) {
             players[n].switchTurn();
-            if (players[n].isMyTurn) whoseTurnNext = players[n];
         }
 
         boardDisplays.forEach((boardDisplay) => boardDisplay.render());
 
         // If it's computer's turn now, it should play without any input
-        if (whoseTurnNext.isComputer) {
+        if (getWhoseTurn().isComputer) {
             setTimeout(playTurn, 2000);
         }
     }
