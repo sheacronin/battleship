@@ -15,6 +15,9 @@ class BugPen {
         this.titleEl = document.createElement('h3');
         this.titleEl.textContent = `${this.owner.name}'s Bugs`;
         this.containerEl.appendChild(this.titleEl);
+
+        this.placeBugsRandomlyBtn = document.createElement('button');
+        this.placeBugsRandomlyBtn.textContent = 'Place Bugs Randomly';
     }
 
     createPen(bugs) {
@@ -49,6 +52,15 @@ class BugPen {
 
             this.containerEl.appendChild(bugContainer);
         });
+
+        // append button to place bugs randomly
+        this.placeBugsRandomlyBtn.addEventListener('click', () => {
+            // clear board bugs because they will be added again when placed
+            bugs.forEach((bug) => this.board.placeBugRandomly(bug));
+            this.placeBugsRandomlyBtn.disabled = true;
+            this.onAllBugsArePlaced();
+        });
+        this.containerEl.appendChild(this.placeBugsRandomlyBtn);
 
         // reset bugs on board object so that they don't get doubled up
         // when the player places them on the board
@@ -97,21 +109,27 @@ class BugPen {
         // check if all coords have been submitted
         this.bugsOnBoardCount++;
         if (this.bugsOnBoardCount === 5) {
-            console.log('all bugs have been added!');
-            // render both boards and start game
-            // make sure turns switch twice if the other player is computer
-            // so you can still go first
-
-            // TODO: fix this section
-            const enemy = game.getEnemyPlayer(this.owner);
-
-            if (enemy.isComputer) {
-                this.owner.switchTurn();
-                enemy.switchTurn();
-            }
-            // end once if the other player is human
-            game.endTurn();
+            this.onAllBugsArePlaced();
         }
+    }
+
+    onAllBugsArePlaced() {
+        console.log('all bugs have been added!');
+        // render both boards and start game
+        // make sure turns switch twice if the other player is computer
+        // so you can still go first
+
+        // TODO: fix this section
+        const enemy = game.getEnemyPlayer(this.owner);
+
+        if (enemy.isComputer) {
+            this.owner.switchTurn();
+            enemy.switchTurn();
+        }
+        // end once if the other player is human
+        // if this is p1, we want to let p2 setup bugs
+        // if this is p2, we want to play normally
+        game.endTurn();
     }
 
     addDragEventListeners(bugContainer) {
