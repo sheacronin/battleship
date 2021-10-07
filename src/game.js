@@ -60,17 +60,30 @@ const game = (() => {
             // if both computer, render
             if (players[1].isComputer && players[2].isComputer) {
                 boardDisplay.render();
+                messages.render({
+                    action: 'firstTurn',
+                    whoDidAction: getWhoseTurn().name,
+                    whoReceivedAction: getNotWhoseTurn().name,
+                });
                 // after both boards are rendered, play turn
                 if (n === '2') setTimeout(playTurn, 2000);
             } else if (!players[1].isComputer && !players[2].isComputer) {
                 // if both human, (WILL NEED PASS TO X SCREEN LATER)
                 // then show just p1 board
                 if (n === '1') boardDisplay.render();
+                messages.render({
+                    action: 'placeBugs',
+                    whoDidAction: players[1].name,
+                });
             } else {
                 // if just one player is human,
                 // show just that player's board to setup
                 if (!owner.isComputer) {
                     boardDisplay.render();
+                    messages.render({
+                        action: 'placeBugs',
+                        whoDidAction: owner.name,
+                    });
                 }
             }
         }
@@ -101,11 +114,14 @@ const game = (() => {
             shouldGameEnd = checkIfGameShouldEnd(whoseTurn.enemyBoard);
         }
 
+        const action = result[0] === 'miss' ? 'miss' : 'hit';
+
         messages.render({
-            missOrBug: result[0],
+            action: action,
             coords: result[1],
-            whoDidAction: whoseTurn,
-            whoReceivedAction: getNotWhoseTurn(),
+            whoDidAction: whoseTurn.name,
+            whoReceivedAction: getNotWhoseTurn().name,
+            hitBug: action === 'hit' ? result[0].name : null,
             wasABugSwatted,
             shouldGameEnd,
         });
