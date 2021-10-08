@@ -8,12 +8,11 @@ const messages = (() => {
     const text = [];
 
     function render(turnData) {
-        console.log('rendering messages');
         containerEl.remove();
         _clear();
         _create(turnData);
         text.forEach((message) => {
-            if (text === 'playAgainBtn') {
+            if (message === 'playAgainBtn') {
                 containerEl.appendChild(playAgainBtn);
             } else {
                 const p = document.createElement('p');

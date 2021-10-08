@@ -7,7 +7,7 @@ import messages from './dom/messages';
 const game = (() => {
     const boards = {};
     const players = {};
-    const boardDisplays = [];
+    const boardDisplays = {};
 
     function setup(playerNames) {
         boards[1] = new Board();
@@ -18,6 +18,13 @@ const game = (() => {
 
         // Player 1 goes first.
         players[1].switchTurn();
+
+        for (let n in boards) {
+            const owner = players[n];
+            const boardDisplay = new BoardDisplay(boards[n], owner);
+            boardDisplay.containerEl.classList.add('p' + n);
+            boardDisplays[n] = boardDisplay;
+        }
 
         const bugCollections = {
             1: [
@@ -48,44 +55,43 @@ const game = (() => {
             }
         }
 
-        for (let n in boards) {
-            const owner = players[n];
-            const boardDisplay = new BoardDisplay(boards[n], owner);
-            boardDisplay.containerEl.classList.add('p' + n);
-
-            boardDisplays.push(boardDisplay);
-
-            // instead of rendering both these board displays here,
-            // check to see if players are human / computer
-            // if both computer, render
-            if (players[1].isComputer && players[2].isComputer) {
-                boardDisplay.render();
-                messages.render({
-                    action: 'firstTurn',
-                    whoDidAction: getWhoseTurn().name,
-                    whoReceivedAction: getNotWhoseTurn().name,
-                });
-                // after both boards are rendered, play turn
-                if (n === '2') setTimeout(playTurn, 2000);
-            } else if (!players[1].isComputer && !players[2].isComputer) {
-                // if both human, (WILL NEED PASS TO X SCREEN LATER)
-                // then show just p1 board
-                if (n === '1') boardDisplay.render();
-                messages.render({
-                    action: 'placeBugs',
-                    whoDidAction: players[1].name,
-                });
-            } else {
-                // if just one player is human,
-                // show just that player's board to setup
-                if (!owner.isComputer) {
-                    boardDisplay.render();
-                    messages.render({
-                        action: 'placeBugs',
-                        whoDidAction: owner.name,
-                    });
+        if (players[1].isComputer && players[2].isComputer) {
+            setupFirstTurn(boardDisplays);
+        } else if (!players[1].isComputer && !players[2].isComputer) {
+            // if both human, (WILL NEED PASS TO X SCREEN LATER)
+            placeBugsFromPen(players[1]);
+        } else {
+            for (let n in players) {
+                if (!players[n].isComputer) {
+                    placeBugsFromPen(players[n]);
                 }
             }
+        }
+    }
+
+    function placeBugsFromPen(player) {
+        console.log('placing bugs from pen...');
+        const n = player === players[1] ? 1 : 2;
+        messages.render({
+            action: 'placeBugs',
+            whoDidAction: player.name,
+        });
+        boardDisplays[n].render();
+    }
+
+    function setupFirstTurn() {
+        for (let n in boardDisplays) {
+            boardDisplays[n].render();
+        }
+
+        messages.render({
+            action: 'firstTurn',
+            whoDidAction: getWhoseTurn().name,
+            whoReceivedAction: getNotWhoseTurn().name,
+        });
+
+        if (getWhoseTurn().isComputer) {
+            setTimeout(playTurn, 2000);
         }
     }
 
@@ -169,7 +175,9 @@ const game = (() => {
             players[n].switchTurn();
         }
 
-        boardDisplays.forEach((boardDisplay) => boardDisplay.render());
+        for (let n in boardDisplays) {
+            boardDisplays[n].render();
+        }
 
         // If it's computer's turn now, it should play without any input
         if (getWhoseTurn().isComputer) {
@@ -178,14 +186,21 @@ const game = (() => {
     }
 
     function endGame() {
-        boardDisplays.forEach((boardDisplay) => {
-            // make sure board renders hit unit
-            boardDisplay.render();
-            boardDisplay.disable();
-        });
+        for (let n in boardDisplays) {
+            boardDisplays[n].render();
+            boardDisplays[n].disable();
+        }
     }
 
-    return { setup, playTurn, endTurn, getWhoseTurn, getEnemyPlayer };
+    return {
+        setup,
+        playTurn,
+        endTurn,
+        getWhoseTurn,
+        getEnemyPlayer,
+        placeBugsFromPen,
+        setupFirstTurn,
+    };
 })();
 
 export default game;

@@ -21,7 +21,6 @@ class BugPen {
     }
 
     createPen(bugs) {
-        console.log(bugs);
         bugs.forEach((bug) => {
             const bugContainer = document.createElement('div');
             bugContainer.classList.add('bug-container');
@@ -65,7 +64,6 @@ class BugPen {
         // reset bugs on board object so that they don't get doubled up
         // when the player places them on the board
         if (!this.owner.isComputer) {
-            console.log('wiping out bugs');
             this.board.bugs = [];
         }
 
@@ -96,7 +94,6 @@ class BugPen {
 
     onSubmitCoords(submitBtn, inputEl, bug) {
         const [x, y] = this.board.convertCoordsToIndicies(inputEl.value);
-        console.log(x, y);
 
         this.board.placeBug(bug, x, y);
 
@@ -123,13 +120,16 @@ class BugPen {
         const enemy = game.getEnemyPlayer(this.owner);
 
         if (enemy.isComputer) {
-            this.owner.switchTurn();
-            enemy.switchTurn();
+            game.setupFirstTurn();
+        } else {
+            // If it is player 2, because it will be p1's turn
+            if (!enemy.isMyTurn) {
+                game.placeBugsFromPen(enemy);
+            } else {
+                // if the enemy is p1, p2 already placed bugs
+                game.setupFirstTurn();
+            }
         }
-        // end once if the other player is human
-        // if this is p1, we want to let p2 setup bugs
-        // if this is p2, we want to play normally
-        game.endTurn();
     }
 
     addDragEventListeners(bugContainer) {
