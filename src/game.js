@@ -161,6 +161,17 @@ const game = (() => {
         }
     }
 
+    function shouldShowBugs(boardOwner) {
+        if (
+            (boardOwner.isMyTurn && !boardOwner.isComputer) ||
+            getEnemyPlayer(boardOwner).isComputer
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     function checkIfGameShouldEnd(boardBeingAttacked) {
         // check if all bugs are swatted
         if (boardBeingAttacked.areAllBugsSwatted()) {
@@ -200,6 +211,7 @@ const game = (() => {
         getEnemyPlayer,
         placeBugsFromPen,
         setupFirstTurn,
+        shouldShowBugs,
     };
 })();
 

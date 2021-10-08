@@ -122,14 +122,16 @@ class BoardDisplay {
         if (unit === 'miss') {
             unitEl.classList.add('miss');
         } else if (unit !== null) {
-            unitEl.classList.add('bug');
             const bug = unit[0];
             // if this unit was hit, add styles
             if (bug.units[unit[1]] === 'hit') unitEl.classList.add('hit');
             // if this bug was swatted, add styles
             if (bug.isSwatted()) unitEl.classList.add('swatted');
             // temporarily add name until bug assets are added
-            unitEl.textContent = bug.name;
+            if (game.shouldShowBugs(this.boardOwnerPlayer)) {
+                unitEl.classList.add('bug');
+                unitEl.textContent = bug.name;
+            }
         }
     }
 
