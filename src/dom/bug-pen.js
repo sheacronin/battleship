@@ -46,6 +46,7 @@ class BugPen {
 
             // only add inputs if the owner of the bugs is human
             if (!this.owner.isComputer) {
+                bugContainer.appendChild(this._createRotateBtn(bug, wholeBug));
                 bugContainer.appendChild(this._createCoordsInput(bug));
             }
 
@@ -69,6 +70,21 @@ class BugPen {
 
         // change this flag so extra bugs don't get added by BoardDisplay
         this.hasBeenCreated = true;
+    }
+
+    _createRotateBtn(bug, bugEl) {
+        const rotateBtn = document.createElement('button');
+        rotateBtn.textContent = 'Rotate Bug';
+        rotateBtn.addEventListener('click', () => {
+            if (bug.direction === 'horizontal') {
+                bug.direction = 'vertical';
+                bugEl.style.flexDirection = 'column';
+            } else {
+                bug.direction = 'horizontal';
+                bugEl.style.flexDirection = 'row';
+            }
+        });
+        return rotateBtn;
     }
 
     _createCoordsInput(bug) {
