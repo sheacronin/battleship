@@ -312,3 +312,22 @@ test('throws an error if second coord is not a valid number', () => {
         'invalid coordinate number'
     );
 });
+
+test('can place at 10 coordinates', () => {
+    const board = new Board();
+    expect(board.convertCoordsToIndicies('A10')).toStrictEqual([9, 0]);
+});
+
+test('throws error if number is too high', () => {
+    const board = new Board();
+    expect(() => board.convertCoordsToIndicies('A11')).toThrow(
+        'invalid coordinate number'
+    );
+});
+
+test('throws error if number is too high', () => {
+    const board = new Board();
+    expect(() => board.convertCoordsToIndicies('A78')).toThrow(
+        'invalid coordinate number'
+    );
+});

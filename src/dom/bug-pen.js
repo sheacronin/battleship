@@ -53,9 +53,7 @@ class BugPen {
             this.containerEl.appendChild(bugContainer);
         });
 
-        // append button to place bugs randomly
         this.placeBugsRandomlyBtn.addEventListener('click', () => {
-            // clear board bugs because they will be added again when placed
             bugs.forEach((bug) => this.board.placeBugRandomly(bug));
             this.placeBugsRandomlyBtn.disabled = true;
             this.onAllBugsArePlaced();
@@ -94,7 +92,7 @@ class BugPen {
 
         label.textContent = 'Enter Coordinates:';
         const input = document.createElement('input');
-        input.maxLength = 2;
+        input.maxLength = 3;
         input.minLength = 2;
         coordsInputContainer.appendChild(input);
 
@@ -119,7 +117,6 @@ class BugPen {
 
         // TODO: add edit button
 
-        // check if all coords have been submitted
         this.bugsOnBoardCount++;
         if (this.bugsOnBoardCount === 5) {
             this.onAllBugsArePlaced();
@@ -128,21 +125,16 @@ class BugPen {
 
     onAllBugsArePlaced() {
         console.log('all bugs have been added!');
-        // render both boards and start game
-        // make sure turns switch twice if the other player is computer
-        // so you can still go first
-
-        // TODO: fix this section
         const enemy = game.getEnemyPlayer(this.owner);
-
         if (enemy.isComputer) {
             game.setupFirstTurn();
         } else {
-            // If it is player 2, because it will be p1's turn
+            // Check if it is player 2, because it will be player 1's turn
             if (!enemy.isMyTurn) {
                 game.placeBugsFromPen(enemy);
             } else {
-                // if the enemy is p1, p2 already placed bugs
+                // If the enemy is p1, p2 has already placed bugs
+                // so we can begin the game
                 game.setupFirstTurn();
             }
         }

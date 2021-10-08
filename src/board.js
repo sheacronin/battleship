@@ -90,9 +90,10 @@ class Board {
     }
 
     convertCoordsToIndicies(coords) {
-        coords = coords.split('');
+        const letter = coords.slice(0, 1);
+        const number = coords.slice(1);
         const indicies = [];
-        switch (coords[0]) {
+        switch (letter) {
             case 'A':
                 indicies[1] = 0;
                 break;
@@ -127,11 +128,11 @@ class Board {
                 throw new Error('invalid coordinate letter');
         }
 
-        if (coords[1] < 1 || isNaN(coords[1])) {
+        if (number < 1 || number > 10 || isNaN(number)) {
             throw new Error('invalid coordinate number');
         }
 
-        indicies[0] = coords[1] - 1;
+        indicies[0] = number - 1;
 
         return indicies;
     }
