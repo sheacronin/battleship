@@ -17,7 +17,9 @@ class BugPen {
         this.containerEl.appendChild(this.titleEl);
 
         this.placeBugsRandomlyBtn = document.createElement('button');
+        this.placeBugsRandomlyBtn.classList.add('place-bugs-random');
         this.placeBugsRandomlyBtn.textContent = 'Place Bugs Randomly';
+        this.containerEl.appendChild(this.placeBugsRandomlyBtn);
     }
 
     createPen(bugs) {
@@ -58,7 +60,6 @@ class BugPen {
             this.placeBugsRandomlyBtn.disabled = true;
             this.onAllBugsArePlaced();
         });
-        this.containerEl.appendChild(this.placeBugsRandomlyBtn);
 
         // reset bugs on board object so that they don't get doubled up
         // when the player places them on the board
@@ -72,6 +73,7 @@ class BugPen {
 
     _createRotateBtn(bug, bugEl) {
         const rotateBtn = document.createElement('button');
+        rotateBtn.classList.add('rotate-bug');
         rotateBtn.textContent = 'Rotate Bug';
         rotateBtn.addEventListener('click', () => {
             if (bug.direction === 'horizontal') {
@@ -87,10 +89,12 @@ class BugPen {
 
     _createCoordsInput(bug) {
         const coordsInputContainer = document.createElement('div');
+        coordsInputContainer.classList.add('coords-input-container');
+
         const label = document.createElement('label');
+        label.textContent = 'Coordinates:';
         coordsInputContainer.appendChild(label);
 
-        label.textContent = 'Enter Coordinates:';
         const input = document.createElement('input');
         input.maxLength = 3;
         input.minLength = 2;
