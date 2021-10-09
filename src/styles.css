@@ -3,17 +3,22 @@
     padding: 0;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Open+Sans&display=swap');
+
 body {
-    background-color: rgb(217, 231, 216);
+    background-color: #e9e3b4;
+    color: #381d2a;
     text-align: center;
-    font-family: sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 h1 {
     height: 10vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
+    font-family: 'Comfortaa', cursive;
+    font-size: 3em;
 }
 
 main {
@@ -27,25 +32,60 @@ main {
 
 #setup {
     grid-area: board;
-    background-color: white;
+    box-shadow: -5px 5px #381d2a;
+    background-color: #f39b6d;
+    padding: 20px;
     height: 40vh;
-    width: 50vw;
+    width: 80vw;
     margin: 0 auto;
     display: grid;
 }
 
 #setup h3 {
     align-self: center;
+    font-family: 'Comfortaa', cursive;
+    font-size: 2em;
 }
 
 .player-info {
     display: grid;
+    border-top: 1px solid black;
 }
 
 .player-name {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.player-is-computer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#setup input,
+#setup button {
+    font-family: 'Open Sans', sans-serif;
+    border: none;
+    color: #381d2a;
+}
+
+#setup input {
+    height: 30px;
+    font-size: 18px;
+    text-align: center;
+}
+
+#setup input[type='checkbox'] {
+    width: 20px;
+}
+
+#setup button {
+    background-color: #381d2a;
+    color: white;
+    font-size: 18px;
+    letter-spacing: 2px;
 }
 
 #messages {
