@@ -1,6 +1,7 @@
 import game from '../game';
 import { BugPen } from './bug-pen';
 import { main } from '../index';
+import getBugImageURL from './bug-images';
 
 class BoardDisplay {
     constructor(board, boardOwnerPlayer) {
@@ -123,14 +124,18 @@ class BoardDisplay {
             unitEl.classList.add('miss');
         } else if (unit !== null) {
             const bug = unit[0];
+            const unitIndex = unit[1];
             // if this unit was hit, add styles
-            if (bug.units[unit[1]] === 'hit') unitEl.classList.add('hit');
+            if (bug.units[unitIndex] === 'hit') unitEl.classList.add('hit');
             // if this bug was swatted, add styles
             if (bug.isSwatted()) unitEl.classList.add('swatted');
             // temporarily add name until bug assets are added
             if (game.shouldShowBugs(this.boardOwnerPlayer)) {
                 unitEl.classList.add('bug');
-                unitEl.textContent = bug.name;
+                unitEl.style.backgroundImage = getBugImageURL(
+                    bug.name,
+                    unitIndex
+                );
             }
         }
     }

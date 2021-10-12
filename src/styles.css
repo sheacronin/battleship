@@ -159,6 +159,7 @@ article.p2 {
     background-color: white;
     width: 25px;
     height: 25px;
+    background-size: contain;
 }
 
 .active.board {

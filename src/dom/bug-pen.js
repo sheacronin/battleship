@@ -1,4 +1,5 @@
 import game from '../game';
+import getBugImageURL from './bug-images';
 
 class BugPen {
     constructor(boardDisplay) {
@@ -37,12 +38,13 @@ class BugPen {
             wholeBug.draggable = true;
             this.addDragEventListeners(wholeBug);
 
-            bug.units.forEach(() => {
+            for (let i = 0; i < bug.units.length; i++) {
                 const bugUnit = document.createElement('div');
                 bugUnit.classList.add('unit');
                 bugUnit.classList.add('bug');
+                bugUnit.style.backgroundImage = getBugImageURL(bug.name, i);
                 wholeBug.appendChild(bugUnit);
-            });
+            }
 
             bugContainer.appendChild(wholeBug);
 
