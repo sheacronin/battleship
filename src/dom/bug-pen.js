@@ -1,5 +1,5 @@
 import game from '../game';
-import getBugImageURL from './bug-images';
+import styleUnitWithBugImage from './bug-images';
 
 class BugPen {
     constructor(boardDisplay) {
@@ -42,7 +42,7 @@ class BugPen {
                 const bugUnit = document.createElement('div');
                 bugUnit.classList.add('unit');
                 bugUnit.classList.add('bug');
-                bugUnit.style.backgroundImage = getBugImageURL(bug.name, i);
+                styleUnitWithBugImage(bugUnit, bug, i);
                 wholeBug.appendChild(bugUnit);
             }
 
@@ -84,6 +84,10 @@ class BugPen {
             } else {
                 bug.direction = 'horizontal';
                 bugEl.style.flexDirection = 'row';
+            }
+            // update background styles
+            for (let i = 0; i < bug.units.length; i++) {
+                styleUnitWithBugImage(bugEl.childNodes[i], bug, i);
             }
         });
         return rotateBtn;

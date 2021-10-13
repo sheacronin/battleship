@@ -1,7 +1,7 @@
 import game from '../game';
 import { BugPen } from './bug-pen';
 import { main } from '../index';
-import getBugImageURL from './bug-images';
+import styleUnitWithBugImage from './bug-images';
 
 class BoardDisplay {
     constructor(board, boardOwnerPlayer) {
@@ -132,10 +132,7 @@ class BoardDisplay {
             // temporarily add name until bug assets are added
             if (game.shouldShowBugs(this.boardOwnerPlayer)) {
                 unitEl.classList.add('bug');
-                unitEl.style.backgroundImage = getBugImageURL(
-                    bug.name,
-                    unitIndex
-                );
+                styleUnitWithBugImage(unitEl, bug, unitIndex);
             }
         }
     }
