@@ -1,7 +1,7 @@
 import game from '../game';
 import { BugPen } from './bug-pen';
 import { main } from '../index';
-import styleUnitWithBugImage from './bug-images';
+import { styleUnitWithBugImageWithRotation } from './bug-images';
 
 class BoardDisplay {
     constructor(board, boardOwnerPlayer) {
@@ -18,9 +18,9 @@ class BoardDisplay {
     render() {
         this._clearBoard();
         if (this._shouldThisBoardBeActive()) {
-            this.boardEl.classList.add('active');
+            this.containerEl.classList.add('active');
         } else {
-            this.boardEl.classList.remove('active');
+            this.containerEl.classList.remove('active');
         }
 
         // add name element
@@ -39,10 +39,7 @@ class BoardDisplay {
         this.containerEl.appendChild(this.boardEl);
 
         // add bug pen
-        if (!this.bugPen.hasBeenCreated) {
-            this.bugPen.createPen(this.board.bugs);
-        }
-        this.containerEl.appendChild(this.bugPen.containerEl);
+        this.bugPen.render(this.board.bugs);
 
         // add container
         main.appendChild(this.containerEl);
@@ -132,7 +129,7 @@ class BoardDisplay {
             // temporarily add name until bug assets are added
             if (game.shouldShowBugs(this.boardOwnerPlayer)) {
                 unitEl.classList.add('bug');
-                styleUnitWithBugImage(unitEl, bug, unitIndex);
+                styleUnitWithBugImageWithRotation(unitEl, bug, unitIndex);
             }
         }
     }
@@ -155,7 +152,7 @@ class BoardDisplay {
         // styles - opacity lower
         this.boardEl.style.opacity = '0.5';
         // remove active class
-        this.boardEl.classList.remove('active');
+        this.containerEl.classList.remove('active');
         // disable unit buttons
         this.boardEl.childNodes.forEach((unit) => (unit.disabled = true));
     }

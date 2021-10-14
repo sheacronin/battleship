@@ -176,13 +176,22 @@ article.p2 {
     background-size: contain;
 }
 
-.active.board {
+.active .board {
     box-shadow: lightskyblue 0 0 10px 10px;
 }
 
 .active .unit:hover {
     cursor: pointer;
     box-shadow: inset 0 0 5px black;
+}
+
+@media (max-width: 500px) {
+    .active {
+        background-color: #e9e3b4;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1;
+    }
 }
 
 .miss {
@@ -203,16 +212,27 @@ article.p2 {
     display: grid;
     grid-template-rows: 10% repeat(3, 30%);
     grid-template-columns: 1fr 1fr;
-    /* not sure about this height */
-    height: 40vh;
     position: absolute;
     bottom: 0;
+    width: 50vw;
+    height: 30vh;
+}
+
+.bug-pen.placing-bugs {
+    height: 40vh;
+}
+
+@media (max-width: 500px) {
+    .bug-pen {
+        width: 100vw;
+    }
 }
 
 .bug-pen h3 {
     grid-row: 1 / 1;
     grid-column: 1 / 3;
     font-family: 'Comfortaa', cursive;
+    align-self: center;
 }
 
 .place-bugs-random {
@@ -223,6 +243,12 @@ article.p2 {
 }
 
 .bug-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bug-container.placing-bugs {
     display: grid;
     justify-items: center;
     align-items: center;

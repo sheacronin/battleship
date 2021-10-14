@@ -28,12 +28,16 @@ const bugImages = {
     worm: [worm_0, worm_1, worm_2, worm_3, worm_4],
 };
 
-function styleUnitWithBugImage(unitEl, bug, index) {
+function styleUnitWithBugImageWithRotation(unitEl, bug, index) {
     if (checkIfBugIsVertical(bug.direction)) {
         unitEl.style.transform = 'rotate(90deg)';
     } else {
         unitEl.style.transform = 'rotate(0deg)';
     }
+    unitEl.style.backgroundImage = getBugImageURL(bug.name, index);
+}
+
+function styleUnitWithBugImageWithoutRotation(unitEl, bug, index) {
     unitEl.style.backgroundImage = getBugImageURL(bug.name, index);
 }
 
@@ -50,4 +54,7 @@ function checkIfBugIsVertical(bugDirection) {
     return bugDirection === 'vertical' ? true : false;
 }
 
-export default styleUnitWithBugImage;
+export {
+    styleUnitWithBugImageWithRotation,
+    styleUnitWithBugImageWithoutRotation,
+};

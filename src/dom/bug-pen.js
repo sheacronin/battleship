@@ -1,5 +1,8 @@
 import game from '../game';
-import styleUnitWithBugImage from './bug-images';
+import {
+    styleUnitWithBugImageWithoutRotation,
+    styleUnitWithBugImageWithRotation,
+} from './bug-images';
 
 class BugPen {
     constructor(boardDisplay) {
@@ -15,15 +18,30 @@ class BugPen {
 
         this.titleEl = document.createElement('h3');
         this.titleEl.textContent = `${this.owner.name}'s Bugs`;
-        this.containerEl.appendChild(this.titleEl);
 
         this.placeBugsRandomlyBtn = document.createElement('button');
         this.placeBugsRandomlyBtn.classList.add('place-bugs-random');
         this.placeBugsRandomlyBtn.textContent = 'Place Bugs Randomly';
-        this.containerEl.appendChild(this.placeBugsRandomlyBtn);
+    }
+
+    render(bugs) {
+        this.clear();
+        this.createPen(bugs);
+
+        this.boardDisplay.containerEl.appendChild(this.containerEl);
     }
 
     createPen(bugs) {
+        this.containerEl.appendChild(this.titleEl);
+
+        if (this._areWePlacingBugs(this.owner)) {
+            this.containerEl.classList.add('placing-bugs');
+        } else {
+            if (this.containerEl.classList.contains('placing-bugs')) {
+                this.containerEl.classList.remove('placing-bugs');
+            }
+        }
+
         bugs.forEach((bug) => {
             const bugContainer = document.createElement('div');
             bugContainer.classList.add('bug-container');
@@ -36,41 +54,64 @@ class BugPen {
             const wholeBug = document.createElement('div');
             wholeBug.classList.add('whole-bug');
             wholeBug.draggable = true;
-            this.addDragEventListeners(wholeBug);
 
             for (let i = 0; i < bug.units.length; i++) {
                 const bugUnit = document.createElement('div');
                 bugUnit.classList.add('unit');
                 bugUnit.classList.add('bug');
-                styleUnitWithBugImage(bugUnit, bug, i);
+                styleUnitWithBugImageWithoutRotation(bugUnit, bug, i);
                 wholeBug.appendChild(bugUnit);
             }
 
             bugContainer.appendChild(wholeBug);
 
             // only add inputs if the owner of the bugs is human
-            if (!this.owner.isComputer) {
-                bugContainer.appendChild(this._createRotateBtn(bug, wholeBug));
-                bugContainer.appendChild(this._createCoordsInput(bug));
+            if (this._areWePlacingBugs(this.owner)) {
+                this._addInputs(bugContainer, bug, wholeBug);
+                bugContainer.classList.add('placing-bugs');
             }
 
             this.containerEl.appendChild(bugContainer);
         });
 
-        this.placeBugsRandomlyBtn.addEventListener('click', () => {
-            bugs.forEach((bug) => this.board.placeBugRandomly(bug));
-            this.placeBugsRandomlyBtn.disabled = true;
-            this.onAllBugsArePlaced();
-        });
-
         // reset bugs on board object so that they don't get doubled up
         // when the player places them on the board
-        if (!this.owner.isComputer) {
+        if (this._areWePlacingBugs(this.owner)) {
+            this._addPlaceBugsRandomlyBtn(bugs);
             this.board.bugs = [];
         }
 
         // change this flag so extra bugs don't get added by BoardDisplay
         this.hasBeenCreated = true;
+    }
+
+    clear() {
+        while (this.containerEl.firstChild) {
+            this.containerEl.removeChild(this.containerEl.firstChild);
+        }
+        this.containerEl.remove();
+    }
+
+    _areWePlacingBugs(owner) {
+        if (!owner.isComputer && !this.hasBeenCreated) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    _addInputs(bugContainer, bug, wholeBug) {
+        bugContainer.appendChild(this._createRotateBtn(bug, wholeBug));
+        bugContainer.appendChild(this._createCoordsInput(bug));
+    }
+
+    _addPlaceBugsRandomlyBtn(bugs) {
+        this.placeBugsRandomlyBtn.addEventListener('click', () => {
+            bugs.forEach((bug) => this.board.placeBugRandomly(bug));
+            this.placeBugsRandomlyBtn.disabled = true;
+            this.onAllBugsArePlaced();
+        });
+        this.containerEl.appendChild(this.placeBugsRandomlyBtn);
     }
 
     _createRotateBtn(bug, bugEl) {
@@ -87,7 +128,7 @@ class BugPen {
             }
             // update background styles
             for (let i = 0; i < bug.units.length; i++) {
-                styleUnitWithBugImage(bugEl.childNodes[i], bug, i);
+                styleUnitWithBugImageWithRotation(bugEl.childNodes[i], bug, i);
             }
         });
         return rotateBtn;
@@ -147,24 +188,6 @@ class BugPen {
                 // so we can begin the game
                 game.setupFirstTurn();
             }
-        }
-    }
-
-    addDragEventListeners(bugContainer) {
-        bugContainer.addEventListener('dragstart', onDragStart);
-
-        function onDragStart(e) {
-            console.log(e);
-        }
-
-        bugContainer.addEventListener('dragend', onDragEnd);
-
-        function onDragEnd(e) {
-            const dropX = e.screenX;
-            const dropY = e.screenY;
-
-            const dropEl = document.elementFromPoint(dropX, dropY);
-            console.log(dropEl);
         }
     }
 }
