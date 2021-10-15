@@ -39,7 +39,7 @@ class BoardDisplay {
         this.containerEl.appendChild(this.boardEl);
 
         // add bug pen
-        this.bugPen.render(this.board.bugs);
+        this.bugPen.render();
 
         // add container
         main.appendChild(this.containerEl);

@@ -26,32 +26,27 @@ const game = (() => {
             boardDisplays[n] = boardDisplay;
         }
 
-        const bugCollections = {
-            1: [
-                new Bug(5, 'Worm'),
-                new Bug(4, 'Caterpillar'),
-                new Bug(3, 'Ant'),
-                new Bug(3, 'Spider'),
-                new Bug(2, 'Ladybug'),
-            ],
+        boards[1].bugs = [
+            new Bug(5, 'Worm'),
+            new Bug(4, 'Caterpillar'),
+            new Bug(3, 'Ant'),
+            new Bug(3, 'Spider'),
+            new Bug(2, 'Ladybug'),
+        ];
 
-            2: [
-                new Bug(5, 'Worm'),
-                new Bug(4, 'Caterpillar'),
-                new Bug(3, 'Ant'),
-                new Bug(3, 'Spider'),
-                new Bug(2, 'Ladybug'),
-            ],
-        };
+        boards[2].bugs = [
+            new Bug(5, 'Worm'),
+            new Bug(4, 'Caterpillar'),
+            new Bug(3, 'Ant'),
+            new Bug(3, 'Spider'),
+            new Bug(2, 'Ladybug'),
+        ];
 
         for (let n in players) {
             if (players[n].isComputer) {
-                bugCollections[n].forEach((bug) => {
+                boards[n].bugs.forEach((bug) => {
                     boards[n].placeBugRandomly(bug);
                 });
-            } else {
-                // push bugs to the board so they will render in bug pen
-                boards[n].bugs = bugCollections[n];
             }
         }
 

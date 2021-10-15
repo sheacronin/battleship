@@ -251,15 +251,6 @@ test('tracks several missed attacks', () => {
     ]);
 });
 
-test('stores bugs in prop when placed', () => {
-    const board = new Board();
-    const spider = new mockBug(2, 'Spider', 'vertical');
-    const caterpillar = new mockBug(4, 'Caterpillar', 'horizontal');
-    board.placeBug(spider, 5, 5);
-    board.placeBug(caterpillar, 0, 0);
-    expect(board.bugs).toStrictEqual([spider, caterpillar]);
-});
-
 test('throws an error if it receives an attack on a unit that has already been attacked', () => {
     const board = new Board();
     board.receiveAttack(0, 0);

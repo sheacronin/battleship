@@ -53,8 +53,6 @@ class Board {
                 bugIndex++;
             }
         }
-
-        this.bugs.push(bug);
     }
 
     placeBugRandomly(bug) {

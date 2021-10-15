@@ -10,8 +10,7 @@ class BugPen {
         this.board = boardDisplay.board;
         this.owner = boardDisplay.boardOwnerPlayer;
 
-        this.hasBeenCreated = false;
-        this.bugsOnBoardCount = 0;
+        this.bugsOnBoard = [];
 
         this.containerEl = document.createElement('div');
         this.containerEl.classList.add('bug-pen');
@@ -24,23 +23,48 @@ class BugPen {
         this.placeBugsRandomlyBtn.textContent = 'Place Bugs Randomly';
     }
 
-    render(bugs) {
-        this.clear();
-        this.createPen(bugs);
+    render() {
+        this._clear();
+
+        if (this._areWePlacingBugs(this.owner)) {
+            this.createPlacingBugsBugPen(this.board.bugs);
+        } else {
+            this.createBugStatusBugPen(this.board.bugs);
+        }
 
         this.boardDisplay.containerEl.appendChild(this.containerEl);
     }
 
-    createPen(bugs) {
-        this.containerEl.appendChild(this.titleEl);
-
-        if (this._areWePlacingBugs(this.owner)) {
-            this.containerEl.classList.add('placing-bugs');
-        } else {
-            if (this.containerEl.classList.contains('placing-bugs')) {
-                this.containerEl.classList.remove('placing-bugs');
-            }
+    _clear() {
+        while (this.containerEl.firstChild) {
+            this.containerEl.removeChild(this.containerEl.firstChild);
         }
+        this.containerEl.remove();
+    }
+
+    createPlacingBugsBugPen() {
+        this.containerEl.classList.add('placing-bugs');
+        this.containerEl.appendChild(this.titleEl);
+        const bugContainers = this._createBugsEls(this.board.bugs);
+        bugContainers.forEach((bugContainer) =>
+            this.containerEl.appendChild(bugContainer)
+        );
+        this._addPlaceBugsRandomlyBtn(this.board.bugs);
+    }
+
+    createBugStatusBugPen() {
+        if (this.containerEl.classList.contains('placing-bugs')) {
+            this.containerEl.classList.remove('placing-bugs');
+        }
+        this.containerEl.appendChild(this.titleEl);
+        const bugContainers = this._createBugsEls(this.board.bugs);
+        bugContainers.forEach((bugContainer) =>
+            this.containerEl.appendChild(bugContainer)
+        );
+    }
+
+    _createBugsEls(bugs) {
+        const bugContainers = [];
 
         bugs.forEach((bug) => {
             const bugContainer = document.createElement('div');
@@ -53,7 +77,6 @@ class BugPen {
 
             const wholeBug = document.createElement('div');
             wholeBug.classList.add('whole-bug');
-            wholeBug.draggable = true;
 
             for (let i = 0; i < bug.units.length; i++) {
                 const bugUnit = document.createElement('div');
@@ -65,35 +88,22 @@ class BugPen {
 
             bugContainer.appendChild(wholeBug);
 
-            // only add inputs if the owner of the bugs is human
-            if (this._areWePlacingBugs(this.owner)) {
+            if (
+                this._areWePlacingBugs(this.owner) &&
+                !this.bugsOnBoard.includes(bug)
+            ) {
+                console.log(this.bugsOnBoard);
                 this._addInputs(bugContainer, bug, wholeBug);
-                bugContainer.classList.add('placing-bugs');
             }
 
-            this.containerEl.appendChild(bugContainer);
+            bugContainers.push(bugContainer);
         });
 
-        // reset bugs on board object so that they don't get doubled up
-        // when the player places them on the board
-        if (this._areWePlacingBugs(this.owner)) {
-            this._addPlaceBugsRandomlyBtn(bugs);
-            this.board.bugs = [];
-        }
-
-        // change this flag so extra bugs don't get added by BoardDisplay
-        this.hasBeenCreated = true;
-    }
-
-    clear() {
-        while (this.containerEl.firstChild) {
-            this.containerEl.removeChild(this.containerEl.firstChild);
-        }
-        this.containerEl.remove();
+        return bugContainers;
     }
 
     _areWePlacingBugs(owner) {
-        if (!owner.isComputer && !this.hasBeenCreated) {
+        if (!owner.isComputer && this.bugsOnBoard.length !== 5) {
             return true;
         } else {
             return false;
@@ -107,7 +117,12 @@ class BugPen {
 
     _addPlaceBugsRandomlyBtn(bugs) {
         this.placeBugsRandomlyBtn.addEventListener('click', () => {
-            bugs.forEach((bug) => this.board.placeBugRandomly(bug));
+            bugs.forEach((bug) => {
+                if (!this.bugsOnBoard.includes(bug)) {
+                    this.board.placeBugRandomly(bug);
+                    this.bugsOnBoard.push(bug);
+                }
+            });
             this.placeBugsRandomlyBtn.disabled = true;
             this.onAllBugsArePlaced();
         });
@@ -161,6 +176,7 @@ class BugPen {
         const [x, y] = this.board.convertCoordsToIndicies(inputEl.value);
 
         this.board.placeBug(bug, x, y);
+        this.bugsOnBoard.push(bug);
 
         this.boardDisplay.render();
 
@@ -168,8 +184,7 @@ class BugPen {
 
         // TODO: add edit button
 
-        this.bugsOnBoardCount++;
-        if (this.bugsOnBoardCount === 5) {
+        if (this.bugsOnBoard.length === 5) {
             this.onAllBugsArePlaced();
         }
     }

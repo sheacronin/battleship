@@ -248,7 +248,7 @@ article.p2 {
     align-items: center;
 }
 
-.bug-container.placing-bugs {
+.placing-bugs .bug-container {
     display: grid;
     justify-items: center;
     align-items: center;
