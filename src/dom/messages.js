@@ -1,6 +1,55 @@
 import { main } from '../index';
 import { setup } from './setup-dom';
 
+function convertIndiciesToCoords(indicies) {
+    const letter = indicies[0];
+    const number = indicies[1];
+    let coords = '';
+
+    switch (letter) {
+        case 0:
+            coords = 'A';
+            break;
+        case 1:
+            coords = 'B';
+            break;
+        case 2:
+            coords = 'C';
+            break;
+        case 3:
+            coords = 'D';
+            break;
+        case 4:
+            coords = 'E';
+            break;
+        case 5:
+            coords = 'F';
+            break;
+        case 6:
+            coords = 'G';
+            break;
+        case 7:
+            coords = 'H';
+            break;
+        case 8:
+            coords = 'I';
+            break;
+        case 9:
+            coords = 'J';
+            break;
+        default:
+            throw new Error('invalid first index');
+    }
+
+    if (number < 0 || number > 9 || isNaN(number)) {
+        throw new Error('invalid second index');
+    }
+
+    coords += number + 1;
+
+    return coords;
+}
+
 const messages = (() => {
     const containerEl = document.createElement('div');
     containerEl.id = 'messages';
@@ -45,32 +94,34 @@ const messages = (() => {
                 );
                 return;
             case 'placeBugs':
-                // render "Player X, please place your bugs by typing..."
                 text.push(
                     `${turnData.whoDidAction}, please place your bugs by typing in coordinates for where you would like the topmost or leftmost unit to be. Please type the coordinates with a capital letter and number (example: A1).`
                 );
                 return;
             case 'miss':
+                turnData.coords = convertIndiciesToCoords(turnData.coords);
                 text.push(
                     `${turnData.whoDidAction} missed at ${turnData.coords}`
                 );
                 break;
             case 'hit':
+                turnData.coords = convertIndiciesToCoords(turnData.coords);
                 text.push(
-                    `${turnData.whoDidAction} hit ${turnData.whoReceivedAction}'s ${turnData.hitBug} at ${turnData.coords}!`
+                    `${turnData.whoDidAction} hit one of ${turnData.whoReceivedAction}'s bugs at ${turnData.coords}!`
                 );
                 break;
             default:
                 console.log('Something went wrong with messages');
         }
 
+        // TODO:
         // // render "Pass to other player"
         // if (turnData.firstTurn) {
         // }
 
         if (turnData.wasABugSwatted) {
             text.push(
-                `${turnData.whoReceivedAction}'s ${turnData.missOrBug} has been swatted!`
+                `${turnData.whoReceivedAction}'s ${turnData.hitBug} has been swatted!`
             );
         }
 
