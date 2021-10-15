@@ -127,7 +127,7 @@ class BoardDisplay {
             // if this bug was swatted, add styles
             if (bug.isSwatted()) unitEl.classList.add('swatted');
             // temporarily add name until bug assets are added
-            if (game.shouldShowBugs(this.boardOwnerPlayer)) {
+            if (game.shouldShowBugs(this.boardOwnerPlayer) || bug.isSwatted()) {
                 unitEl.classList.add('bug');
                 styleUnitWithBugImageWithRotation(unitEl, bug, unitIndex);
             }

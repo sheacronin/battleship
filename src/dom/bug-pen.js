@@ -77,6 +77,7 @@ class BugPen {
 
             const wholeBug = document.createElement('div');
             wholeBug.classList.add('whole-bug');
+            if (bug.isSwatted()) wholeBug.classList.add('swatted');
 
             for (let i = 0; i < bug.units.length; i++) {
                 const bugUnit = document.createElement('div');
