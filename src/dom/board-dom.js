@@ -17,11 +17,14 @@ class BoardDisplay {
 
     render() {
         this._clearBoard();
-        if (this._shouldThisBoardBeActive()) {
-            this.containerEl.classList.add('active');
-        } else {
-            this.containerEl.classList.remove('active');
-        }
+
+        setTimeout(() => {
+            if (this._shouldThisBoardBeActive()) {
+                this.containerEl.classList.add('active');
+            } else {
+                this.containerEl.classList.remove('active');
+            }
+        }, 1500);
 
         // add name element
         this.nameEl.textContent = `${this.boardOwnerPlayer.name}'s board`;

@@ -125,7 +125,8 @@ class BugPen {
                 }
             });
             this.placeBugsRandomlyBtn.disabled = true;
-            this.onAllBugsArePlaced();
+            this.boardDisplay.render();
+            setTimeout(() => this.onAllBugsArePlaced(), 1500);
         });
         this.containerEl.appendChild(this.placeBugsRandomlyBtn);
     }

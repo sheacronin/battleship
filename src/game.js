@@ -76,6 +76,10 @@ const game = (() => {
 
     function setupFirstTurn() {
         for (let n in boardDisplays) {
+            // make active immediately on the first turn
+            if (players[n] === getNotWhoseTurn()) {
+                boardDisplays[n].containerEl.classList.add('active');
+            }
             boardDisplays[n].render();
         }
 
@@ -187,7 +191,7 @@ const game = (() => {
 
         // If it's computer's turn now, it should play without any input
         if (getWhoseTurn().isComputer) {
-            setTimeout(playTurn, 2000);
+            setTimeout(playTurn, 3000);
         }
     }
 
