@@ -67,11 +67,21 @@ const game = (() => {
     function placeBugsFromPen(player) {
         console.log('placing bugs from pen...');
         const n = player === players[1] ? 1 : 2;
-        messages.render({
-            action: 'placeBugs',
-            whoDidAction: player.name,
-        });
-        boardDisplays[n].render();
+
+        if (boardDisplays[n].bugPen.areWePlacingBugs()) {
+            if (n === 2) {
+                switchBothPlayersTurn();
+            }
+
+            messages.render({
+                action: 'placeBugs',
+                whoDidAction: player.name,
+            });
+
+            boardDisplays[n].render();
+        } else {
+            throw new Error('bugs have already been placed');
+        }
     }
 
     function setupFirstTurn() {
@@ -181,9 +191,7 @@ const game = (() => {
     }
 
     function endTurn() {
-        for (let n in players) {
-            players[n].switchTurn();
-        }
+        switchBothPlayersTurn();
 
         for (let n in boardDisplays) {
             boardDisplays[n].render();
@@ -202,6 +210,12 @@ const game = (() => {
         }
     }
 
+    function switchBothPlayersTurn() {
+        for (let n in players) {
+            players[n].switchTurn();
+        }
+    }
+
     return {
         setup,
         playTurn,
@@ -211,6 +225,7 @@ const game = (() => {
         placeBugsFromPen,
         setupFirstTurn,
         shouldShowBugs,
+        switchBothPlayersTurn,
     };
 })();
 

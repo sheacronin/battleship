@@ -26,7 +26,7 @@ class BugPen {
     render() {
         this._clear();
 
-        if (this._areWePlacingBugs(this.owner)) {
+        if (this.areWePlacingBugs()) {
             this.createPlacingBugsBugPen(this.board.bugs);
         } else {
             this.createBugStatusBugPen(this.board.bugs);
@@ -89,11 +89,7 @@ class BugPen {
 
             bugContainer.appendChild(wholeBug);
 
-            if (
-                this._areWePlacingBugs(this.owner) &&
-                !this.bugsOnBoard.includes(bug)
-            ) {
-                console.log(this.bugsOnBoard);
+            if (this.areWePlacingBugs() && !this.bugsOnBoard.includes(bug)) {
                 this._addInputs(bugContainer, bug, wholeBug);
             }
 
@@ -103,8 +99,8 @@ class BugPen {
         return bugContainers;
     }
 
-    _areWePlacingBugs(owner) {
-        if (!owner.isComputer && this.bugsOnBoard.length !== 5) {
+    areWePlacingBugs() {
+        if (!this.owner.isComputer && this.bugsOnBoard.length !== 5) {
             return true;
         } else {
             return false;
@@ -197,12 +193,12 @@ class BugPen {
         if (enemy.isComputer) {
             game.setupFirstTurn();
         } else {
-            // Check if it is player 2, because it will be player 1's turn
-            if (!enemy.isMyTurn) {
+            try {
                 game.placeBugsFromPen(enemy);
-            } else {
-                // If the enemy is p1, p2 has already placed bugs
-                // so we can begin the game
+            } catch {
+                console.log('catch');
+                // switch the turns back so it is player 1's turn
+                game.switchBothPlayersTurn();
                 game.setupFirstTurn();
             }
         }
