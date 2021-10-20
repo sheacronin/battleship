@@ -1,6 +1,6 @@
 import './styles.css';
 import { setup } from './dom/setup-dom';
-import messages from './dom/messages';
+import { messages } from './dom/messages';
 
 const main = document.querySelector('main');
 

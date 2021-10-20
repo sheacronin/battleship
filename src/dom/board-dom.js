@@ -18,14 +18,6 @@ class BoardDisplay {
     render() {
         this._clearBoard();
 
-        setTimeout(() => {
-            if (this._shouldThisBoardBeActive()) {
-                this.containerEl.classList.add('active');
-            } else {
-                this.containerEl.classList.remove('active');
-            }
-        }, 1500);
-
         // add name element
         this.nameEl.textContent = `${this.boardOwnerPlayer.name}'s board`;
         this.containerEl.appendChild(this.nameEl);
@@ -46,12 +38,24 @@ class BoardDisplay {
 
         // add container
         main.appendChild(this.containerEl);
+
+        this.toggleActiveClass();
     }
 
     _clearBoard() {
         while (this.boardEl.firstChild) {
             this.boardEl.removeChild(this.boardEl.firstChild);
         }
+    }
+
+    toggleActiveClass() {
+        setTimeout(() => {
+            if (this._shouldThisBoardBeActive()) {
+                this.containerEl.classList.add('active');
+            } else {
+                this.containerEl.classList.remove('active');
+            }
+        }, 1500);
     }
 
     _createXAxisLabels() {
@@ -138,7 +142,9 @@ class BoardDisplay {
     }
 
     _shouldThisBoardBeActive() {
-        return !this.boardOwnerPlayer.isMyTurn;
+        return (
+            !this.boardOwnerPlayer.isMyTurn && !this.bugPen.areWePlacingBugs()
+        );
     }
 
     _shouldThisBoardBeClickable() {
@@ -161,4 +167,25 @@ class BoardDisplay {
     }
 }
 
-export { BoardDisplay };
+const nextTurnBtn = (() => {
+    const button = document.createElement('button');
+    button.classList.add('next-turn');
+    button.textContent = 'Next Turn';
+    button.addEventListener('click', onClick);
+
+    function render() {
+        main.appendChild(button);
+    }
+
+    function remove() {
+        button.remove();
+    }
+
+    function onClick() {
+        game.endTurn();
+    }
+
+    return { render, remove };
+})();
+
+export { BoardDisplay, nextTurnBtn };

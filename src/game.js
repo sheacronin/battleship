@@ -1,8 +1,8 @@
 import Player from './player';
 import Board from './board';
 import Bug from './bugs';
-import { BoardDisplay } from './dom/board-dom';
-import messages from './dom/messages';
+import { BoardDisplay, nextTurnBtn } from './dom/board-dom';
+import { messages, passToPlayerNScreen } from './dom/messages';
 
 const game = (() => {
     const boards = {};
@@ -67,6 +67,7 @@ const game = (() => {
     function placeBugsFromPen(player) {
         console.log('placing bugs from pen...');
         const n = player === players[1] ? 1 : 2;
+        const otherPlayerN = n === 1 ? 2 : 1;
 
         if (boardDisplays[n].bugPen.areWePlacingBugs()) {
             if (n === 2) {
@@ -78,6 +79,7 @@ const game = (() => {
                 whoDidAction: player.name,
             });
 
+            boardDisplays[otherPlayerN].containerEl.remove();
             boardDisplays[n].render();
         } else {
             throw new Error('bugs have already been placed');
@@ -141,10 +143,14 @@ const game = (() => {
             shouldGameEnd,
         });
 
+        for (let n in boardDisplays) {
+            boardDisplays[n].render();
+        }
+
         if (shouldGameEnd) {
             endGame();
         } else {
-            endTurn();
+            nextTurnBtn.render();
         }
     }
 
@@ -190,8 +196,15 @@ const game = (() => {
         }
     }
 
-    function endTurn() {
+    async function endTurn() {
+        nextTurnBtn.remove();
+
         switchBothPlayersTurn();
+
+        if (!players[1].isComputer && !players[2].isComputer) {
+            console.log('rendering pass screen');
+            passToPlayerNScreen.render(getWhoseTurn().name);
+        }
 
         for (let n in boardDisplays) {
             boardDisplays[n].render();

@@ -136,6 +136,37 @@ const messages = (() => {
     return { render };
 })();
 
+const passToPlayerNScreen = (() => {
+    const containerEl = document.createElement('div');
+    containerEl.classList.add('pass-screen');
+
+    function render(playerName) {
+        console.log('rendering pass');
+        _clear();
+
+        const p = document.createElement('p');
+        p.textContent = `Pass to ${playerName}.`;
+        containerEl.appendChild(p);
+
+        const passedBtn = document.createElement('button');
+        passedBtn.textContent = 'Done!';
+        passedBtn.addEventListener('click', _clear);
+        containerEl.appendChild(passedBtn);
+
+        main.appendChild(containerEl);
+    }
+
+    function _clear() {
+        while (containerEl.firstChild) {
+            containerEl.removeChild(containerEl.firstChild);
+        }
+
+        containerEl.remove();
+    }
+
+    return { render };
+})();
+
 const playAgainBtn = document.createElement('button');
 playAgainBtn.textContent = 'Play Again';
 playAgainBtn.addEventListener('click', () => {
@@ -145,4 +176,4 @@ playAgainBtn.addEventListener('click', () => {
     setup.render();
 });
 
-export default messages;
+export { messages, passToPlayerNScreen };
