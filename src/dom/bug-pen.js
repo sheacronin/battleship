@@ -3,6 +3,7 @@ import {
     styleUnitWithBugImageWithoutRotation,
     styleUnitWithBugImageWithRotation,
 } from './bug-images';
+import { passToPlayerNScreen } from './messages';
 
 class BugPen {
     constructor(boardDisplay) {
@@ -194,6 +195,7 @@ class BugPen {
             game.setupFirstTurn();
         } else {
             try {
+                passToPlayerNScreen.render(enemy.name);
                 game.placeBugsFromPen(enemy);
             } catch {
                 console.log('catch');

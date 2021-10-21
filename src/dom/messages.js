@@ -140,6 +140,9 @@ const passToPlayerNScreen = (() => {
     const containerEl = document.createElement('div');
     containerEl.classList.add('pass-screen');
 
+    const passedBtn = document.createElement('button');
+    passedBtn.textContent = 'Done!';
+
     function render(playerName) {
         console.log('rendering pass');
         _clear();
@@ -148,12 +151,17 @@ const passToPlayerNScreen = (() => {
         p.textContent = `Pass to ${playerName}.`;
         containerEl.appendChild(p);
 
-        const passedBtn = document.createElement('button');
-        passedBtn.textContent = 'Done!';
         passedBtn.addEventListener('click', _clear);
+        passedBtn.disabled = true;
         containerEl.appendChild(passedBtn);
 
+        setTimeout(enablePassedBtn, 1500);
+
         main.appendChild(containerEl);
+    }
+
+    function enablePassedBtn() {
+        passedBtn.disabled = false;
     }
 
     function _clear() {
@@ -164,7 +172,7 @@ const passToPlayerNScreen = (() => {
         containerEl.remove();
     }
 
-    return { render };
+    return { render, enablePassedBtn };
 })();
 
 const playAgainBtn = document.createElement('button');

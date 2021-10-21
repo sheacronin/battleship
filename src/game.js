@@ -150,7 +150,8 @@ const game = (() => {
         if (shouldGameEnd) {
             endGame();
         } else {
-            nextTurnBtn.render();
+            // TODO: remove nextTurnBtn.render() ?
+            endTurn();
         }
     }
 
@@ -199,12 +200,17 @@ const game = (() => {
     async function endTurn() {
         nextTurnBtn.remove();
 
-        switchBothPlayersTurn();
+        for (let n in boardDisplays) {
+            boardDisplays[n].render();
+        }
 
         if (!players[1].isComputer && !players[2].isComputer) {
             console.log('rendering pass screen');
-            passToPlayerNScreen.render(getWhoseTurn().name);
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            passToPlayerNScreen.render(getNotWhoseTurn().name);
         }
+
+        switchBothPlayersTurn();
 
         for (let n in boardDisplays) {
             boardDisplays[n].render();

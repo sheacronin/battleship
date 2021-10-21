@@ -92,6 +92,10 @@ button {
     color: white;
 }
 
+button:disabled {
+    opacity: 30%;
+}
+
 button:hover {
     cursor: pointer;
 }
