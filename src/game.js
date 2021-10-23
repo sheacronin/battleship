@@ -199,6 +199,12 @@ const game = (() => {
 
         for (let n in boardDisplays) {
             renderedPromises.push(boardDisplays[n].render());
+
+            // Disable units so that player can't attack twice in a row
+            boardDisplays[n].boardEl.childNodes.forEach((unit) => {
+                unit.disabled = true;
+                unit.style.opacity = '100';
+            });
         }
 
         Promise.all(renderedPromises)

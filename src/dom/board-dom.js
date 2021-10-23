@@ -46,7 +46,6 @@ class BoardDisplay {
 
     toggleActiveClass() {
         if (this._shouldThisBoardBeActive()) {
-            console.log('adding active');
             this.containerEl.classList.add('active');
         } else {
             this.containerEl.classList.remove('active');
