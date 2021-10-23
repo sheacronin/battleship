@@ -246,17 +246,10 @@ article.p2 {
 .bug-pen {
     background-color: #f39b6d;
     grid-area: bug-pen;
-    display: grid;
-    grid-template-rows: 10% repeat(3, 30%);
-    grid-template-columns: 1fr 1fr;
     position: absolute;
     bottom: 0;
     width: 50vw;
-    height: 30vh;
-}
-
-.bug-pen.placing-bugs {
-    height: 40vh;
+    height: 26vh;
 }
 
 @media (max-width: 500px) {
@@ -266,10 +259,17 @@ article.p2 {
 }
 
 .bug-pen h3 {
-    grid-row: 1 / 1;
-    grid-column: 1 / 3;
     font-family: 'Comfortaa', cursive;
-    align-self: center;
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.all-bugs-container {
+    overflow-x: scroll;
+    height: 20vh;
+    display: flex;
 }
 
 .place-bugs-random {
@@ -280,29 +280,15 @@ article.p2 {
 }
 
 .bug-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.placing-bugs .bug-container {
-    display: grid;
     justify-items: center;
     align-items: center;
-    grid-template-columns: 2fr 1fr;
-    grid-template-rows: 1fr 3fr;
-    grid-template-areas:
-        'bug-name bug-name'
-        'bug input'
-        'bug rotate';
-    font-size: 0.9em;
+    border-right: 1px solid;
+    display: flex;
+    flex-direction: column;
     position: relative;
-    border: 1px solid;
-}
-
-.worm {
-    grid-row: 2 / 2;
-    grid-column: 1 / 3;
+    flex-basis: 20vh;
+    flex-shrink: 0;
+    justify-content: space-evenly;
 }
 
 .bug-container h4 {

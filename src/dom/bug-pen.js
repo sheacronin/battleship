@@ -47,10 +47,15 @@ class BugPen {
     createPlacingBugsBugPen() {
         this.containerEl.classList.add('placing-bugs');
         this.containerEl.appendChild(this.titleEl);
+
+        const bugsDiv = document.createElement('div');
+        bugsDiv.classList.add('all-bugs-container');
         const bugContainers = this._createBugsEls(this.board.bugs);
         bugContainers.forEach((bugContainer) =>
-            this.containerEl.appendChild(bugContainer)
+            bugsDiv.appendChild(bugContainer)
         );
+        this.containerEl.appendChild(bugsDiv);
+
         this._addPlaceBugsRandomlyBtn(this.board.bugs);
     }
 
