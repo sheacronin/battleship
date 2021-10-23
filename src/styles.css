@@ -282,24 +282,26 @@ article.p2 {
 .bug-container {
     justify-items: center;
     align-items: center;
-    border-right: 1px solid;
     display: flex;
     flex-direction: column;
     position: relative;
     flex-basis: 20vh;
     flex-shrink: 0;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    margin: 20px;
 }
 
 .bug-container h4 {
     grid-area: bug-name;
+    margin-bottom: 10px;
 }
 
 .rotate-bug {
     position: absolute;
     bottom: 0;
     left: 0;
-    padding: 6px;
+    height: 40px;
+    width: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -318,6 +320,9 @@ article.p2 {
 .coords-input-container {
     text-align: left;
     font-size: 12px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 .coords-input-container label {
@@ -326,11 +331,11 @@ article.p2 {
 
 .coords-input-container input {
     border: none;
-    height: 20px;
-    width: 30px;
+    height: 40px;
+    width: 40px;
 }
 
 .coords-input-container button {
-    height: 20px;
-    width: 30px;
+    height: 40px;
+    width: 40px;
 }
