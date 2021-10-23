@@ -114,11 +114,6 @@ const messages = (() => {
                 console.log('Something went wrong with messages');
         }
 
-        // TODO:
-        // // render "Pass to other player"
-        // if (turnData.firstTurn) {
-        // }
-
         if (turnData.wasABugSwatted) {
             text.push(
                 `${turnData.whoReceivedAction}'s ${turnData.hitBug} has been swatted!`

@@ -53,7 +53,6 @@ const game = (() => {
         if (players[1].isComputer && players[2].isComputer) {
             setupFirstTurn(boardDisplays);
         } else if (!players[1].isComputer && !players[2].isComputer) {
-            // if both human, (WILL NEED PASS TO X SCREEN LATER)
             placeBugsFromPen(players[1]);
         } else {
             for (let n in players) {
@@ -65,7 +64,6 @@ const game = (() => {
     }
 
     function placeBugsFromPen(player) {
-        console.log('placing bugs from pen...');
         const n = player === players[1] ? 1 : 2;
         const otherPlayerN = n === 1 ? 2 : 1;
 
@@ -124,7 +122,6 @@ const game = (() => {
         }
 
         const wasABugSwatted = result[0] !== 'miss' && result[0].isSwatted();
-        console.log('swatted? ' + wasABugSwatted);
 
         let shouldGameEnd;
         if (wasABugSwatted) {
@@ -150,7 +147,6 @@ const game = (() => {
         if (shouldGameEnd) {
             endGame();
         } else {
-            // TODO: remove nextTurnBtn.render() ?
             endTurn();
         }
     }
@@ -189,7 +185,6 @@ const game = (() => {
     }
 
     function checkIfGameShouldEnd(boardBeingAttacked) {
-        // check if all bugs are swatted
         if (boardBeingAttacked.areAllBugsSwatted()) {
             return true;
         } else {
