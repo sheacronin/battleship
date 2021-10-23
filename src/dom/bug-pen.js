@@ -4,6 +4,7 @@ import {
     styleUnitWithBugImageWithRotation,
 } from './bug-images';
 import { passToPlayerNScreen } from './messages';
+import rotateImg from '../img/rotate.png';
 
 class BugPen {
     constructor(boardDisplay) {
@@ -131,7 +132,12 @@ class BugPen {
     _createRotateBtn(bug, bugEl) {
         const rotateBtn = document.createElement('button');
         rotateBtn.classList.add('rotate-bug');
-        rotateBtn.textContent = 'Rotate Bug';
+
+        const rotateImgEl = document.createElement('img');
+        rotateImgEl.src = rotateImg;
+        rotateImgEl.alt = 'Rotate Icon';
+        rotateBtn.appendChild(rotateImgEl);
+
         rotateBtn.addEventListener('click', () => {
             if (bug.direction === 'horizontal') {
                 bug.direction = 'vertical';
