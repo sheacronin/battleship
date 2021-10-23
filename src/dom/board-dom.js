@@ -13,6 +13,7 @@ class BoardDisplay {
         this.boardEl = document.createElement('div');
         this.boardEl.classList.add('board');
         this.bugPen = new BugPen(this);
+        this.otherBoardBtn = new OtherBoardBtn(this.containerEl);
     }
 
     render() {
@@ -30,6 +31,8 @@ class BoardDisplay {
         this.containerEl.appendChild(this.boardEl);
 
         this.bugPen.render();
+
+        this.otherBoardBtn.render();
 
         main.appendChild(this.containerEl);
 
@@ -158,6 +161,34 @@ class BoardDisplay {
         this.containerEl.classList.remove('active');
         // disable unit buttons
         this.boardEl.childNodes.forEach((unit) => (unit.disabled = true));
+    }
+
+    remove() {
+        this.containerEl.remove();
+    }
+}
+
+class OtherBoardBtn {
+    constructor(boardDisplayContainer) {
+        this.boardDisplayContainer = boardDisplayContainer;
+
+        this.button = document.createElement('button');
+        this.button.classList.add('other-board');
+        this.button.textContent = 'Other Board >>';
+        this.button.addEventListener('click', () => this.showOtherBoard());
+
+        this.showingActiveBoard = true;
+    }
+
+    render() {
+        this.boardDisplayContainer.appendChild(this.button);
+    }
+
+    showOtherBoard() {
+        for (let n in game.boardDisplays) {
+            game.boardDisplays[n].render();
+        }
+        this.boardDisplayContainer.remove();
     }
 }
 

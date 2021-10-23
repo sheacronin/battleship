@@ -251,6 +251,7 @@ const game = (() => {
         setupFirstTurn,
         shouldShowBugs,
         switchBothPlayersTurn,
+        boardDisplays,
     };
 })();
 

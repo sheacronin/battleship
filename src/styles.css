@@ -130,6 +130,17 @@ button:hover {
     padding: 10px;
 }
 
+.other-board {
+    padding: 5px;
+    margin-top: 10px;
+}
+
+@media (min-width: 500px) {
+    .other-board {
+        display: none;
+    }
+}
+
 article.p1 {
     grid-column: 1 / 1;
     grid-row: 2 / 2;
