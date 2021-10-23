@@ -18,28 +18,24 @@ class BoardDisplay {
     render() {
         this._clearBoard();
 
-        // add name element
         this.nameEl.textContent = `${this.boardOwnerPlayer.name}'s board`;
         this.containerEl.appendChild(this.nameEl);
 
-        // add board labels
         this.boardEl.appendChild(this._createXAxisLabels());
         this.boardEl.appendChild(this._createYAxisLabels());
 
-        // add units to board
         const unitEls = this._createUnits();
         unitEls.forEach((unitEl) => this.boardEl.appendChild(unitEl));
 
-        // add board element
         this.containerEl.appendChild(this.boardEl);
 
-        // add bug pen
         this.bugPen.render();
 
-        // add container
         main.appendChild(this.containerEl);
 
-        this.toggleActiveClass();
+        return new Promise((resolve) =>
+            setTimeout(() => resolve(this.toggleActiveClass()), 1500)
+        );
     }
 
     _clearBoard() {
@@ -49,13 +45,12 @@ class BoardDisplay {
     }
 
     toggleActiveClass() {
-        setTimeout(() => {
-            if (this._shouldThisBoardBeActive()) {
-                this.containerEl.classList.add('active');
-            } else {
-                this.containerEl.classList.remove('active');
-            }
-        }, 1500);
+        if (this._shouldThisBoardBeActive()) {
+            console.log('adding active');
+            this.containerEl.classList.add('active');
+        } else {
+            this.containerEl.classList.remove('active');
+        }
     }
 
     _createXAxisLabels() {

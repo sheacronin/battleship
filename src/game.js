@@ -195,26 +195,31 @@ const game = (() => {
     async function endTurn() {
         nextTurnBtn.remove();
 
-        for (let n in boardDisplays) {
-            boardDisplays[n].render();
-        }
-
-        if (!players[1].isComputer && !players[2].isComputer) {
-            console.log('rendering pass screen');
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            passToPlayerNScreen.render(getNotWhoseTurn().name);
-        }
-
-        switchBothPlayersTurn();
+        const renderedPromises = [];
 
         for (let n in boardDisplays) {
-            boardDisplays[n].render();
+            renderedPromises.push(boardDisplays[n].render());
         }
 
-        // If it's computer's turn now, it should play without any input
-        if (getWhoseTurn().isComputer) {
-            setTimeout(playTurn, 3000);
-        }
+        Promise.all(renderedPromises)
+            .then(() => {
+                if (!players[1].isComputer && !players[2].isComputer) {
+                    passToPlayerNScreen.render(getNotWhoseTurn().name);
+                }
+            })
+            .then(() => {
+                switchBothPlayersTurn();
+
+                for (let n in boardDisplays) {
+                    console.log('rendering after switched turn');
+                    boardDisplays[n].render();
+                }
+
+                // If it's computer's turn now, it should play without any input
+                if (getWhoseTurn().isComputer) {
+                    setTimeout(playTurn, 3000);
+                }
+            });
     }
 
     function endGame() {
