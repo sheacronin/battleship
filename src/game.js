@@ -1,7 +1,7 @@
 import Player from './player';
 import Board from './board';
 import Bug from './bugs';
-import { BoardDisplay, nextTurnBtn } from './dom/board-dom';
+import { BoardDisplay } from './dom/board-dom';
 import { messages, passToPlayerNScreen } from './dom/messages';
 
 const game = (() => {
@@ -193,8 +193,6 @@ const game = (() => {
     }
 
     async function endTurn() {
-        nextTurnBtn.remove();
-
         const renderedPromises = [];
 
         for (let n in boardDisplays) {

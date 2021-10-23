@@ -192,25 +192,4 @@ class OtherBoardBtn {
     }
 }
 
-const nextTurnBtn = (() => {
-    const button = document.createElement('button');
-    button.classList.add('next-turn');
-    button.textContent = 'Next Turn';
-    button.addEventListener('click', onClick);
-
-    function render() {
-        main.appendChild(button);
-    }
-
-    function remove() {
-        button.remove();
-    }
-
-    function onClick() {
-        game.endTurn();
-    }
-
-    return { render, remove };
-})();
-
-export { BoardDisplay, nextTurnBtn };
+export { BoardDisplay };
