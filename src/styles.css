@@ -108,6 +108,12 @@ button:hover {
     grid-area: message;
 }
 
+@media (max-width: 400px) {
+    #messages {
+        font-size: 12px;
+    }
+}
+
 .pass-screen {
     width: 100vw;
     height: 100vh;
@@ -354,4 +360,38 @@ article.p2 {
 .coords-input-container button {
     height: 40px;
     width: 40px;
+}
+
+@media (max-width: 400px) {
+    .bug-pen {
+        height: 23vh;
+    }
+
+    .bug-pen h3 {
+        height: 4vh;
+        font-size: 16px;
+    }
+
+    .all-bugs-container {
+        height: 19vh;
+    }
+
+    .bug-container {
+        margin: 0 10px 10px 10px;
+    }
+
+    .whole-bug .unit {
+        width: 30px;
+        height: 30px;
+    }
+
+    .coords-input-container input {
+        height: 30px;
+        width: 30px;
+    }
+
+    .coords-input-container button {
+        height: 30px;
+        width: 30px;
+    }
 }
