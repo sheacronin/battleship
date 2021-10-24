@@ -2,8 +2,8 @@ import { main } from '../index';
 import { setup } from './setup-dom';
 
 function convertIndiciesToCoords(indicies) {
-    const letter = indicies[0];
-    const number = indicies[1];
+    const letter = indicies[1];
+    const number = indicies[0];
     let coords = '';
 
     switch (letter) {
