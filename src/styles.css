@@ -217,7 +217,7 @@ article.p2 {
     box-shadow: lightskyblue 0 0 10px 10px;
 }
 
-.active .unit:hover {
+.active .board .unit:hover {
     cursor: pointer;
     box-shadow: inset 0 0 5px black;
 }
@@ -253,6 +253,10 @@ article.p2 {
     color: white;
 }
 
+.status-bugs.bug-pen {
+    height: 20vh;
+}
+
 @media (max-width: 500px) {
     .bug-pen {
         width: 100vw;
@@ -269,8 +273,13 @@ article.p2 {
 
 .all-bugs-container {
     overflow-x: scroll;
+    overflow-y: hidden;
     height: 20vh;
     display: flex;
+}
+
+.status-bugs .all-bugs-container {
+    height: 14vh;
 }
 
 .place-bugs-random {

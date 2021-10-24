@@ -28,11 +28,7 @@ class BugPen {
     render() {
         this._clear();
 
-        if (this.areWePlacingBugs()) {
-            this.createPlacingBugsBugPen(this.board.bugs);
-        } else {
-            this.createBugStatusBugPen(this.board.bugs);
-        }
+        this.createBugPen();
 
         this.boardDisplay.containerEl.appendChild(this.containerEl);
     }
@@ -44,8 +40,7 @@ class BugPen {
         this.containerEl.remove();
     }
 
-    createPlacingBugsBugPen() {
-        this.containerEl.classList.add('placing-bugs');
+    createBugPen() {
         this.containerEl.appendChild(this.titleEl);
 
         const bugsDiv = document.createElement('div');
@@ -56,18 +51,12 @@ class BugPen {
         );
         this.containerEl.appendChild(bugsDiv);
 
-        this._addPlaceBugsRandomlyBtn(this.board.bugs);
-    }
-
-    createBugStatusBugPen() {
-        if (this.containerEl.classList.contains('placing-bugs')) {
-            this.containerEl.classList.remove('placing-bugs');
+        if (this.areWePlacingBugs()) {
+            this._addPlaceBugsRandomlyBtn(this.board.bugs);
+            this.containerEl.classList.remove('status-bugs');
+        } else {
+            this.containerEl.classList.add('status-bugs');
         }
-        this.containerEl.appendChild(this.titleEl);
-        const bugContainers = this._createBugsEls(this.board.bugs);
-        bugContainers.forEach((bugContainer) =>
-            this.containerEl.appendChild(bugContainer)
-        );
     }
 
     _createBugsEls(bugs) {
