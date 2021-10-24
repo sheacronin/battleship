@@ -201,7 +201,6 @@ const game = (() => {
             // Disable units so that player can't attack twice in a row
             boardDisplays[n].boardEl.childNodes.forEach((unit) => {
                 unit.disabled = true;
-                unit.style.opacity = '100';
             });
         }
 
