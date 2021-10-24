@@ -8,11 +8,6 @@ const mockBoard = jest.fn(() => {
     };
 });
 
-test('player can attack', () => {
-    const player = new Player('Bob', new mockBoard());
-    expect(player.attack(0, 0)).toStrictEqual([0, 0]);
-});
-
 test('player is computer if name === "Computer"', () => {
     expect(new Player('Computer').isComputer).toBe(true);
 });
@@ -21,7 +16,7 @@ test('player with any other name is not a computer', () => {
     expect(new Player('Bob').isComputer).toBe(false);
 });
 
-test('computer player returns valid random attack coordinates', () => {
+xtest('computer player returns valid random attack coordinates', () => {
     const computer = new Player('Computer', new mockBoard());
     const [x, y] = computer.attack();
     expect(x).toBeGreaterThanOrEqual(0);
