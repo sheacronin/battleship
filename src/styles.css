@@ -218,7 +218,7 @@ article.p2 {
 }
 
 .active .board {
-    box-shadow: lightskyblue 0 0 10px 10px;
+    box-shadow: #f39b6d 0 0 10px 10px;
 }
 
 .active .board .unit:hover {

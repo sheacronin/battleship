@@ -32,7 +32,9 @@ class BoardDisplay {
 
         this.bugPen.render();
 
-        this.otherBoardBtn.render();
+        if (!this.bugPen.areWePlacingBugs()) {
+            this.otherBoardBtn.render();
+        }
 
         main.appendChild(this.containerEl);
 
