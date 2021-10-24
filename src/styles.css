@@ -141,6 +141,10 @@ button:hover {
     }
 }
 
+article {
+    position: relative;
+}
+
 article.p1 {
     grid-column: 1 / 1;
     grid-row: 2 / 2;
@@ -248,19 +252,16 @@ article.p2 {
     grid-area: bug-pen;
     position: absolute;
     bottom: 0;
-    width: 50vw;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
     height: 26vh;
     color: white;
+    box-shadow: 0 0 5px #00000040;
 }
 
 .status-bugs.bug-pen {
     height: 20vh;
-}
-
-@media (max-width: 500px) {
-    .bug-pen {
-        width: 100vw;
-    }
 }
 
 .bug-pen h3 {
