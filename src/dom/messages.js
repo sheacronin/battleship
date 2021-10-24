@@ -136,6 +136,7 @@ const passToPlayerNScreen = (() => {
     containerEl.classList.add('pass-screen');
 
     const passedBtn = document.createElement('button');
+    passedBtn.classList.add('passed-btn');
     passedBtn.textContent = 'Done!';
 
     function render(playerName) {
