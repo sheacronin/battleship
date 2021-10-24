@@ -244,12 +244,13 @@ article.p2 {
 }
 
 .bug-pen {
-    background-color: #f39b6d;
+    background-color: #6f764c;
     grid-area: bug-pen;
     position: absolute;
     bottom: 0;
     width: 50vw;
     height: 26vh;
+    color: white;
 }
 
 @media (max-width: 500px) {
@@ -288,7 +289,8 @@ article.p2 {
     flex-basis: 20vh;
     flex-shrink: 0;
     justify-content: flex-start;
-    margin: 20px;
+    margin: 0 20px 20px 20px;
+    min-width: 200px;
 }
 
 .bug-container h4 {
@@ -313,8 +315,12 @@ article.p2 {
 
 .whole-bug {
     display: flex;
-    cursor: move;
-    grid-area: bug;
+}
+
+.whole-bug .unit {
+    background-color: transparent;
+    width: 40px;
+    height: 40px;
 }
 
 .coords-input-container {
